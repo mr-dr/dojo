@@ -1,5 +1,6 @@
 package com.dojo.lit
 
+import android.graphics.drawable.Drawable
 import android.widget.Toast
 
 object Utils {
@@ -14,6 +15,14 @@ object Utils {
         toast.show()
     }
 
+    fun getColor(id:Int): Int {
+        return AppController.getResources().getColor(id)
+    }
+
+    fun getDimen(id:Int): Float {
+        return AppController.getResources().getDimension(id)
+    }
+
     fun getString(id:Int): String {
         return AppController.getResources().getString(id)
     }
@@ -21,4 +30,5 @@ object Utils {
     fun getString(id: Int, vararg strings: String): String {
         return AppController.getResources().getString(id, strings)
     }
+
 }

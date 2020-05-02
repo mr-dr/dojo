@@ -56,17 +56,6 @@
     <string name="diamonds_a">Ace Diamonds</string>
     <string name="joker_b">Black Joker</string>
     <string name="joker_r">Red Joker</string>
-
-    <string name="ask">Ask</string>
-    <string name="transfer">Transfer</string>
-    <string name="declare">Declare</string>
-    <string name="your_cards">Your Cards</string>
-    <string name="logs">Logs</string>
-    <string name="none">None/Empty</string>
-    <string name="lit_game_not_enough_args">Not enough information to start game!\\nGame probably not started yet!!</string>
-    <string name="game_code">Game Code: %s</string>
-    <string name="waiting_for_turn">Waiting for %s to play</string>
-    <string name="its_your_turn">It\'s your turn to play</string>
 <!--    names of sets-->
     <string name="spades_lower">Lower Spades</string>
     <string name="spades_higher">Higher Spades</string>
@@ -77,4 +66,21 @@
     <string name="clubs_lower">Lower Clubs</string>
     <string name="clubs_higher">Higher Clubs</string>
     <string name="jokers">Jokers</string>
+
+<!--    used in app-->
+    <string name="ask">Ask</string>
+    <string name="transfer">Transfer</string>
+    <string name="declare">Declare</string>
+    <string name="your_cards">Your Cards</string>
+    <string name="logs">Logs</string>
+    <string name="none">None/Empty</string>
+    <string name="lit_game_not_enough_args">Not enough information to start game!\\nGame probably not started yet!!</string>
+    <string name="game_code">Game Code: %s</string>
+    <string name="waiting_for_turn">Waiting for %s to play</string>
+    <string name="its_your_turn">It\'s your turn to play</string>
+    <string name="your_score">Your Score\n%s</string>
+    <string name="opponent_score">Opponent\'s Score\n%s</string>
+    <string name="log_template_took">%1$s took %3$s from %2$s</string>
+    <string name="log_template_ask">%1$s asked %2$s for %3$s</string>
+    <string name="you">You</string>
 </resources>

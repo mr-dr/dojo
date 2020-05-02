@@ -16,8 +16,16 @@ import com.dojo.lit.network.ApiListeners
  * */
 
 class PlayGameInteractor: BaseInteractor() {
+    companion object {
+        val GET_CHANGES_TAG = "lit_changes_tag"
+    }
     fun fetchChanges(listener: ApiListeners<TransactionResponse>) {
+        // TODO add user and game id as headers
         ApiBuilder<TransactionResponse>().get(TransactionResponse::class.java).url(getChangesUrl())
-            .tag(getChangesRequestTag()).listener(listener).build()
+            .tag(GET_CHANGES_TAG).listener(listener).build()
+    }
+
+    private fun getChangesUrl(): String {
+        return "api.dojo.com/lit/transactions"
     }
 }

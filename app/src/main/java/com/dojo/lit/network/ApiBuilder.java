@@ -130,7 +130,7 @@ public class ApiBuilder<T> {
     private Map<String, String> getAccessHeader() {
         Map<String, String> headers = new HashMap<>();
         headers.put("access_token","rand"); // fixme
-        headers.put("game_id",UserInfo.getOngoingGameId());
+//        headers.put("game_id",UserInfo.getOngoingGameId());
         return headers;
     }
 

@@ -26,13 +26,24 @@
         tools:text="Dropped sets : Low Spades"/>
 
     <TextView
-        android:id="@+id/score_info_tv"
-        android:layout_width="match_parent"
+        android:id="@+id/your_score_info_tv"
+        android:gravity="center"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
         app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Score=1(you):0"/>
+        tools:text="Your score\n0"/>
+
+    <TextView
+        android:id="@+id/opponent_score_info_tv"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
+        app:layout_constraintLeft_toRightOf="@id/your_score_info_tv"
+        tools:text="Opponent's score\n0"/>
 
     <LinearLayout
         android:id="@+id/cards_held_table"
@@ -40,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/score_info_tv"
+        app:layout_constraintTop_toBottomOf="@id/your_score_info_tv"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -64,6 +75,7 @@
 
     <TextView
         android:id="@+id/turn_info"
+        android:background="@color/your_turn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
@@ -88,7 +100,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
         app:layout_constraintTop_toBottomOf="@id/your_cards_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="100dp"
+            android:src="@drawable/clubs_2"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/action_btns_ll"
