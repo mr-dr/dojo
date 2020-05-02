@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/standard_padding">
+
+    <TextView
+        android:id="@+id/game_code_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textIsSelectable="true"
+        tools:text="Game Code: xbvjkdm"/>
+
+    <TextView
+        android:id="@+id/dropped_set_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/game_code_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Dropped sets : Low Spades"/>
+
+    <TextView
+        android:id="@+id/score_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Score=1(you):0"/>
+
+    <LinearLayout
+        android:id="@+id/cards_held_table"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/score_info_tv"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/log_header_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/cards_held_table"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/logs"/>
+
+    <TextView
+        android:id="@+id/logs_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/log_header_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Reaa took 6 Spades from Ayan\nReaa asked 7 Spades from Ayan"
+        />
+
+    <TextView
+        android:id="@+id/turn_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/logs_info_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Waiting for Ayan to play"/>
+
+    <TextView
+        android:id="@+id/your_cards_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/turn_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/your_cards"/>
+
+    <LinearLayout
+        android:id="@+id/your_cards_ll"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/your_cards_tv"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/action_btns_ll"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/your_cards_ll"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/ask_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/ask"/>
+        <TextView
+            android:id="@+id/transfer_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/transfer"/>
+        <TextView
+            android:id="@+id/declare_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/declare"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,67 @@
+package com.dojo.lit.util
+
+import com.dojo.lit.R
+
+object CardImagesUtil {
+    private val map: MutableMap<String, Int> = HashMap()
+    init {
+        map.put(CardApiNames.S2, R.drawable.spades_2)
+        map.put(CardApiNames.S3, R.drawable.spades_3)
+        map.put(CardApiNames.S4, R.drawable.spades_4)
+        map.put(CardApiNames.S5, R.drawable.spades_5)
+        map.put(CardApiNames.S6, R.drawable.spades_6)
+        map.put(CardApiNames.S7, R.drawable.spades_7)
+        map.put(CardApiNames.S8, R.drawable.spades_8)
+        map.put(CardApiNames.S9, R.drawable.spades_9)
+        map.put(CardApiNames.S10, R.drawable.spades_10)
+        map.put(CardApiNames.Sj, R.drawable.spades_j)
+        map.put(CardApiNames.Sq, R.drawable.spades_q)
+        map.put(CardApiNames.Sk, R.drawable.spades_k)
+        map.put(CardApiNames.Sa, R.drawable.spades_a)
+        map.put(CardApiNames.C2, R.drawable.clubs_2)
+        map.put(CardApiNames.C3, R.drawable.clubs_3)
+        map.put(CardApiNames.C4, R.drawable.clubs_4)
+        map.put(CardApiNames.C5, R.drawable.clubs_5)
+        map.put(CardApiNames.C6, R.drawable.clubs_6)
+        map.put(CardApiNames.C7, R.drawable.clubs_7)
+        map.put(CardApiNames.C8, R.drawable.clubs_8)
+        map.put(CardApiNames.C9, R.drawable.clubs_9)
+        map.put(CardApiNames.C10, R.drawable.clubs_10)
+        map.put(CardApiNames.Cj, R.drawable.clubs_j)
+        map.put(CardApiNames.Cq, R.drawable.clubs_q)
+        map.put(CardApiNames.Ck, R.drawable.clubs_k)
+        map.put(CardApiNames.Ca, R.drawable.clubs_a)
+        map.put(CardApiNames.D2, R.drawable.diamonds_2)
+        map.put(CardApiNames.D3, R.drawable.diamonds_3)
+        map.put(CardApiNames.D4, R.drawable.diamonds_4)
+        map.put(CardApiNames.D5, R.drawable.diamonds_5)
+        map.put(CardApiNames.D6, R.drawable.diamonds_6)
+        map.put(CardApiNames.D7, R.drawable.diamonds_7)
+        map.put(CardApiNames.D8, R.drawable.diamonds_8)
+        map.put(CardApiNames.D9, R.drawable.diamonds_9)
+        map.put(CardApiNames.D10, R.drawable.diamonds_10)
+        map.put(CardApiNames.Dj, R.drawable.diamonds_j)
+        map.put(CardApiNames.Dq, R.drawable.diamonds_q)
+        map.put(CardApiNames.Dk, R.drawable.diamonds_k)
+        map.put(CardApiNames.Da, R.drawable.diamonds_a)
+        map.put(CardApiNames.H2, R.drawable.hearts_2)
+        map.put(CardApiNames.H3, R.drawable.hearts_3)
+        map.put(CardApiNames.H4, R.drawable.hearts_4)
+        map.put(CardApiNames.H5, R.drawable.hearts_5)
+        map.put(CardApiNames.H6, R.drawable.hearts_6)
+        map.put(CardApiNames.H7, R.drawable.hearts_7)
+        map.put(CardApiNames.H8, R.drawable.hearts_8)
+        map.put(CardApiNames.H9, R.drawable.hearts_9)
+        map.put(CardApiNames.H10, R.drawable.hearts_10)
+        map.put(CardApiNames.Hj, R.drawable.hearts_j)
+        map.put(CardApiNames.Hq, R.drawable.hearts_q)
+        map.put(CardApiNames.Hk, R.drawable.hearts_k)
+        map.put(CardApiNames.Ha, R.drawable.hearts_a)
+        map.put(CardApiNames.Jb, R.drawable.joker_b)
+        map.put(CardApiNames.Jr, R.drawable.joker_r)
+    }
+
+    fun getMapping(): Map<String, Int>{
+        return map
+    }
+}
