@@ -83,4 +83,10 @@
     <string name="log_template_took">%1$s took %3$s from %2$s</string>
     <string name="log_template_ask">%1$s asked %2$s for %3$s</string>
     <string name="you">You</string>
+    <string name="create_room">Create Room</string>
+    <string name="join_room">Join Room</string>
+    <string name="create_room_dialog_text">How many previous transactions should be visible during your game?</string>
+    <string name="join_room_dialog_text">Enter the game room code</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

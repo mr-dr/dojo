@@ -93,20 +93,25 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/your_cards"/>
 
-    <LinearLayout
-        android:id="@+id/your_cards_ll"
-        android:orientation="horizontal"
+    <HorizontalScrollView
+        android:id="@+id/your_cards_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
         app:layout_constraintTop_toBottomOf="@id/your_cards_tv"
         app:layout_constraintStart_toStartOf="parent">
-        <ImageView
-            android:layout_width="65dp"
-            android:layout_height="100dp"
-            android:src="@drawable/clubs_2"
-            />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/your_cards_ll"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half">
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="100dp"
+                android:src="@drawable/clubs_2"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/action_btns_ll"
@@ -114,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/your_cards_ll"
+        app:layout_constraintTop_toBottomOf="@id/your_cards_sv"
         app:layout_constraintStart_toStartOf="parent">
         <TextView
             android:id="@+id/ask_tv"

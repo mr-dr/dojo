@@ -1,17 +1,18 @@
 package com.dojo.lit
 
-import android.graphics.drawable.Drawable
+import android.content.Context
+import android.net.ConnectivityManager
 import android.widget.Toast
 
 object Utils {
     fun makeToastLong(messageId: Int) {
-        val message = AppController.getResources().getString(messageId)
-        val toast = Toast.makeText(AppController.applicationContext, message, Toast.LENGTH_LONG)
+        val message = AppController.getInstance().getResources().getString(messageId)
+        val toast = Toast.makeText(AppController.getApplicationContext(), message, Toast.LENGTH_LONG)
         toast.show()
     }
 
     fun makeToastLong(message: String) {
-        val toast = Toast.makeText(AppController.applicationContext, message, Toast.LENGTH_LONG)
+        val toast = Toast.makeText(AppController.getApplicationContext(), message, Toast.LENGTH_LONG)
         toast.show()
     }
 
@@ -29,6 +30,14 @@ object Utils {
 
     fun getString(id: Int, vararg strings: String): String {
         return AppController.getResources().getString(id, strings)
+    }
+
+    fun isNetworkAvailable(): Boolean {
+        val context = AppController.getInstance()
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 
 }

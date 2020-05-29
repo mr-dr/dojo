@@ -47,6 +47,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setupPresenter()
         return inflater.inflate(R.layout.fragment_play_lit, container, false)
     }
 
@@ -57,7 +58,6 @@ class PlayGameFragment : BaseFragment(), IPlayGameView {
             return
         }
         init()
-        setupPresenter()
         mPresenter.start()
     }
 
@@ -83,24 +83,24 @@ class PlayGameFragment : BaseFragment(), IPlayGameView {
 
     private fun setupDefaultValues() {
         val gameCode=
-            arguments!!.getString(BundleArgumentKeys.GAME_CODE) ?: Utils.getString(R.string.none)
-        mGameCodeTv.text = Utils.getString(R.string.game_code, gameCode)
+            arguments!!.getString(BundleArgumentKeys.GAME_CODE) ?: getResources().getString(R.string.none)
+        mGameCodeTv.text = getResources().getString(R.string.game_code, gameCode)
     }
 
     private fun setupPresenter() {
-        mPresenter = PlayGamePresenter(this, arguments!!)
+        mPresenter = PlayGamePresenter(this, arguments)
     }
 
     override fun setData(vm: PlayGameVM) {
         mDroppedSetsTv.text = getDroppedSetsText(vm.droppedSets)
-        mYourScoreTv.text = Utils.getString(R.string.your_score, vm.yourScore.toString())
-        mOpponentScoreTv.text = Utils.getString(R.string.opponent_score, vm.opponentScore.toString())
+        mYourScoreTv.text = getResources().getString(R.string.your_score, vm.yourScore.toString())
+        mOpponentScoreTv.text = getResources().getString(R.string.opponent_score, vm.opponentScore.toString())
         mTurnInfoTv.apply {
             if(vm.isYourTurn){
-                mTurnInfoTv.text = Utils.getString(R.string.its_your_turn)
+                mTurnInfoTv.text = getResources().getString(R.string.its_your_turn)
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.your_turn))
             } else {
-                mTurnInfoTv.text = Utils.getString(R.string.waiting_for_turn, vm.nameOfPlayerWhoseTurn)
+                mTurnInfoTv.text = getResources().getString(R.string.waiting_for_turn, vm.nameOfPlayerWhoseTurn)
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.not_your_turn))
             }
         }
@@ -145,10 +145,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView {
         logs.indices.forEach { count ->
             val log = logs[count]
             if (count > 0) strBuilder.append(TextUtil.NEWLINE)
-            val askedBy = if (PlayGamePresenter.YOU.equals(log.askedBy)) {Utils.getString(R.string.you)} else {log.askedBy}
-            val askedFrom = if (PlayGamePresenter.YOU.equals(log.askedFrom)) {Utils.getString(R.string.you)} else {log.askedFrom}
+            val askedBy = if (PlayGamePresenter.YOU.equals(log.askedBy)) {getResources().getString(R.string.you)} else {log.askedBy}
+            val askedFrom = if (PlayGamePresenter.YOU.equals(log.askedFrom)) {getResources().getString(R.string.you)} else {log.askedFrom}
             val logTemplateId = if (log.wasSuccessful) {R.string.log_template_took} else {R.string.log_template_ask}
-            strBuilder.append(Utils.getString(logTemplateId, askedBy, askedFrom, log.askedFor))
+            strBuilder.append(getResources().getString(logTemplateId, askedBy, askedFrom, log.askedFor))
         }
         return strBuilder.toString()
     }

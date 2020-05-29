@@ -16,10 +16,10 @@ class GamesListActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        tv?.text = "GamesList Screen" + tv?.text // fixme
+        tv = findViewById(R.id.tv)
+        tv?.text = "GamesList Screen\n" + tv?.text // fixme
 
-        fab.setOnClickListener { view -> // temp impl
+        tv?.setOnClickListener { view -> // temp impl
             val intent = Intent(this, LitGameActivity::class.java)
             startActivity(intent)
         }

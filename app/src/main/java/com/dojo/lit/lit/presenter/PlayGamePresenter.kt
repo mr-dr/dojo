@@ -5,7 +5,7 @@ import android.util.Log
 import com.android.volley.VolleyError
 import com.dojo.lit.base.BasePresenter
 import com.dojo.lit.lit.BundleArgumentKeys
-import com.dojo.lit.lit.PlayGameInteractor
+import com.dojo.lit.lit.GameInteractor
 import com.dojo.lit.lit.PlayGameVM
 import com.dojo.lit.lit.TransactionLogVM
 import com.dojo.lit.lit.model.TransactionData
@@ -13,9 +13,12 @@ import com.dojo.lit.lit.model.TransactionResponse
 import com.dojo.lit.lit.view.IPlayGameView
 import com.dojo.lit.network.ApiListeners
 import com.dojo.lit.scheduling.GameStateUpdateScheduler
-import com.dojo.lit.util.TextUtil
+import com.dojo.lit.util.FirebaseRealtimeDbListener
+import com.dojo.lit.util.FirebaseUtils
+import com.google.firebase.database.DatabaseException
 
-class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle) : BasePresenter() {
+class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BasePresenter() {
+    // fixme arguments should be non-null
     companion object {
         val YOU = "you"
     }
@@ -37,7 +40,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle) : BasePr
     private val opponentScore: Int
     get() = (droppedSets.size - yourScore)
 
-    private val mInteractor: PlayGameInteractor
+    private val mInteractor: GameInteractor
     private var isPaused: Boolean
     private val LOG_TAG = "play_lit_presenter"
 
@@ -46,37 +49,66 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle) : BasePr
         yourScore = 0
         droppedSets = ArrayList()
         cardsHeldByEachPlayerChanged = false
-        yourPlayerNo = arguments.getInt(BundleArgumentKeys.PLAYER_NO) // fixed value
-        playerNames = arguments.getStringArrayList(BundleArgumentKeys.PLAYER_NAMES)!! // fixme decide
-        cardsInHand = arguments.getStringArrayList(BundleArgumentKeys.CARDS_IN_HAND)!!
+        yourPlayerNo = arguments?.getInt(BundleArgumentKeys.PLAYER_NO) ?: 0 // fixed value
+        playerNames = arguments?.getStringArrayList(BundleArgumentKeys.PLAYER_NAMES) ?: ArrayList() // fixme decide
+        cardsInHand = arguments?.getStringArrayList(BundleArgumentKeys.CARDS_IN_HAND) ?: ArrayList()
         cardsInHandChanged = false
-        cardsHeldByEachPlayer = arguments.getIntegerArrayList(BundleArgumentKeys.CARDS_NO_EACH_PLAYER)!!
-        logsLength = arguments.getInt(BundleArgumentKeys.LOGS_LENGTH) // fixed value
+        cardsHeldByEachPlayer = arguments?.getIntegerArrayList(BundleArgumentKeys.CARDS_NO_EACH_PLAYER) ?: ArrayList()
+        logsLength = arguments?.getInt(BundleArgumentKeys.LOGS_LENGTH) ?: 0 // fixed value
         droppedSuccessfullyInLastTurn = false
         logs = ArrayList()
 
-        mInteractor = PlayGameInteractor()
+        mInteractor = GameInteractor()
         isPaused = false
     }
 
     private fun updatePresenterData(newData: TransactionResponse) {
+        val scoreArray = newData.scoreboardText.split(":")
         turnOfPlayer = newData.turnOfPlayer
-        yourScore = newData.setsDeclaredByYourTeam
-        cardsInHandChanged = !cardsInHand.equals(newData.yourCards) // expecting sorted cards
+        yourScore = (scoreArray.get(0)).toInt()
+        val newCardsInHand = getYourCards(newData)
+        cardsInHandChanged = !cardsInHand.equals(newCardsInHand) // expecting sorted cards
         cardsInHand.clear()
-        cardsInHand.addAll(newData.yourCards)
+        cardsInHand.addAll(newCardsInHand)
         droppedSets.clear()
-        droppedSets.addAll(newData.droppedSets)
-        cardsHeldByEachPlayerChanged = !cardsHeldByEachPlayer.equals(newData.cardsHeldByEachPlayer)
-                || !playerNames.equals(newData.playerNames)
+//        droppedSets.addAll(newData.droppedSets) // fixme uncomment
+//        cardsHeldByEachPlayerChanged = !cardsHeldByEachPlayer.equals(newData.cardsHeldByEachPlayer)
+//                || !playerNames.equals(newData.playerNames)
         playerNames.clear()
-        playerNames.addAll(newData.playerNames)
-        cardsHeldByEachPlayer.clear()
-        cardsHeldByEachPlayer.addAll(newData.cardsHeldByEachPlayer)
-        droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop
-        if (newData.lastTransaction != null) {
-            addNewLog(newData.lastTransaction)
+        playerNames.addAll(getPlayerNames(newData))
+//        cardsHeldByEachPlayer.clear()
+//        cardsHeldByEachPlayer.addAll(newData.cardsHeldByEachPlayer)
+        droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop.toBoolean()
+//        if (newData.lastTransaction != null) {
+//            addNewLog(newData.lastTransaction)
+//        }
+    }
+
+    private fun getYourCards(newData: TransactionResponse): List<String> {
+        if (yourPlayerNo == 1) {
+            return newData.player1.cards
+        } else if (yourPlayerNo == 2) {
+            return newData.player2.cards
+        } else if (yourPlayerNo == 3) {
+            return newData.player3.cards
+        } else if (yourPlayerNo == 4) {
+            return newData.player4.cards
+        } else if (yourPlayerNo == 5) {
+            return newData.player5.cards
+        } else {
+            return newData.player6.cards
         }
+    }
+
+    private fun getPlayerNames(newData: TransactionResponse): List<String> {
+        val names = ArrayList<String>()
+        names.add(newData.player1.name)
+        names.add(newData.player2.name)
+        names.add(newData.player3.name)
+        names.add(newData.player4.name)
+        names.add(newData.player5.name)
+        names.add(newData.player6.name)
+        return names
     }
 
     private fun updateState(response: TransactionResponse) {
@@ -86,9 +118,21 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle) : BasePr
 
     override fun start(){
         setData() // initialize data
-        GameStateUpdateScheduler.schedule(Runnable { // schedule update after regular interval
-            fetchChanges()
-        }, checkStatusAfterMillis)
+        FirebaseUtils.subscribeToFirebaseRealtimeDb(object: FirebaseRealtimeDbListener() {
+            override fun onDataChange(value: TransactionResponse?) {
+                if (value == null) return
+                updateState(value) // fixme
+            }
+
+            override fun onCancelled(exception: DatabaseException) {
+                // TODO log error for firebase DB
+            }
+        })
+//        { // TODO will be useful in future on shifting from realtime DB
+//            GameStateUpdateScheduler.schedule(Runnable { // schedule update after regular interval
+//                fetchChanges()
+//            }, checkStatusAfterMillis)
+//        }
     }
 
     private fun fetchChanges() {
@@ -123,7 +167,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle) : BasePr
                 log.wasSuccessful
             ))
         }
-        val nameOfCurrentTurnPlayer = playerNames[turnOfPlayer]
+        val nameOfCurrentTurnPlayer =
+            if (playerNames.size > turnOfPlayer) playerNames[turnOfPlayer] else "-"
         val isYourTurn = turnOfPlayer == yourPlayerNo
 
         return PlayGameVM(

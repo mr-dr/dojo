@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RetryPolicy;
+import com.dojo.lit.lit.model.CreateRoomResponse;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -96,12 +97,12 @@ public class ApiBuilder<T> {
         return this;
     }
 
-    public Request<T> build() {
+    public ApiRequest<T> build() {
         if (TextUtils.isEmpty(url) || listeners == null) {
             throw new IllegalArgumentException("url/listeners required");
         }
         updateHeaders();
-        Request<T> apiRequest = new ApiRequest<>(getType(), method, url, headers, requestBody, formData, listeners, listeners);
+        ApiRequest<T> apiRequest = new ApiRequest<>(getType(), method, url, headers, requestBody, formData, listeners, listeners);
         apiRequest.setTag(tag);
 
         if (retryPolicy == null) {
