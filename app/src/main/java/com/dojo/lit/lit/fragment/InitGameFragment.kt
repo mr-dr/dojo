@@ -15,6 +15,8 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import com.android.volley.VolleyError
 import com.dojo.lit.Utils
+import com.dojo.lit.base.BaseActivity
+import com.dojo.lit.lit.BundleArgumentKeys
 import com.dojo.lit.lit.activity.LitGameActivity
 import com.dojo.lit.lit.model.CreateRoomResponse
 import com.dojo.lit.network.ApiListeners
@@ -80,7 +82,7 @@ class InitGameFragment : BaseFragment() {
     }
 
     private fun makeCreateRoomCall() {
-        // TODO add progress bar
+        showProgressDialog()
         interactor.createRoom(Integer.parseInt(logsDialogInput!!), object: ApiListeners<CreateRoomResponse>() {
             override fun onResponse(response: CreateRoomResponse?) {
                 if (response == null || TextUtil.isEmpty(response.gameId)) {
@@ -88,11 +90,12 @@ class InitGameFragment : BaseFragment() {
                     return
                 }
                 gameIdDialogInput = response.gameId
+                hideProgressDialog()
                 makeJoinRoomCall()
             }
 
             override fun onErrorResponse(error: VolleyError?) {
-                // TODO remove progress bar
+                hideProgressDialog()
                 // TODO Log all errors
                 Utils.makeToastLong("Room could not be created!")
             }
@@ -101,14 +104,15 @@ class InitGameFragment : BaseFragment() {
     }
 
     private fun makeJoinRoomCall() {
+        showProgressDialog()
         interactor.joinRoom(aliasDialogInput!!, gameIdDialogInput!!, playerNoDialogInput!!.toInt(), object: ApiListeners<String>() {
             override fun onResponse(response: String?) {
-                // TODO remove progress bar
+                hideProgressDialog()
                 if (activity is LitGameActivity) {
                     val gameData = Bundle()
-                    gameData.putString("game_id", gameIdDialogInput)
-                    gameData.putString("alias", aliasDialogInput)
-                    gameData.putInt("playerNo", playerNoDialogInput!!.toInt())
+                    gameData.putString(BundleArgumentKeys.GAME_CODE, gameIdDialogInput)
+                    gameData.putString(BundleArgumentKeys.ALIAS, aliasDialogInput)
+                    gameData.putInt(BundleArgumentKeys.PLAYER_NO, playerNoDialogInput!!.toInt())
                     (activity as LitGameActivity).joinGame(gameData)
                 } else {
                     Utils.makeToastLong("Something went wrong!")
@@ -116,7 +120,7 @@ class InitGameFragment : BaseFragment() {
             }
 
             override fun onErrorResponse(error: VolleyError?) {
-                // TODO remove progress bar
+                hideProgressDialog()
                 // TODO Log all errors
                 Utils.makeToastLong("Room could not be joined!")
             }

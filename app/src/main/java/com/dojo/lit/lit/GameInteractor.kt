@@ -12,6 +12,7 @@ class GameInteractor: BaseInteractor() {
         val BASE_URL = "https://us-central1-litt-276414.cloudfunctions.net" // fixed for Firebase Cloud Functions
         val CREATE_ROOM_TAG = "createRoomRequestTag"
         val JOIN_ROOM_TAG = "joinRoomRequestTag"
+        val LEAVE_ROOM_TAG = "leaveRoomRequestTag"
         val ASK_CARD_TAG = "askCardRequestTag"
         val DROP_SET_TAG = "dropSetRequestTag"
         val TRANSFER_TURN_TAG = "transferRequestTag"
@@ -32,7 +33,7 @@ class GameInteractor: BaseInteractor() {
         startApiRequest(request)
     }
 
-    // only success & failure matter here
+    // need entire transaction response
     fun joinRoom(alias: String, gameId: String, playerNo: Int, listener: ApiListeners<String>) {
         val params = HashMap<String, String>()
         params.put(ApiParams.ALIAS, alias)
@@ -49,6 +50,21 @@ class GameInteractor: BaseInteractor() {
         startApiRequest(request)
     }
 
+    fun leaveRoom(gameId: String, playerNo: Int, listener: ApiListeners<String>) {
+        val params = HashMap<String, String>()
+        params.put(ApiParams.GAME_ID, gameId)
+        params.put(ApiParams.PLAYER_NO, playerNo.toString())
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.LEAVE_ROOM).params(params).build()
+        val request = ApiBuilder<String>()
+            .get(String::class.java)
+            .url(url)
+            .headers(ApiHeader.getDefaultHeaders())
+            .listener(listener)
+            .tag(LEAVE_ROOM_TAG)
+            .build()
+        startApiRequest(request)
+    }
+
     // only success & failure matter here
     fun askCard(gameId: String, transactionData: TransactionData, listener: ApiListeners<String>) {
         val params = HashMap<String, String>()
@@ -56,7 +72,7 @@ class GameInteractor: BaseInteractor() {
         params.put(ApiParams.PLAYER_B, transactionData.askedFrom.toString())
         params.put(ApiParams.CARD, transactionData.askedFor)
         params.put(ApiParams.GAME_ID, gameId)
-        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.JOIN_ROOM).params(params).build()
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.ASK_CARD).params(params).build()
         val request = ApiBuilder<String>()
             .get(String::class.java)
             .url(url)
@@ -74,11 +90,20 @@ class GameInteractor: BaseInteractor() {
         params.put(ApiParams.PLAYER_A, data.playerA.toString()) // fixme should always be for your user
         params.put(ApiParams.PLAYER_B, data.playerB.toString())
         params.put(ApiParams.PLAYER_C, data.playerC.toString())
-        params.put(ApiParams.CARDS_A, convertListToQueryParam(data.cardsA))
-        params.put(ApiParams.CARDS_B, convertListToQueryParam(data.cardsB))
-        params.put(ApiParams.CARDS_C, convertListToQueryParam(data.cardsC))
+        if (!data.cardsA.isEmpty()) params.put(
+            ApiParams.CARDS_A,
+            convertListToQueryParam(data.cardsA)
+        )
+        if (!data.cardsB.isEmpty()) params.put(
+            ApiParams.CARDS_B,
+            convertListToQueryParam(data.cardsB)
+        )
+        if (!data.cardsC.isEmpty()) params.put(
+            ApiParams.CARDS_C,
+            convertListToQueryParam(data.cardsC)
+        )
         params.put(ApiParams.GAME_ID, gameId)
-        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.JOIN_ROOM).params(params).build()
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.DROP_SET).params(params).build()
         val request = ApiBuilder<String>()
             .get(String::class.java)
             .url(url)
@@ -96,7 +121,7 @@ class GameInteractor: BaseInteractor() {
         params.put(ApiParams.PLAYER_A, playerA.toString())
         params.put(ApiParams.PLAYER_B, playerB.toString())
         params.put(ApiParams.GAME_ID, gameId)
-        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.JOIN_ROOM).params(params).build()
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.TRANSFER_TURN).params(params).build()
         val request = ApiBuilder<String>()
             .get(String::class.java)
             .url(url)

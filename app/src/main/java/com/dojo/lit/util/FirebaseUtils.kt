@@ -14,14 +14,12 @@ import com.google.firebase.database.*
 object FirebaseUtils {
     private val TAG = "FirebaseUtils"
     private val database: FirebaseDatabase
-    private val myRef: DatabaseReference
+    private lateinit var myRef: DatabaseReference
     private val realtimeDbListeners = ArrayList<FirebaseRealtimeDbListener>()
+    private var currentGameCode: String? = null
 
     init {
         database = Firebase.database
-        // fixme rishabh - needs to be set on join room
-        myRef = database.getReference("r64GfCEqv8ThuMay28202017:10:061590685806445")
-        addListenersToRealtimeDb()
     }
 
     private fun addListenersToRealtimeDb() {
@@ -48,6 +46,19 @@ object FirebaseUtils {
         })
     }
 
+    fun connectToDb(dbName: String){
+        // "r64GfCEqv8ThuMay28202017:10:061590685806445"
+        database.goOnline()
+        myRef = database.getReference(dbName)
+        currentGameCode = dbName
+        addListenersToRealtimeDb()
+    }
+
+    fun disconnectFromDb(){
+        database.goOffline()
+        realtimeDbListeners.clear()
+    }
+
     // each game service (eg. Lit) will implement FirebaseRealtimeDbListener & subscribe to this func
     fun subscribeToFirebaseRealtimeDb(listener: FirebaseRealtimeDbListener) {
         if (!realtimeDbListeners.contains(listener)) {
@@ -55,7 +66,7 @@ object FirebaseUtils {
         }
     }
 
-    fun unsubscribeToFirebaseRealtimeDb(listener: FirebaseRealtimeDbListener) {
+    fun unsubscribeToFirebaseRealtimeDb(listener: FirebaseRealtimeDbListener?) {
         if (realtimeDbListeners.contains(listener)) {
             realtimeDbListeners.remove(listener)
         }
