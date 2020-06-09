@@ -98,13 +98,13 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
     private fun getYourCards(newData: TransactionResponse): List<String> {
         if (yourPlayerNo == 1) {
-            return newData.player1.cards
+            return newData.player1.cards ?: ArrayList()
         } else if (yourPlayerNo == 2) {
-            return newData.player2.cards
+            return newData.player2.cards ?: ArrayList()
         } else if (yourPlayerNo == 3) {
-            return newData.player3.cards
+            return newData.player3.cards ?: ArrayList()
         } else if (yourPlayerNo == 4) {
-            return newData.player4.cards
+            return newData.player4.cards ?: ArrayList()
         } else if (yourPlayerNo == 5) {
             return newData.player5?.cards ?: ArrayList()
         } else {

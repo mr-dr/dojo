@@ -35,15 +35,15 @@ data class TransactionResponse(
 
     fun getCardsHeldByEachPlayer() : List<Int> {
         val cardsHeld = ArrayList<Int>()
-        cardsHeld.add(player1.cards.size)
-        cardsHeld.add(player2.cards.size)
-        cardsHeld.add(player3.cards.size)
-        cardsHeld.add(player4.cards.size)
+        cardsHeld.add(player1.cards?.size ?: 0)
+        cardsHeld.add(player2.cards?.size ?: 0)
+        cardsHeld.add(player3.cards?.size ?: 0)
+        cardsHeld.add(player4.cards?.size ?: 0)
         if (player5 != null) {
-            cardsHeld.add(player5.cards.size)
+            cardsHeld.add(player5.cards?.size ?: 0)
         }
         if (player6 != null) {
-            cardsHeld.add(player6.cards.size)
+            cardsHeld.add(player6.cards?.size ?: 0)
         }
         return cardsHeld
     }
@@ -69,7 +69,7 @@ data class PlayerInfo(
     @SerializedName("alias")
     val name: String,
     @SerializedName("cards") // fixme - card info should not be accessible for other players
-    val cards: List<String>
+    val cards: List<String>?
 ) : Parcelable
 
 @Parcelize
