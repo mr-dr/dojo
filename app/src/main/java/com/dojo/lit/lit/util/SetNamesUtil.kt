@@ -13,7 +13,7 @@ object SetNamesUtil {
         map.put(SetApiNames.Dh, R.string.diamonds_higher)
         map.put(SetApiNames.Cl, R.string.clubs_lower)
         map.put(SetApiNames.Ch, R.string.clubs_higher)
-        map.put(SetApiNames.Ch, R.string.jokers)
+        map.put(SetApiNames.j, R.string.jokers)
     }
 
     fun getMapping(): Map<String, Int>{

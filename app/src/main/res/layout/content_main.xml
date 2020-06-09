@@ -12,7 +12,7 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to the next activity for now!\n(Hit the button on bottom-right)"
+        android:text="Go to the next activity for now!\n(Click here)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

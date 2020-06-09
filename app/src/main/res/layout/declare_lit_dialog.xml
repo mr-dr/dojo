@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/standard_margin">
+
+    <Spinner
+        android:id="@+id/declare_set_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
+    <TableLayout
+        android:id="@+id/cards_ll_tbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        android:visibility="gone"
+        android:stretchColumns="*">
+        <TableRow>
+            <TextView
+                android:id="@+id/player_1_name_tv"
+                android:padding="@dimen/cell_padding"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                tools:text="Pazer" />
+            <TextView
+                android:id="@+id/player_2_name_tv"
+                android:padding="@dimen/cell_padding"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                tools:text="Tururu" />
+            <TextView
+                android:id="@+id/player_3_name_tv"
+                android:padding="@dimen/cell_padding"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                tools:text="Holo" />
+        </TableRow>
+
+        <TableRow>
+            <com.dojo.lit.view.DroppableLinearLayout
+                android:id="@+id/player_1_cards_ll"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+            <com.dojo.lit.view.DroppableLinearLayout
+                android:id="@+id/player_2_cards_ll"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+            <com.dojo.lit.view.DroppableLinearLayout
+                android:id="@+id/player_3_cards_ll"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

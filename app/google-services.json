@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "515712549746",
+    "firebase_url": "https://litt-276414.firebaseio.com",
+    "project_id": "litt-276414",
+    "storage_bucket": "litt-276414.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515712549746:android:b8fd040225e10d6daa13eb",
+        "android_client_info": {
+          "package_name": "com.dojo.lit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515712549746-3ovo6hgu47qpuf7m6ag9kukajrsi0lqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dojo.lit",
+            "certificate_hash": "df2ee7aea46320dd0e2f2f66cfaf2d681a6cbe26"
+          }
+        },
+        {
+          "client_id": "515712549746-gfag6or3a4sliju6r9s7vcaqftjebbul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjrWUqypzjtva7AQL9FVB2zEc0VbIZRZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515712549746-gfag6or3a4sliju6r9s7vcaqftjebbul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

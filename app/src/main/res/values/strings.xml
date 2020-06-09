@@ -75,7 +75,8 @@
     <string name="logs">Logs</string>
     <string name="none">None/Empty</string>
     <string name="lit_game_not_enough_args">Not enough information to start game!\\nGame probably not started yet!!</string>
-    <string name="game_code">Game Code: %s</string>
+<!--    <string name="game_code">Game Code: %s</string>-->
+    <string name="game_code">Share join room link</string>
     <string name="waiting_for_turn">Waiting for %s to play</string>
     <string name="its_your_turn">It\'s your turn to play</string>
     <string name="your_score">Your Score\n%s</string>
@@ -83,4 +84,16 @@
     <string name="log_template_took">%1$s took %3$s from %2$s</string>
     <string name="log_template_ask">%1$s asked %2$s for %3$s</string>
     <string name="you">You</string>
+    <string name="create_room">Create Room</string>
+    <string name="join_room">Join Room</string>
+    <string name="dropped_sets">Dropped sets:\n</string>
+    <string name="create_room_dialog_text">Enter new game details</string>
+    <string name="join_room_dialog_text">Enter the game details</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="ask_dialog_title">Who do you want to ask from?</string>
+    <string name="ask_dialog_error">Please select all 3 fields to ask card!</string>
+    <string name="transfer_dialog_title">Whom do you want to transfer to?</string>
+    <string name="transfer_dialog_error">You didn\'t select any player name!</string>
+    <string name="declare_dialog_title"><![CDATA[Select set & assign cards to each of your teammates]]></string>
 </resources>

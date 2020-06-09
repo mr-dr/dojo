@@ -6,17 +6,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/standard_padding">
 
-    <TextView
-        android:id="@+id/game_code_tv"
-        android:layout_width="match_parent"
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/your_score_info_tv"
+        android:gravity="center"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
+        android:textColor="@color/txt_inverted"
+        android:padding="@dimen/standard_padding_half"
+        app:olSheet="true"
+        app:olSheetColor="@color/same_team"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:text="Your score\n0"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/opponent_score_info_tv"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        android:textColor="@color/txt_inverted"
+        android:padding="@dimen/standard_padding_half"
+        app:olSheet="true"
+        app:olSheetColor="@color/opp_team"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Opponent's score\n0"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/game_code_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/your_score_info_tv"
+        app:layout_constraintStart_toEndOf="@id/your_score_info_tv"
+        app:layout_constraintEnd_toStartOf="@id/game_code_share"
+        app:layout_constraintHorizontal_chainStyle="packed"
         android:textIsSelectable="true"
         tools:text="Game Code: xbvjkdm"/>
+    <View
+        android:id="@+id/game_code_share"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standard_margin_half"
+        app:layout_constraintTop_toTopOf="@id/game_code_tv"
+        app:layout_constraintBottom_toBottomOf="@id/game_code_tv"
+        app:layout_constraintStart_toEndOf="@id/game_code_tv"
+        app:layout_constraintEnd_toStartOf="@id/opponent_score_info_tv"
+        android:background="@android:drawable/ic_menu_share"
+        />
 
-    <TextView
+    <com.dojo.lit.view.DojoTextView
         android:id="@+id/dropped_set_info_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,45 +69,26 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Dropped sets : Low Spades"/>
 
-    <TextView
-        android:id="@+id/your_score_info_tv"
-        android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Your score\n0"/>
-
-    <TextView
-        android:id="@+id/opponent_score_info_tv"
-        android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
-        app:layout_constraintLeft_toRightOf="@id/your_score_info_tv"
-        tools:text="Opponent's score\n0"/>
-
     <LinearLayout
         android:id="@+id/cards_held_table"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/your_score_info_tv"
+        app:layout_constraintTop_toBottomOf="@id/game_code_tv"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <TextView
+    <com.dojo.lit.view.DojoTextView
         android:id="@+id/log_header_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/cards_held_table"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/dropped_set_info_tv"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/logs"/>
 
-    <TextView
+    <com.dojo.lit.view.DojoTextView
         android:id="@+id/logs_info_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,40 +98,112 @@
         tools:text="Reaa took 6 Spades from Ayan\nReaa asked 7 Spades from Ayan"
         />
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/table_vert_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_end="280dp"
+        android:orientation="horizontal"/>
+
+    <com.dojo.lit.view.DojoTextView
         android:id="@+id/turn_info"
-        android:background="@color/your_turn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
+        android:maxWidth="@dimen/card_size"
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginStart="@dimen/standard_margin_xxx_double"
+        android:layout_marginEnd="@dimen/standard_margin_xxx_double"
+        android:layout_marginBottom="100dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/logs_info_tv"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/your_turn"
+        app:layout_constraintTop_toTopOf="@id/table_vert_center"
+        app:layout_constraintBottom_toBottomOf="@id/table_vert_center"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Waiting for Ayan to play"/>
 
-    <TextView
-        android:id="@+id/your_cards_tv"
-        android:layout_width="match_parent"
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/player_1_opp_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/turn_info"
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginBottom="@dimen/standard_margin_xx_double"
+        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/opp_team"
+        app:layout_constraintBottom_toTopOf="@id/table_vert_center"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/your_cards"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Pazer"/>
 
-    <LinearLayout
-        android:id="@+id/your_cards_ll"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/player_2_opp_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/your_cards_tv"
-        app:layout_constraintStart_toStartOf="parent">
-        <ImageView
-            android:layout_width="65dp"
-            android:layout_height="100dp"
-            android:src="@drawable/clubs_2"
-            />
-    </LinearLayout>
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/opp_team"
+        app:layout_constraintTop_toBottomOf="@id/table_vert_center"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Rocket"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/player_1_same_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/same_team"
+        app:layout_constraintBottom_toTopOf="@id/table_vert_center"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Tantan"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/player_3_opp_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/opp_team"
+        app:layout_constraintTop_toBottomOf="@id/table_vert_center"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Tururu"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/player_2_same_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/standard_padding"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetColor="@color/same_team"
+        app:layout_constraintBottom_toTopOf="@id/table_vert_center"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Sanyu"/>
 
     <LinearLayout
         android:id="@+id/action_btns_ll"
@@ -114,26 +211,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/your_cards_ll"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@id/your_cards_tv"
         app:layout_constraintStart_toStartOf="parent">
-        <TextView
+        <com.dojo.lit.view.DojoTextView
             android:id="@+id/ask_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorCta"
             android:padding="@dimen/standard_padding_half"
             android:text="@string/ask"/>
-        <TextView
+        <com.dojo.lit.view.DojoTextView
             android:id="@+id/transfer_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorCta"
             android:padding="@dimen/standard_padding_half"
             android:text="@string/transfer"/>
-        <TextView
+        <com.dojo.lit.view.DojoTextView
             android:id="@+id/declare_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorCta"
             android:padding="@dimen/standard_padding_half"
             android:text="@string/declare"/>
     </LinearLayout>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/your_cards_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        app:layout_constraintBottom_toTopOf="@id/your_cards_sv"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/your_cards"/>
+
+    <HorizontalScrollView
+        android:id="@+id/your_cards_sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:id="@+id/your_cards_ll"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half">
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="100dp"
+                android:src="@drawable/clubs_2"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

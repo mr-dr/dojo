@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DojoTextView">
+        <attr name="olSheet" format="boolean"/>
+        <attr name="olSheetCornerRadius" format="dimension"/>
+        <attr name="olSheetColor" format="color"/>
+        <attr name="olSheetStrokeWidth" format="dimension"/>
+        <attr name="olSheetStrokeColor" format="color"/>
+    </declare-styleable>
+</resources>

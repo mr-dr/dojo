@@ -4,6 +4,9 @@ object BundleArgumentKeys {
     val GAME_CODE: String
         get() = "game_code"
 
+    val ALIAS: String
+        get() = "alias"
+
     val PLAYER_NO: String
         get() = "player_no"
 

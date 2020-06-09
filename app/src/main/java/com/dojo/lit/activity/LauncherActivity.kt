@@ -15,11 +15,10 @@ class LauncherActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
         tv = findViewById(R.id.tv)
         tv?.text = "Launcher Screen\n" + tv?.text // fixme
 
-        fab.setOnClickListener { view -> // temp impl
+        tv?.setOnClickListener { view -> // temp impl
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
             // TODO delete this activity after sending elsewhere
