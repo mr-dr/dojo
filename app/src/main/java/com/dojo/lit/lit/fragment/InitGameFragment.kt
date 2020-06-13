@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.dojo.lit.R
 import com.dojo.lit.fragment.BaseFragment
 import com.dojo.lit.lit.GameInteractor
 import android.text.InputType
 import android.text.TextUtils
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.android.volley.VolleyError
 import com.dojo.lit.Utils
@@ -83,7 +81,7 @@ class InitGameFragment : BaseFragment() {
 
     private fun makeCreateRoomCall() {
         showProgressDialog()
-        interactor.createRoom(Integer.parseInt(logsDialogInput!!), object: ApiListeners<CreateRoomResponse>() {
+        interactor.createRoom((logsDialogInput!!).toInt(), object: ApiListeners<CreateRoomResponse>() {
             override fun onResponse(response: CreateRoomResponse?) {
                 if (response == null || TextUtil.isEmpty(response.gameId)) {
                     onErrorResponse(VolleyError("Empty create room response"))
@@ -133,11 +131,25 @@ class InitGameFragment : BaseFragment() {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(title)
 
-        val logsCountTv = layout.findViewById<EditText>(R.id.logs_count_tv)
+        val logsCountTv = layout.findViewById<Spinner>(R.id.logs_count_dropdown)
         val gameIdTv = layout.findViewById<EditText>(R.id.game_code_tv)
         val aliasTv = layout.findViewById<EditText>(R.id.alias_tv)
         val playerNoTv = layout.findViewById<EditText>(R.id.player_no_tv)
         val errorMessageTv = layout.findViewById<View>(R.id.error_msg_tv)
+
+        val arr = ArrayList<String>(5)
+        arr.add("1")
+        arr.add("2")
+        arr.add("3")
+        arr.add("4")
+        arr.add("5")
+        logsCountTv.setAdapter(
+            ArrayAdapter(
+                context!!,
+                android.R.layout.simple_spinner_dropdown_item,
+                arr
+            )
+        )
 
         if(DialogTypes.CREATE_ROOM == dialogType) { // create room - logs count
             gameIdTv.visibility = View.GONE
@@ -149,7 +161,7 @@ class InitGameFragment : BaseFragment() {
 
         // Set up the buttons
         builder.setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-            logsDialogInput = logsCountTv.text.toString()
+            logsDialogInput = logsCountTv.selectedItem.toString()
             gameIdDialogInput = gameIdTv.text.toString()
             aliasDialogInput = aliasTv.text.toString()
             playerNoDialogInput = playerNoTv.text.toString()
@@ -157,7 +169,7 @@ class InitGameFragment : BaseFragment() {
                 || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
                 || TextUtils.isEmpty(aliasDialogInput)
                 || TextUtils.isEmpty(playerNoDialogInput)) {
-                errorMessageTv.visibility = View.VISIBLE
+                Utils.makeToastLong("Please fill all the values!")
                 return@setPositiveButton
             }
             confirmCallback.run()

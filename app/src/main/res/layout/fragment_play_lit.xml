@@ -19,7 +19,7 @@
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Your score\n0"/>
+        tools:text="Apne\n0"/>
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/opponent_score_info_tv"
@@ -34,7 +34,7 @@
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Opponent's score\n0"/>
+        tools:text="Paraye\n0"/>
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/game_code_tv"
@@ -242,9 +242,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
+        android:text="@string/your_cards"
         app:layout_constraintBottom_toTopOf="@id/your_cards_sv"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/your_cards"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/your_alias_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin_half"
+        android:text="@string/your_alias_nickname"
+        android:textColor="@color/same_team"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/your_cards_sv"
+        app:layout_constraintStart_toStartOf="@id/player_1_opp_tv" />
 
     <HorizontalScrollView
         android:id="@+id/your_cards_sv"

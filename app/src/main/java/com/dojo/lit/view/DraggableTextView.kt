@@ -18,7 +18,7 @@ class DraggableTextView(context: Context?, attrs: AttributeSet?, val txt: String
     override fun setup() {
         text = txt
         apply { // move to Draggable interface
-            setOnLongClickListener {
+            setOnClickListener {
                 val cliptext = "This is clipData text"
                 val item = ClipData.Item(cliptext)
                 val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)

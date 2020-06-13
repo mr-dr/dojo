@@ -76,7 +76,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mAskBtn: TextView
     private lateinit var mTransferBtn: TextView
     private lateinit var mDeclareBtn: TextView
-
+    private lateinit var mYourAlias: TextView
     private val mHandler = Handler()
     private val delayedTimeMillis: Long = 5000
 
@@ -109,6 +109,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mGameCodeShareTv = findViewById(R.id.game_code_share)
         mDroppedSetsTv = findViewById(R.id.dropped_set_info_tv)
         mYourScoreTv = findViewById(R.id.your_score_info_tv)
+        mYourAlias = findViewById(R.id.your_alias_tv)
         mOpponentScoreTv = findViewById(R.id.opponent_score_info_tv)
         mCardHeldLl = findViewById(R.id.cards_held_table)
         mLogsTv = findViewById(R.id.logs_info_tv)
@@ -134,7 +135,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private fun setupDefaultValues() {
         val gameCode=
             arguments!!.getString(BundleArgumentKeys.GAME_CODE) ?: getResources().getString(R.string.none)
-        mGameCodeTv.text = getResources().getString(R.string.game_code)
+        val alias=
+            arguments!!.getString(BundleArgumentKeys.ALIAS) ?: getResources().getString(R.string.none)
+        mYourAlias.text = getResources().getString(R.string.your_alias, alias)
     }
 
     private fun setupPresenter() {
@@ -145,6 +148,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         Log.d("own_score", "fragment- " + vm.yourScore)
         Log.d("opponent_score", "fragment- " + vm.opponentScore)
         mDroppedSetsTv.text = getDroppedSetsText(vm.droppedSets)
+        mGameCodeTv.text = getResources().getString(R.string.game_code, vm.gamecode.toString())
         mYourScoreTv.text = getResources().getString(R.string.your_score, vm.yourScore.toString())
         mOpponentScoreTv.text = getResources().getString(R.string.opponent_score, vm.opponentScore.toString())
         mTurnInfoTv.apply {
@@ -174,6 +178,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             updateCardsInHand(vm.yourCards)
         }
 //        mLogsTv.text = getLogsText(vm.logs)
+        Utils.makeToastLong(vm.logsStr)
         mLogsTv.text = vm.logsStr
         if (vm.cardsHeldNoChanged) {
             updatePlayerNamesNCards(vm.sameTeamPlayerNames, vm.oppTeamPlayerNames, vm.cardsHeldNo)
@@ -186,7 +191,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         cardsHeldNo: List<Int>
     ) {
         // TODO show cards held by each player
-        mOppPlayerNameTv1.text = oppTeamNames[0]
+        mOppPlayerNameTv1.text = oppTeamNames[0] //oppTeamNames[0] + "\n" + oppTeamCards[0]
         mOppPlayerNameTv2.text = oppTeamNames[1]
         mOppPlayerNameTv3.text = oppTeamNames[2]
         mSamePlayerNameTv1.text = sameTeamNames[0]
@@ -225,7 +230,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 Utils.getDimen(R.dimen.playing_card_height).toInt()
             )
             val lpMargin = Utils.getDimen(R.dimen.standard_margin_half).toInt()
-            lp.setMargins(lpMargin, 0, lpMargin, 0)
+            lp.setMargins(0, 0, -5, 0) //Not RTL supported
             view.layoutParams = lp
             mYourCardsLl.addView(view)
         }

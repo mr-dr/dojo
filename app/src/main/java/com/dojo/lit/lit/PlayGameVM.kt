@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlayGameVM(
+    val gamecode: String,
     val droppedSets: List<String>,
     val yourScore: Int,
     val opponentScore: Int,

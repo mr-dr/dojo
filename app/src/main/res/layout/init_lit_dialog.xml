@@ -7,28 +7,29 @@
         android:id="@+id/error_msg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="*Please fill all fields"
+        android:text="@string/please_fill_all_fields"
         android:textColor="@color/colorError"
         android:layout_margin="@dimen/standard_margin"
         android:visibility="gone"
         />
 
-    <EditText
-        android:id="@+id/logs_count_tv"
+    <Spinner
+        android:id="@+id/logs_count_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="Number of logs"
+        android:background="@android:drawable/btn_dropdown"
+        android:hint="@string/number_of_logs"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
         android:layout_marginRight="@dimen/standard_margin_double"
-        android:layout_marginBottom="@dimen/standard_margin_half"/>
+        android:layout_marginBottom="@dimen/standard_margin_half"
+        android:spinnerMode="dropdown"/>
 
     <EditText
         android:id="@+id/game_code_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Game room code"
+        android:hint="@string/game_room_code"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
@@ -38,7 +39,7 @@
         android:id="@+id/alias_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Your alias/nickname"
+        android:hint="@string/your_alias_nickname"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:hint="Your player no."
+        android:hint="@string/your_player_no"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
