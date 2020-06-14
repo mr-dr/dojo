@@ -23,18 +23,18 @@
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/opponent_score_info_tv"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        android:textColor="@color/txt_inverted"
+        android:gravity="center"
         android:padding="@dimen/standard_padding_half"
+        android:textColor="@color/txt_inverted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:olSheet="true"
         app:olSheetColor="@color/opp_team"
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Paraye\n0"/>
+        tools:text="Unka\n0" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/game_code_tv"
@@ -268,12 +268,22 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin_half">
+            android:layout_margin="@dimen/standard_margin_half"
+            android:clipToPadding="false"
+            android:layout_gravity="fill_horizontal">
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="100dp"
                 android:src="@drawable/clubs_2"
+                android:layout_marginRight="-50dp"
                 />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="65dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:src="@drawable/clubs_2" />
         </LinearLayout>
     </HorizontalScrollView>
 

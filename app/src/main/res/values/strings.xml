@@ -81,7 +81,7 @@
     <string name="its_your_turn">It\'s your turn to play</string>
     <string name="your_score">Apna Score\n%s</string>
     <string name="your_alias">%s</string>
-    <string name="opponent_score">Paraya Score\n%s</string>
+    <string name="opponent_score">Unka Score\n%s</string>
     <string name="log_template_took">%1$s took %3$s from %2$s</string>
     <string name="log_template_ask">%1$s asked %2$s for %3$s</string>
     <string name="you">You</string>

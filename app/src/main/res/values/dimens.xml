@@ -8,6 +8,7 @@
     <dimen name="standard_margin_xx_double">80dp</dimen>
     <dimen name="standard_margin_xxx_double">128dp</dimen>
     <dimen name="standard_margin_half">8dp</dimen>
+    <dimen name="standard_in_hand_collapsed_margin">-25dp</dimen>
     <dimen name="playing_card_height">100dp</dimen>
     <dimen name="playing_card_width">65dp</dimen>
     <dimen name="cell_padding">6dp</dimen>

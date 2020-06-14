@@ -25,10 +25,8 @@ import androidx.appcompat.app.AlertDialog
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.dojo.lit.util.CardNamesUtil
-import com.dojo.lit.util.GsonUtil
 import com.dojo.lit.view.DraggableTextView
 import com.dojo.lit.view.DroppableLinearLayout
-import android.util.Log
 import androidx.core.view.children
 import com.dojo.lit.view.Draggable
 
@@ -44,6 +42,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             showDeclareSetDialog()
         } else if (id == R.id.game_code_tv || id == R.id.game_code_share) {
             shareGameCode(mPresenter.gameCode)
+        } else if (id == R.id.player_1_opp_tv || id == R.id.player_2_opp_tv || id == R.id.player_3_opp_tv) {
+            showAskDialog((v as TextView).text.toString())
         }
     }
 
@@ -125,6 +125,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mAskBtn = findViewById(R.id.ask_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
 
+
         mTransferBtn.setOnClickListener(this)
         mAskBtn.setOnClickListener(this)
         mDeclareBtn.setOnClickListener(this)
@@ -145,8 +146,6 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     }
 
     override fun setData(vm: PlayGameVM) {
-        Log.d("own_score", "fragment- " + vm.yourScore)
-        Log.d("opponent_score", "fragment- " + vm.opponentScore)
         mDroppedSetsTv.text = getDroppedSetsText(vm.droppedSets)
         mGameCodeTv.text = getResources().getString(R.string.game_code, vm.gamecode.toString())
         mYourScoreTv.text = getResources().getString(R.string.your_score, vm.yourScore.toString())
@@ -163,8 +162,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mActionsLl.apply {
             if (vm.showDefaultActions) {
                 visibility = VISIBLE
+                mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
+                mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
+                mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
             } else {
                 visibility = GONE
+                mOppPlayerNameTv1.setOnClickListener(null)
+                mOppPlayerNameTv2.setOnClickListener(null)
+                mOppPlayerNameTv3.setOnClickListener(null)
             }
         }
         mTransferBtn.apply {
@@ -214,6 +219,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
     private fun updateCardsInHand(yourCards: List<String>) {
         mYourCardsLl.removeAllViews()
+        val lpMargin = getCardsMargin(yourCards.size)
         yourCards.forEach { apiCardName ->
             val drawableId = CardImagesUtil.getMapping().get(apiCardName)
             val view: View
@@ -229,11 +235,29 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 Utils.getDimen(R.dimen.playing_card_width).toInt(),
                 Utils.getDimen(R.dimen.playing_card_height).toInt()
             )
-            val lpMargin = Utils.getDimen(R.dimen.standard_margin_half).toInt()
-            lp.setMargins(0, 0, -5, 0) //Not RTL supported
+
+
+            lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
             view.layoutParams = lp
             mYourCardsLl.addView(view)
         }
+    }
+
+    private fun getCardsMargin(size: Int): Int {
+        val min = Utils.getDimen(R.dimen.standard_in_hand_collapsed_margin).toInt()
+        val max = Utils.getDimen(R.dimen.standard_margin_half).toInt()
+        if(size <= 4) {
+            return max
+        }
+        if(size >= 9) {
+            return min
+        }
+
+        val margin = max + ((min - max) / 10 * (size - 4))
+        if (margin < min) {
+            return min
+        }
+        return margin
     }
 
     private fun getDroppedSetsText(droppedSets: List<String>): String {
@@ -299,6 +323,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     }
 
     private fun showAskDialog() {
+        showAskDialog(null)
+    }
+
+    private fun showAskDialog(playerName: String?) {
         val layout = LayoutInflater.from(context).inflate(R.layout.ask_lit_dialog, null)
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(getString(R.string.ask_dialog_title))
@@ -307,9 +335,17 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val askForSetDropdown = layout.findViewById<Spinner>(R.id.ask_suit_dropdown)
         val askForCardDropdown = layout.findViewById<Spinner>(R.id.ask_card_dropdown)
 
-        val oppositeTeamPlayerNames = mPresenter.getOppositeTeamPlayerNames()
+        var oppositeTeamPlayerNames = mPresenter.getOppositeTeamPlayerNames()
         val askableSetNames = mPresenter.getAskableSetNames()
         var askableCards: List<String>? = null
+
+        if(playerName != null && oppositeTeamPlayerNames.contains(playerName)) {
+            var selectedNameTop: MutableList<String>
+            selectedNameTop = oppositeTeamPlayerNames as ArrayList<String>
+            selectedNameTop.remove(playerName)
+            selectedNameTop.add(0,playerName)
+            oppositeTeamPlayerNames = selectedNameTop
+        }
 
         askFromDropdown.setAdapter(
             ArrayAdapter(
@@ -466,9 +502,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 player3CardsLl.children.forEach {
                     player3CardsApiNameList.add((it as Draggable).getIdentifier())
                 }
-                Log.d("player1cards", GsonUtil.toJson(player1CardsApiNameList))
-                Log.d("player2cards", GsonUtil.toJson(player2CardsApiNameList))
-                Log.d("player3cards", GsonUtil.toJson(player3CardsApiNameList))
+
 //                Utils.makeToastLong("declare clicked")
                 mPresenter.dropSet (player1CardsApiNameList, player2CardsApiNameList, player3CardsApiNameList)
             } else {

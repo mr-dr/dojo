@@ -45,16 +45,17 @@
         android:layout_marginLeft="@dimen/standard_margin_double"
         android:layout_marginRight="@dimen/standard_margin_double"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/player_no_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:background="@android:drawable/btn_dropdown"
         android:hint="@string/your_player_no"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
-        android:layout_marginRight="@dimen/standard_margin_double"/>
+        android:layout_marginRight="@dimen/standard_margin_double"
+        android:spinnerMode="dropdown"/>
         />
 
 </LinearLayout>

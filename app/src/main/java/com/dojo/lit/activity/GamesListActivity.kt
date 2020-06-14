@@ -12,17 +12,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class GamesListActivity : BaseActivity() {
     private var tv: TextView? = null
-
+    private var gamelist=  ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         tv = findViewById(R.id.tv)
         tv?.text = "GamesList Screen\n" + tv?.text // fixme
 
-        tv?.setOnClickListener { view -> // temp impl
+        if (gamelist.size <= 1) {
             val intent = Intent(this, LitGameActivity::class.java)
             startActivity(intent)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -40,7 +40,6 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private var droppedSuccessfullyInLastTurn: Boolean
     private var yourScore:Int
     private var opponentScore: Int
-    get() = (droppedSets.size - yourScore)
 
     private val mInteractor: GameInteractor
     private var isPaused: Boolean
@@ -84,36 +83,24 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
 
     private fun updatePresenterData(newData: TransactionResponse) {
-        Log.d("own_score", "in newData odd- "+newData.scoreOddTeam)
-        Log.d("opponent_score", "in newData even- "+newData.scoreEvenTeam)
         turnOfPlayer = newData.turnOfPlayer
         yourScore = if (youAreOnOddTeam()) newData.scoreOddTeam else newData.scoreEvenTeam
         opponentScore = if (youAreOnOddTeam()) newData.scoreEvenTeam else newData.scoreOddTeam
-        //Log.d("opponent_score", "mera testing- "+opponentScore)
         val newCardsInHand = getYourCards(newData)
         cardsInHandChanged = !cardsInHand.equals(newCardsInHand) // expecting sorted cards
         cardsInHand.clear()
         cardsInHand.addAll(newCardsInHand)
-        //Log.d("opponent_score", "mera testing 2- "+opponentScore)
         droppedSets.clear()
-        Log.d("opponent_score", "mera testing 3- "+opponentScore)
         droppedSets.addAll(newData.droppedSets)
-        Log.d("opponent_score", "mera testing 4- "+opponentScore)
         logsStr = TextUtil.join(newData.logs, TextUtil.NEWLINE);
-        //Log.d("opponent_score", "mera testing 5- "+opponentScore)
         cardsHeldByEachPlayerChanged = !cardsHeldByEachPlayer.equals(newData.getCardsHeldByEachPlayer())
                 || !playerNames.equals(newData.getPlayerNames())
-        //Log.d("opponent_score", "mera testing 6- "+opponentScore)
         playerNames.clear()
         playerNames.addAll(newData.getPlayerNames())
         cardsHeldByEachPlayer.clear()
         cardsHeldByEachPlayer.addAll(newData.getCardsHeldByEachPlayer())
         droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop.toBoolean()
-        Log.d("own_score", "after newData - "+yourScore)
-        Log.d("opponent_score", "after newData- "+opponentScore)
-//        if (newData.lastTransaction != null) {
-//            addNewLog(newData.lastTransaction)
-//        }
+
     }
 
     private fun getYourCards(newData: TransactionResponse): List<String> {
@@ -179,11 +166,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
     private fun setData() {
-        Log.d("own_score", "pres-" + yourScore)
-        Log.d("opponent_score", "pres-" + opponentScore)
         val vm = getVM()
-        Log.d("own_score", "vm- " + vm.yourScore)
-        Log.d("opponent_score", "vm- " + vm.opponentScore)
         view.setData(vm)
     }
 
@@ -201,8 +184,6 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             if (playerNames.size > turnOfPlayer - 1 && playerNames[turnOfPlayer - 1] != null) playerNames[turnOfPlayer - 1] else "-"
         val isYourTurn = turnOfPlayer == yourPlayerNo
 
-        Log.d("own_score", "in vm- " + yourScore)
-        Log.d("opponent_score", "in vm- " + opponentScore)
         return PlayGameVM(
             gameCode,
             droppedSets,

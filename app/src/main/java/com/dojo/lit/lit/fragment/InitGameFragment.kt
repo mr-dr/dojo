@@ -19,8 +19,7 @@ import com.dojo.lit.lit.activity.LitGameActivity
 import com.dojo.lit.lit.model.CreateRoomResponse
 import com.dojo.lit.network.ApiListeners
 import com.dojo.lit.util.TextUtil
-
-
+import java.util.*
 
 
 class InitGameFragment : BaseFragment() {
@@ -134,20 +133,25 @@ class InitGameFragment : BaseFragment() {
         val logsCountTv = layout.findViewById<Spinner>(R.id.logs_count_dropdown)
         val gameIdTv = layout.findViewById<EditText>(R.id.game_code_tv)
         val aliasTv = layout.findViewById<EditText>(R.id.alias_tv)
-        val playerNoTv = layout.findViewById<EditText>(R.id.player_no_tv)
+        val playerNoTv = layout.findViewById<Spinner>(R.id.player_no_tv)
         val errorMessageTv = layout.findViewById<View>(R.id.error_msg_tv)
 
-        val arr = ArrayList<String>(5)
-        arr.add("1")
-        arr.add("2")
-        arr.add("3")
-        arr.add("4")
-        arr.add("5")
+        val log_count_array = Arrays.asList("1","2","3","4","5")
+        val player_no_array = Arrays.asList("1","2","3","4","5","6")
+
         logsCountTv.setAdapter(
             ArrayAdapter(
                 context!!,
                 android.R.layout.simple_spinner_dropdown_item,
-                arr
+                log_count_array
+            )
+        )
+
+        playerNoTv.setAdapter(
+            ArrayAdapter(
+                context!!,
+                android.R.layout.simple_spinner_dropdown_item,
+                player_no_array
             )
         )
 
@@ -164,7 +168,7 @@ class InitGameFragment : BaseFragment() {
             logsDialogInput = logsCountTv.selectedItem.toString()
             gameIdDialogInput = gameIdTv.text.toString()
             aliasDialogInput = aliasTv.text.toString()
-            playerNoDialogInput = playerNoTv.text.toString()
+            playerNoDialogInput = playerNoTv.selectedItem.toString()
             if((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
                 || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
                 || TextUtils.isEmpty(aliasDialogInput)
