@@ -119,6 +119,7 @@
         app:olSheet="true"
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:olSheetColor="@color/your_turn"
+        android:textColor="@color/txt_inverted"
         app:layout_constraintTop_toTopOf="@id/table_vert_center"
         app:layout_constraintBottom_toBottomOf="@id/table_vert_center"
         app:layout_constraintStart_toStartOf="parent"
