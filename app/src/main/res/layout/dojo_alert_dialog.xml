@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dojo.lit.view.DojoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/custom_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+    <com.dojo.lit.view.DojoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/positive_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/negative_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.dojo.lit.view.DojoLinearLayout>
+
+</com.dojo.lit.view.DojoLinearLayout>

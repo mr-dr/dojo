@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DojoTextView">
+    <declare-styleable name="SheetStyleable">
         <attr name="olSheet" format="boolean"/>
         <attr name="olSheetCornerRadius" format="dimension"/>
         <attr name="olSheetColor" format="color"/>
+        <attr name="olSheetStartColor" format="color"/>
+        <attr name="olSheetMidColor" format="color"/>
+        <attr name="olSheetEndColor" format="color"/>
+        <attr name="olSheetGradientAngle" format="enum">
+            <enum name="left_right" value="0"/>
+            <enum name="right_left" value="1"/>
+            <enum name="top_bottom" value="2"/>
+            <enum name="bottom_top" value="3"/>
+            <enum name="tl_br" value="4"/>
+            <enum name="br_tl" value="5"/>
+            <enum name="tr_bl" value="6"/>
+            <enum name="bl_tr" value="7"/>
+        </attr>
         <attr name="olSheetStrokeWidth" format="dimension"/>
+        <attr name="olSheetStrokeDashWidth" format="dimension"/>
+        <attr name="olSheetStrokeDashGap" format="dimension"/>
         <attr name="olSheetStrokeColor" format="color"/>
     </declare-styleable>
 </resources>

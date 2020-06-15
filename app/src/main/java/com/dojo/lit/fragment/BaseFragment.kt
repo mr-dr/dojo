@@ -18,7 +18,7 @@ abstract open class BaseFragment : Fragment() {
 
     fun <T : View> findViewById(id: Int): T {
         if (view == null) {
-            throw NullPointerException("no view attached to this fragment")
+            throw NullPointerException("mNegative view attached to this fragment")
         }
         return view!!.findViewById(id)
     }
@@ -39,5 +39,9 @@ abstract open class BaseFragment : Fragment() {
 
     fun hideProgressDialog() {
         progressDialog?.dismiss()
+    }
+
+    fun showDojoToast(toastMessage: String, toastDuration: Int) {
+        (activity as BaseActivity).showDojoToast(toastMessage, toastDuration)
     }
 }

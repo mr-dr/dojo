@@ -6,9 +6,15 @@
     <color name="colorCta">#24a0ed</color>
     <color name="colorAccent">#D81B60</color>
     <color name="your_turn">#FFC300</color>
-    <color name="not_your_turn">#CFFAFF</color>
+    <color name="not_your_turn">#FFECD9</color>
     <color name="same_team">#008B8B</color>
-    <color name="opp_team">#DC143C</color>
+    <color name="same_team_dark">#3D5206</color>
+    <color name="opp_team">#3C1642</color>
+    <color name="opp_team_dark">#251945</color>
     <color name="txt_inverted">#FFFFFF</color>
+    <color name="txt_inverted_opacity_50">#88FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="logs_bg_color">#88000000</color>
+    <color name="white">#FFF</color>
+    <color name="transparent">#00000000</color>
 </resources>

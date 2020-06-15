@@ -24,7 +24,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
     private val checkStatusAfterMillis = 500L
 
-    public val gameCode: String
+    val gameCode: String
     private val yourPlayerNo: Int
     private val playerNames: MutableList<String>
     private val cardsInHand: MutableList<String>
@@ -33,6 +33,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private val cardsHeldByEachPlayer: MutableList<Int>
     private val logsLength: Int
     private var logsStr: String
+    private var showToastMessage = true
+    private var toastMessage: String?
     @Deprecated("use logsStr instead") private val logs: MutableList<TransactionData>
     private var turnOfPlayer: Int
     private val droppedSets: MutableList<String>
@@ -40,7 +42,6 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private var droppedSuccessfullyInLastTurn: Boolean
     private var yourScore:Int
     private var opponentScore: Int
-    get() = (droppedSets.size - yourScore)
 
     private val mInteractor: GameInteractor
     private var isPaused: Boolean
@@ -63,15 +64,28 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         logsLength = arguments?.getInt(BundleArgumentKeys.LOGS_LENGTH) ?: 0 // fixed value
         droppedSuccessfullyInLastTurn = false
         logsStr = "-"
+        toastMessage = null
         logs = ArrayList()
 
         mInteractor = GameInteractor()
         isPaused = false
     }
 
+    private fun <T> reorderOnbasisOfPlayerNo(listToRotate: List<T>): List<T>{
+        var list = ArrayList<T>()
+        for (x in 1..yourPlayerNo) {
+            var element = listToRotate.get(x)
+            list.add(element)
+        }
+        for (x in 6..yourPlayerNo) {
+            var element = listToRotate.get(x)
+            list.add(0,element)
+        }
+        return listToRotate
+    }
+
+
     private fun updatePresenterData(newData: TransactionResponse) {
-        Log.d("own_score", "in newData odd- "+newData.scoreOddTeam)
-        Log.d("opponent_score", "in newData even- "+newData.scoreEvenTeam)
         turnOfPlayer = newData.turnOfPlayer
         yourScore = if (youAreOnOddTeam()) newData.scoreOddTeam else newData.scoreEvenTeam
         opponentScore = if (youAreOnOddTeam()) newData.scoreEvenTeam else newData.scoreOddTeam
@@ -82,6 +96,14 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         droppedSets.clear()
         droppedSets.addAll(newData.droppedSets)
         logsStr = TextUtil.join(newData.logs, TextUtil.NEWLINE);
+        val lastLog =
+            if (newData.logs != null && newData.logs.size > 0) newData.logs[newData.logs.size - 1] else null
+        if (!TextUtil.areSame(toastMessage, lastLog) && !TextUtil.isEmpty(lastLog)) {
+            toastMessage = lastLog
+            showToastMessage = true
+        } else {
+            showToastMessage = false
+        }
         cardsHeldByEachPlayerChanged = !cardsHeldByEachPlayer.equals(newData.getCardsHeldByEachPlayer())
                 || !playerNames.equals(newData.getPlayerNames())
         playerNames.clear()
@@ -89,11 +111,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         cardsHeldByEachPlayer.clear()
         cardsHeldByEachPlayer.addAll(newData.getCardsHeldByEachPlayer())
         droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop.toBoolean()
-        Log.d("own_score", "after newData- "+yourScore)
-        Log.d("opponent_score", "after newData- "+opponentScore)
-//        if (newData.lastTransaction != null) {
-//            addNewLog(newData.lastTransaction)
-//        }
+
     }
 
     private fun getYourCards(newData: TransactionResponse): List<String> {
@@ -159,11 +177,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
     private fun setData() {
-        Log.d("own_score", "pres-" + yourScore)
-        Log.d("opponent_score", "pres-" + opponentScore)
         val vm = getVM()
-        Log.d("own_score", "vm- " + vm.yourScore)
-        Log.d("opponent_score", "vm- " + vm.opponentScore)
         view.setData(vm)
     }
 
@@ -181,8 +195,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             if (playerNames.size > turnOfPlayer - 1 && playerNames[turnOfPlayer - 1] != null) playerNames[turnOfPlayer - 1] else "-"
         val isYourTurn = turnOfPlayer == yourPlayerNo
 
-        Log.d("own_score", "in vm- " + yourScore)
-        Log.d("opponent_score", "in vm- " + opponentScore)
+        val toastMsg = if (showToastMessage) toastMessage else null
+
         return PlayGameVM(
             droppedSets,
             yourScore,
@@ -193,6 +207,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             getOppositeTeamPlayerNames(),
             logsVM,
             logsStr,
+            toastMsg,
             nameOfCurrentTurnPlayer,
             isYourTurn,
             cardsInHand,
@@ -203,7 +218,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
 
-    override fun stop() {
+    override fun stop() { // fixme rishabh
         super.stop()
 //        FirebaseUtils.disconnectFromDb()
 //        FirebaseUtils.unsubscribeToFirebaseRealtimeDb()

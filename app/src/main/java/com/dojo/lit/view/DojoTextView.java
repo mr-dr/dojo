@@ -15,8 +15,14 @@ public class DojoTextView extends AppCompatTextView {
     boolean hasSheet = false;
     float cornerRadius = 0;
     int bgColor = 0;
+    int startColor = 0;
+    int midColor = 0;
+    int endColor = 0;
+    int gradientAngle = -1;
     int strokeColor = 0;
     Float strokeWidth = 0F;
+    Float strokeDashWidth = 0F;
+    Float strokeDashGap = 0F;
     SheetDrawable sheet = null;
 
     public DojoTextView(Context context) {
@@ -31,15 +37,21 @@ public class DojoTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.DojoTextView,
+                R.styleable.SheetStyleable,
                 defStyleAttr, 0);
-        hasSheet = a.getBoolean(R.styleable.DojoTextView_olSheet, false);
+        hasSheet = a.getBoolean(R.styleable.SheetStyleable_olSheet, false);
         if (hasSheet) {
-            cornerRadius = a.getDimension(R.styleable.DojoTextView_olSheetCornerRadius, 0);
-            bgColor = a.getColor(R.styleable.DojoTextView_olSheetColor, 0);
-            strokeColor = a.getColor(R.styleable.DojoTextView_olSheetStrokeColor, 0);
-            strokeWidth = a.getDimension(R.styleable.DojoTextView_olSheetStrokeWidth, 0);
-            sheet = SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, strokeColor, strokeWidth.intValue());
+            cornerRadius = a.getDimension(R.styleable.SheetStyleable_olSheetCornerRadius, 0);
+            bgColor = a.getColor(R.styleable.SheetStyleable_olSheetColor, 0);
+            startColor = a.getColor(R.styleable.SheetStyleable_olSheetStartColor, 0);
+            midColor = a.getColor(R.styleable.SheetStyleable_olSheetMidColor, 0);
+            endColor = a.getColor(R.styleable.SheetStyleable_olSheetEndColor, 0);
+            gradientAngle = a.getInt(R.styleable.SheetStyleable_olSheetGradientAngle, 0);
+            strokeColor = a.getColor(R.styleable.SheetStyleable_olSheetStrokeColor, 0);
+            strokeWidth = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeWidth, 0);
+            strokeDashWidth = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeDashWidth, 0);
+            strokeDashGap = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeDashGap, 0);
+            sheet = SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, gradientAngle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap);
             setBackground(sheet);
         }
     }
@@ -53,12 +65,19 @@ public class DojoTextView extends AppCompatTextView {
         }
     }
 
-    public void setSheetAttrs(float cornerRadius, int bgColor, int strokeColor, Float strokeWidth) {
+    public void setSheetAttrs(float cornerRadius, int bgColor, int startColor, int midColor,
+                              int endColor, int angle, int strokeColor, Float strokeWidth, Float strokeDashWidth, Float strokeDashGap) {
         hasSheet = true;
         this.cornerRadius = cornerRadius;
         this.bgColor = bgColor;
+        this.startColor = startColor;
+        this.midColor = midColor;
+        this.endColor = endColor;
+        this.gradientAngle = angle;
         this.strokeColor = strokeColor;
         this.strokeWidth = strokeWidth;
-        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, strokeColor, strokeWidth.intValue()));
+        this.strokeDashWidth = strokeDashWidth;
+        this.strokeDashGap = strokeDashGap;
+        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, angle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap));
     }
 }

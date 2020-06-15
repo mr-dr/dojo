@@ -1,13 +1,14 @@
 package com.dojo.lit.base
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.dojo.lit.R
+import com.dojo.lit.Utils
 import com.dojo.lit.fragment.BaseFragment
 import com.dojo.lit.util.TextUtil
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -76,19 +77,18 @@ abstract class BaseActivity : AppCompatActivity() {
         fragmentTransaction.commitAllowingStateLoss()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    fun showDojoToast(toastMessage: String, toastDuration: Int) {
+        val inflater = layoutInflater
+//        val container: ViewGroup = findViewById(R.id.custom_toast_container)
+        val layout = inflater.inflate(R.layout.custom_toast, null)
+        val text: TextView = layout.findViewById(R.id.text)
+        text.text = toastMessage
+        with (Toast(applicationContext)) {
+            setGravity(Gravity.CENTER_VERTICAL, 0, 0)
+            duration = toastDuration
+            view = layout
+            show()
+            Utils.makeNotificationSound()
         }
     }
 }

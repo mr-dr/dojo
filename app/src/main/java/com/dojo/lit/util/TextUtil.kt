@@ -27,4 +27,10 @@ object TextUtil {
         }
         return str.toString()
     }
+
+    fun areSame(str1: String?, str2: String?): Boolean {
+        if (str1 == null && str2 == null) return true
+        if (str1 == null || str2 == null) return false
+        return str1.equals(str2)
+    }
 }
