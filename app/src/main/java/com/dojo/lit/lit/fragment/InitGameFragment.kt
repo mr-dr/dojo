@@ -7,18 +7,18 @@ import android.view.ViewGroup
 import com.dojo.lit.R
 import com.dojo.lit.fragment.BaseFragment
 import com.dojo.lit.lit.GameInteractor
-import android.text.InputType
 import android.text.TextUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.android.volley.VolleyError
 import com.dojo.lit.Utils
-import com.dojo.lit.base.BaseActivity
 import com.dojo.lit.lit.BundleArgumentKeys
 import com.dojo.lit.lit.activity.LitGameActivity
 import com.dojo.lit.lit.model.CreateRoomResponse
 import com.dojo.lit.network.ApiListeners
 import com.dojo.lit.util.TextUtil
+import com.dojo.lit.view.DojoAlertDialog
+import com.dojo.lit.view.SheetHelper
 import java.util.*
 
 
@@ -125,33 +125,40 @@ class InitGameFragment : BaseFragment() {
         })
     }
 
+    // fixme rishabh - new spinners don't show hints
     private fun showDialog(dialogType: String, title: String, confirmCallback: Runnable) {
         val layout = LayoutInflater.from(context).inflate(R.layout.init_lit_dialog, null)
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle(title)
+//        builder.setTitle(title)
+        builder.setTitle("")
 
+        val titleTv = layout.findViewById<TextView>(R.id.title)
         val logsCountTv = layout.findViewById<Spinner>(R.id.logs_count_dropdown)
         val gameIdTv = layout.findViewById<EditText>(R.id.game_code_tv)
         val aliasTv = layout.findViewById<EditText>(R.id.alias_tv)
-        val playerNoTv = layout.findViewById<Spinner>(R.id.player_no_tv)
+        val joinAsPlayerTv = layout.findViewById<Spinner>(R.id.player_no_tv)
         val errorMessageTv = layout.findViewById<View>(R.id.error_msg_tv)
+        val positiveBtn = layout.findViewById<View>(R.id.positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.negative_button)
 
-        val log_count_array = Arrays.asList("1","2","3","4","5")
-        val player_no_array = Arrays.asList("1","2","3","4","5","6")
+        titleTv.text = title
+
+        val logCountArray = Arrays.asList("1","2","3","4","5") // fixme move to presenter
+        val joinAsPlayerArray = Arrays.asList("1","2","3","4","5","6")
 
         logsCountTv.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
-                log_count_array
+                R.layout.dojo_dropdown_item,
+                logCountArray
             )
         )
 
-        playerNoTv.setAdapter(
+        joinAsPlayerTv.setAdapter(
             ArrayAdapter(
                 context!!,
                 android.R.layout.simple_spinner_dropdown_item,
-                player_no_array
+                joinAsPlayerArray
             )
         )
 
@@ -163,24 +170,46 @@ class InitGameFragment : BaseFragment() {
 
         builder.setView(layout)
 
-        // Set up the buttons
-        builder.setPositiveButton(getString(R.string.confirm)) { dialog, which ->
+        var alertDialog: AlertDialog? = null
+
+//        // Set up the buttons
+////        builder.setPositiveButton(getString(R.string.confirm)) { dialog, which ->
+//        builder.setPositiveButton("") { dialog, which ->
+//            logsDialogInput = logsCountTv.selectedItem.toString()
+//            gameIdDialogInput = gameIdTv.text.toString()
+//            aliasDialogInput = aliasTv.text.toString()
+//            playerNoDialogInput = joinAsPlayerTv.selectedItem.toString()
+//            if((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
+//                || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
+//                || TextUtils.isEmpty(aliasDialogInput)
+//                || TextUtils.isEmpty(playerNoDialogInput)) {
+//                Utils.makeToastLong(getString(R.string.init_lit_incomplete_fields_msg))
+//                return@setPositiveButton
+//            }
+//            confirmCallback.run()
+//        }
+//        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+//        builder.setNegativeButton("", { dialog, which -> dialog.cancel() })
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        positiveBtn.setOnClickListener {
             logsDialogInput = logsCountTv.selectedItem.toString()
             gameIdDialogInput = gameIdTv.text.toString()
             aliasDialogInput = aliasTv.text.toString()
-            playerNoDialogInput = playerNoTv.selectedItem.toString()
+            playerNoDialogInput = joinAsPlayerTv.selectedItem.toString()
             if((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
                 || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
                 || TextUtils.isEmpty(aliasDialogInput)
                 || TextUtils.isEmpty(playerNoDialogInput)) {
-                Utils.makeToastLong("Please fill all the values!")
-                return@setPositiveButton
+                errorMessageTv.visibility = View.VISIBLE
+            } else {
+                confirmCallback.run()
+                alertDialog?.dismiss()
             }
-            confirmCallback.run()
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
-
-        builder.show()
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
     }
 
     private object DialogTypes {

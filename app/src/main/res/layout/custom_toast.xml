@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_toast_container"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="8dp"
+    >
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:fontFamily="casual"
+        android:layout_marginTop="161dp"
+        android:padding="@dimen/standard_padding"
+        android:textColor="@color/black"
+        app:olSheetColor="@color/txt_inverted"
+        app:olSheetStrokeColor="@color/black"
+        app:olSheetStrokeWidth="2dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/toast_corner_radius"
+        tools:text="Risso was brutally denied by p4 for 3♥ and left to cry in the corner" />
+</LinearLayout>

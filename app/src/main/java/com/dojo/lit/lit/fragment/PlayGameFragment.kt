@@ -65,6 +65,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mOpponentScoreTv: TextView
     private lateinit var mCardHeldLl: LinearLayout
     private lateinit var mLogsTv: TextView
+    private lateinit var mLogsSv: ScrollView
     private lateinit var mTurnInfoTv: TextView
     private lateinit var mYourCardsLl: LinearLayout
     private lateinit var mOppPlayerNameTv1: TextView
@@ -113,6 +114,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mOpponentScoreTv = findViewById(R.id.opponent_score_info_tv)
         mCardHeldLl = findViewById(R.id.cards_held_table)
         mLogsTv = findViewById(R.id.logs_info_tv)
+        mLogsSv = findViewById(R.id.logs_info_sv)
         mTurnInfoTv = findViewById(R.id.turn_info)
         mYourCardsLl = findViewById(R.id.your_cards_ll)
         mOppPlayerNameTv1 = findViewById(R.id.player_1_opp_tv)
@@ -131,13 +133,17 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mDeclareBtn.setOnClickListener(this)
         mGameCodeTv.setOnClickListener(this)
         mGameCodeShareTv.setOnClickListener(this)
+        mLogsSv.post { mLogsSv.fullScroll(View.FOCUS_DOWN) } // scroll to bottom
     }
 
     private fun setupDefaultValues() {
-        val gameCode=
-            arguments!!.getString(BundleArgumentKeys.GAME_CODE) ?: getResources().getString(R.string.none)
-        val alias=
-            arguments!!.getString(BundleArgumentKeys.ALIAS) ?: getResources().getString(R.string.none)
+        val gameCode =
+            arguments!!.getString(BundleArgumentKeys.GAME_CODE)
+                ?: getResources().getString(R.string.none)
+        mGameCodeTv.text = getResources().getString(R.string.game_code, gameCode)
+        val alias =
+            arguments!!.getString(BundleArgumentKeys.ALIAS)
+                ?: getResources().getString(R.string.none)
         mYourAlias.text = getResources().getString(R.string.your_alias, alias)
     }
 
@@ -147,15 +153,16 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
     override fun setData(vm: PlayGameVM) {
         mDroppedSetsTv.text = getDroppedSetsText(vm.droppedSets)
-        mGameCodeTv.text = getResources().getString(R.string.game_code, vm.gamecode.toString())
         mYourScoreTv.text = getResources().getString(R.string.your_score, vm.yourScore.toString())
-        mOpponentScoreTv.text = getResources().getString(R.string.opponent_score, vm.opponentScore.toString())
+        mOpponentScoreTv.text =
+            getResources().getString(R.string.opponent_score, vm.opponentScore.toString())
         mTurnInfoTv.apply {
-            if(vm.isYourTurn){
+            if (vm.isYourTurn) {
                 mTurnInfoTv.text = getResources().getString(R.string.its_your_turn)
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.your_turn))
             } else {
-                mTurnInfoTv.text = getResources().getString(R.string.waiting_for_turn, vm.nameOfPlayerWhoseTurn)
+                mTurnInfoTv.text =
+                    getResources().getString(R.string.waiting_for_turn, vm.nameOfPlayerWhoseTurn)
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.not_your_turn))
             }
         }
@@ -182,8 +189,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         if (vm.yourCardsChanged) {
             updateCardsInHand(vm.yourCards)
         }
-//        mLogsTv.text = getLogsText(vm.logs)
-        Utils.makeToastLong(vm.logsStr)
+        if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_SHORT)
         mLogsTv.text = vm.logsStr
         if (vm.cardsHeldNoChanged) {
             updatePlayerNamesNCards(vm.sameTeamPlayerNames, vm.oppTeamPlayerNames, vm.cardsHeldNo)
@@ -204,15 +210,34 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {
-        if(logs.isEmpty()) return TextUtil.EMPTY
+        if (logs.isEmpty()) return TextUtil.EMPTY
         val strBuilder = StringBuilder()
         logs.indices.forEach { count ->
             val log = logs[count]
             if (count > 0) strBuilder.append(TextUtil.NEWLINE)
-            val askedBy = if (PlayGamePresenter.YOU.equals(log.askedBy)) {getResources().getString(R.string.you)} else {log.askedBy}
-            val askedFrom = if (PlayGamePresenter.YOU.equals(log.askedFrom)) {getResources().getString(R.string.you)} else {log.askedFrom}
-            val logTemplateId = if (log.wasSuccessful) {R.string.log_template_took} else {R.string.log_template_ask}
-            strBuilder.append(getResources().getString(logTemplateId, askedBy, askedFrom, log.askedFor))
+            val askedBy = if (PlayGamePresenter.YOU.equals(log.askedBy)) {
+                getResources().getString(R.string.you)
+            } else {
+                log.askedBy
+            }
+            val askedFrom = if (PlayGamePresenter.YOU.equals(log.askedFrom)) {
+                getResources().getString(R.string.you)
+            } else {
+                log.askedFrom
+            }
+            val logTemplateId = if (log.wasSuccessful) {
+                R.string.log_template_took
+            } else {
+                R.string.log_template_ask
+            }
+            strBuilder.append(
+                getResources().getString(
+                    logTemplateId,
+                    askedBy,
+                    askedFrom,
+                    log.askedFor
+                )
+            )
         }
         return strBuilder.toString()
     }
@@ -220,7 +245,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private fun updateCardsInHand(yourCards: List<String>) {
         mYourCardsLl.removeAllViews()
         val lpMargin = getCardsMargin(yourCards.size)
-        yourCards.forEach { apiCardName ->
+        yourCards.indices.forEach { cardCount ->
+            val apiCardName = yourCards[cardCount]
             val drawableId = CardImagesUtil.getMapping().get(apiCardName)
             val view: View
             if (drawableId != null) {
@@ -231,25 +257,25 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 view.setBackgroundColor(Utils.getColor(R.color.black))
                 // fixme log this, it should never happen
             }
-            val lp = LinearLayout.LayoutParams(
-                Utils.getDimen(R.dimen.playing_card_width).toInt(),
-                Utils.getDimen(R.dimen.playing_card_height).toInt()
-            )
-
-
-            lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
-            view.layoutParams = lp
-            mYourCardsLl.addView(view)
+            if (cardCount < yourCards.size - 1) { // don't reduce right margin for last card
+                val lp = LinearLayout.LayoutParams(
+                    Utils.getDimen(R.dimen.playing_card_width).toInt(),
+                    Utils.getDimen(R.dimen.playing_card_height).toInt()
+                )
+                lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
+                view.layoutParams = lp
+                mYourCardsLl.addView(view)
+            }
         }
     }
 
     private fun getCardsMargin(size: Int): Int {
         val min = Utils.getDimen(R.dimen.standard_in_hand_collapsed_margin).toInt()
         val max = Utils.getDimen(R.dimen.standard_margin_half).toInt()
-        if(size <= 4) {
+        if (size <= 4) {
             return max
         }
-        if(size >= 9) {
+        if (size >= 9) {
             return min
         }
 
@@ -268,7 +294,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 str.append(TextUtil.PIPE_SEPARATOR)
             }
             val setNameMap = SetNamesUtil.getMapping()
-            if(setNameMap.containsKey(setApiName)) {
+            if (setNameMap.containsKey(setApiName)) {
                 str.append(getString(setNameMap.get(setApiName)!!))
             } else {
                 str.append(setApiName)
@@ -339,11 +365,11 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val askableSetNames = mPresenter.getAskableSetNames()
         var askableCards: List<String>? = null
 
-        if(playerName != null && oppositeTeamPlayerNames.contains(playerName)) {
+        if (playerName != null && oppositeTeamPlayerNames.contains(playerName)) {
             var selectedNameTop: MutableList<String>
             selectedNameTop = oppositeTeamPlayerNames as ArrayList<String>
             selectedNameTop.remove(playerName)
-            selectedNameTop.add(0,playerName)
+            selectedNameTop.add(0, playerName)
             oppositeTeamPlayerNames = selectedNameTop
         }
 
@@ -364,8 +390,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         )
 
         askForSetDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                askableCards = mPresenter.getAskableCards(askableSetNames[askForSetDropdown.selectedItemPosition])
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                askableCards =
+                    mPresenter.getAskableCards(askableSetNames[askForSetDropdown.selectedItemPosition])
                 askForCardDropdown.setAdapter(
                     ArrayAdapter(
                         context!!,
@@ -375,7 +407,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 )
                 askForCardDropdown.visibility = VISIBLE
             }
-            override fun onNothingSelected(parent: AdapterView<*>){
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
                 askForCardDropdown.visibility = GONE
             }
         }
@@ -387,8 +420,12 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         // Set up the buttons
         builder.setPositiveButton(getString(R.string.ask)) { dialog, which ->
             if (askableCards != null && askFromDropdown.selectedItem != null
-                && askForSetDropdown != null && askForCardDropdown != null) {
-                mPresenter.askCard(askFromDropdown.selectedItem as String, askableCards!![askForCardDropdown.selectedItemPosition])
+                && askForSetDropdown != null && askForCardDropdown != null
+            ) {
+                mPresenter.askCard(
+                    askFromDropdown.selectedItem as String,
+                    askableCards!![askForCardDropdown.selectedItemPosition]
+                )
             } else {
                 Utils.makeToastLong(R.string.ask_dialog_error)
             }
@@ -434,17 +471,17 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(getString(R.string.declare_dialog_title))
 
-        val declareSetDropdown= layout.findViewById<Spinner>(R.id.declare_set_dropdown)
-        val player1NameTv= layout.findViewById<TextView>(R.id.player_1_name_tv)
-        val player2NameTv= layout.findViewById<TextView>(R.id.player_2_name_tv)
-        val player3NameTv= layout.findViewById<TextView>(R.id.player_3_name_tv)
-        val player1CardsLl= layout.findViewById<DroppableLinearLayout>(R.id.player_1_cards_ll)
-        val player2CardsLl= layout.findViewById<DroppableLinearLayout>(R.id.player_2_cards_ll)
-        val player3CardsLl= layout.findViewById<DroppableLinearLayout>(R.id.player_3_cards_ll)
+        val declareSetDropdown = layout.findViewById<Spinner>(R.id.declare_set_dropdown)
+        val player1NameTv = layout.findViewById<TextView>(R.id.player_1_name_tv)
+        val player2NameTv = layout.findViewById<TextView>(R.id.player_2_name_tv)
+        val player3NameTv = layout.findViewById<TextView>(R.id.player_3_name_tv)
+        val player1CardsLl = layout.findViewById<DroppableLinearLayout>(R.id.player_1_cards_ll)
+        val player2CardsLl = layout.findViewById<DroppableLinearLayout>(R.id.player_2_cards_ll)
+        val player3CardsLl = layout.findViewById<DroppableLinearLayout>(R.id.player_3_cards_ll)
         val player1CardsApiNameList: MutableList<String> = ArrayList()
         val player2CardsApiNameList: MutableList<String> = ArrayList()
         val player3CardsApiNameList: MutableList<String> = ArrayList()
-        val cardsLlTbl= layout.findViewById<TableLayout>(R.id.cards_ll_tbl)
+        val cardsLlTbl = layout.findViewById<TableLayout>(R.id.cards_ll_tbl)
         val askableSets = mPresenter.getAskableSetNames()
         val teamPlayerNames = mPresenter.getSameTeamPlayerNames(true)
 
@@ -464,11 +501,17 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             )
         )
 
-        declareSetDropdown.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        declareSetDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 cardsLlTbl.visibility = GONE
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 player1CardsLl.removeAllViews()
                 player2CardsLl.removeAllViews()
                 player3CardsLl.removeAllViews()
@@ -477,7 +520,12 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 val cardsDisplayName = getCardDisplayNames(cardsForSelectedSet)
                 // TODO make LinearLayout implement drag ended
                 cardsDisplayName.indices.forEach {
-                    val tv = DraggableTextView(this@PlayGameFragment.context, null, cardsDisplayName[it], cardsForSelectedSet[it])
+                    val tv = DraggableTextView(
+                        this@PlayGameFragment.context,
+                        null,
+                        cardsDisplayName[it],
+                        cardsForSelectedSet[it]
+                    )
                     tv.setup()
                     val padding = Utils.getDimen(R.dimen.standard_padding_half).toInt()
                     tv.setPadding(padding, padding, padding, padding)
@@ -504,7 +552,11 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 }
 
 //                Utils.makeToastLong("declare clicked")
-                mPresenter.dropSet (player1CardsApiNameList, player2CardsApiNameList, player3CardsApiNameList)
+                mPresenter.dropSet(
+                    player1CardsApiNameList,
+                    player2CardsApiNameList,
+                    player3CardsApiNameList
+                )
             } else {
                 Utils.makeToastLong(R.string.transfer_dialog_error)
             }

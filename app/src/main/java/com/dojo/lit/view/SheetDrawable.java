@@ -10,10 +10,12 @@ public class SheetDrawable extends GradientDrawable {
 
     public void setBgColor(int color) {
         setColor(color);
+        clearColorFilter();
     }
 
     public void setBgGradient(int[] colors, Orientation orientation) {
         setOrientation(orientation);
         setColors(colors);
+        clearColorFilter();
     }
 }

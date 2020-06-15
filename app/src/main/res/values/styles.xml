@@ -17,4 +17,38 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="LitPlayerNames">
+        <item name="olSheet">true</item>
+        <item name="olSheetGradientAngle">tl_br</item>
+        <item name="olSheetCornerRadius">@dimen/standard_corner_radius</item>
+        <item name="olSheetStrokeColor">@color/txt_inverted</item>
+        <item name="olSheetStrokeWidth">1dp</item>
+        <item name="olSheetStrokeDashWidth">4dp</item>
+        <item name="olSheetStrokeDashGap">2dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/give_you_glory</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/standard_padding</item>
+        <item name="android:textColor">@color/txt_inverted</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DojoDialogTextStyle">
+        <item name="android:fontFamily">@font/architects_daughter</item>
+        <item name="android:textScaleX">1.2</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">@color/txt_inverted</item>
+        <item name="android:textColorHint">@color/txt_inverted_opacity_50</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DojoDialogButtonStyle" parent="DojoDialogTextStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="olSheet">true</item>
+        <item name="olSheetCornerRadius">5dp</item>
+        <item name="olSheetStartColor">@color/white</item>
+        <item name="olSheetEndColor">@color/txt_inverted_opacity_50</item>
+    </style>
+
 </resources>

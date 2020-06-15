@@ -24,7 +24,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
     private val checkStatusAfterMillis = 500L
 
-    public val gameCode: String
+    val gameCode: String
     private val yourPlayerNo: Int
     private val playerNames: MutableList<String>
     private val cardsInHand: MutableList<String>
@@ -33,6 +33,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private val cardsHeldByEachPlayer: MutableList<Int>
     private val logsLength: Int
     private var logsStr: String
+    private var showToastMessage = true
+    private var toastMessage: String?
     @Deprecated("use logsStr instead") private val logs: MutableList<TransactionData>
     private var turnOfPlayer: Int
     private val droppedSets: MutableList<String>
@@ -62,6 +64,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         logsLength = arguments?.getInt(BundleArgumentKeys.LOGS_LENGTH) ?: 0 // fixed value
         droppedSuccessfullyInLastTurn = false
         logsStr = "-"
+        toastMessage = null
         logs = ArrayList()
 
         mInteractor = GameInteractor()
@@ -93,6 +96,14 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         droppedSets.clear()
         droppedSets.addAll(newData.droppedSets)
         logsStr = TextUtil.join(newData.logs, TextUtil.NEWLINE);
+        val lastLog =
+            if (newData.logs != null && newData.logs.size > 0) newData.logs[newData.logs.size - 1] else null
+        if (!TextUtil.areSame(toastMessage, lastLog) && !TextUtil.isEmpty(lastLog)) {
+            toastMessage = lastLog
+            showToastMessage = true
+        } else {
+            showToastMessage = false
+        }
         cardsHeldByEachPlayerChanged = !cardsHeldByEachPlayer.equals(newData.getCardsHeldByEachPlayer())
                 || !playerNames.equals(newData.getPlayerNames())
         playerNames.clear()
@@ -184,8 +195,9 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             if (playerNames.size > turnOfPlayer - 1 && playerNames[turnOfPlayer - 1] != null) playerNames[turnOfPlayer - 1] else "-"
         val isYourTurn = turnOfPlayer == yourPlayerNo
 
+        val toastMsg = if (showToastMessage) toastMessage else null
+
         return PlayGameVM(
-            gameCode,
             droppedSets,
             yourScore,
             opponentScore,
@@ -195,6 +207,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             getOppositeTeamPlayerNames(),
             logsVM,
             logsStr,
+            toastMsg,
             nameOfCurrentTurnPlayer,
             isYourTurn,
             cardsInHand,
@@ -205,7 +218,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
 
-    override fun stop() {
+    override fun stop() { // fixme rishabh
         super.stop()
 //        FirebaseUtils.disconnectFromDb()
 //        FirebaseUtils.unsubscribeToFirebaseRealtimeDb()

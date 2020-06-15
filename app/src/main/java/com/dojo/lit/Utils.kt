@@ -3,6 +3,10 @@ package com.dojo.lit
 import android.content.Context
 import android.net.ConnectivityManager
 import android.widget.Toast
+import android.media.RingtoneManager
+import android.media.Ringtone
+
+
 
 object Utils {
     fun makeToastLong(messageId: Int) {
@@ -14,6 +18,17 @@ object Utils {
     fun makeToastLong(message: String) {
         val toast = Toast.makeText(AppController.getApplicationContext(), message, Toast.LENGTH_LONG)
         toast.show()
+    }
+
+    fun makeNotificationSound() {
+        try {
+            val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val r = RingtoneManager.getRingtone(AppController.getApplicationContext(), notification)
+            r.play()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     fun getColor(id:Int): Int {

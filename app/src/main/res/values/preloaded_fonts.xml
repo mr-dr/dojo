@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/advent_pro_bold</item>
+        <item>@font/advent_pro_thin</item>
+        <item>@font/amatica_sc_bold</item>
+        <item>@font/architects_daughter</item>
+        <item>@font/aref_ruqaa</item>
+        <item>@font/atomic_age</item>
+        <item>@font/give_you_glory</item>
+        <item>@font/indie_flower</item>
+        <item>@font/kalam_light</item>
+        <item>@font/permanent_marker</item>
+        <item>@font/rajdhani_bold</item>
+        <item>@font/rajdhani_light</item>
+        <item>@font/righteous</item>
+    </array>
+</resources>

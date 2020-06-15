@@ -4,6 +4,13 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/title"
+        style="@style/DojoDialogTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin" />
+
+    <TextView
         android:id="@+id/error_msg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,23 +34,25 @@
 
     <EditText
         android:id="@+id/game_code_tv"
+        style="@style/DojoDialogTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/game_room_code"
-        android:layout_marginTop="@dimen/standard_margin_half"
-        android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
-        android:layout_marginRight="@dimen/standard_margin_double"/>
+        android:layout_marginTop="@dimen/standard_margin_half"
+        android:layout_marginRight="@dimen/standard_margin_double"
+        android:layout_marginBottom="@dimen/standard_margin_half"
+        android:hint="@string/game_room_code"/>
 
     <EditText
         android:id="@+id/alias_tv"
+        style="@style/DojoDialogTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/your_alias_nickname"
-        android:layout_marginTop="@dimen/standard_margin_half"
-        android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
-        android:layout_marginRight="@dimen/standard_margin_double"/>
+        android:layout_marginTop="@dimen/standard_margin_half"
+        android:layout_marginRight="@dimen/standard_margin_double"
+        android:layout_marginBottom="@dimen/standard_margin_half"
+        android:hint="@string/your_alias_nickname" />
 
     <Spinner
         android:id="@+id/player_no_tv"
@@ -56,6 +65,28 @@
         android:layout_marginLeft="@dimen/standard_margin_double"
         android:layout_marginRight="@dimen/standard_margin_double"
         android:spinnerMode="dropdown"/>
-        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/positive_button"
+            style="@style/DojoDialogButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/confirm"/>
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/negative_button"
+            style="@style/DojoDialogButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/cancel"/>
+    </LinearLayout>
 
 </LinearLayout>
