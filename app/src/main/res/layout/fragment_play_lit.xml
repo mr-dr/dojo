@@ -284,8 +284,8 @@
         android:layout_margin="@dimen/standard_margin_half"
         android:fontFamily="@font/advent_pro_bold"
         android:text="@string/your_alias_nickname"
-        android:textColor="@color/same_team"
-        android:textStyle="bold"
+        android:textColor="@color/txt_inverted"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/your_cards_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/your_cards_tv" />

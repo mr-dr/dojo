@@ -189,7 +189,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         if (vm.yourCardsChanged) {
             updateCardsInHand(vm.yourCards)
         }
-        if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_SHORT)
+        if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_LONG)
         mLogsTv.text = vm.logsStr
         if (vm.cardsHeldNoChanged) {
             updatePlayerNamesNCards(vm.sameTeamPlayerNames, vm.oppTeamPlayerNames, vm.cardsHeldNo)
@@ -357,6 +357,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(getString(R.string.ask_dialog_title))
 
+        val positiveBtn = layout.findViewById<View>(R.id.ask_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.ask_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.ask_error_msg_tv)
         val askFromDropdown = layout.findViewById<Spinner>(R.id.ask_from_dropdown)
         val askForSetDropdown = layout.findViewById<Spinner>(R.id.ask_suit_dropdown)
         val askForCardDropdown = layout.findViewById<Spinner>(R.id.ask_card_dropdown)
@@ -417,8 +420,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.ask)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (askableCards != null && askFromDropdown.selectedItem != null
                 && askForSetDropdown != null && askForCardDropdown != null
             ) {
@@ -426,13 +434,15 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     askFromDropdown.selectedItem as String,
                     askableCards!![askForCardDropdown.selectedItemPosition]
                 )
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.ask_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 
     private fun showTransferDialog() {
@@ -440,6 +450,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(getString(R.string.transfer_dialog_title))
 
+        val positiveBtn = layout.findViewById<View>(R.id.transfer_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.transfer_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.transfer_error_msg_tv)
         val transferToDropdown = layout.findViewById<Spinner>(R.id.transfer_to_dropdown)
         val transferablePlayerNames = mPresenter.getTransferablePlayerNames()
 
@@ -453,17 +466,24 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.transfer)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (transferToDropdown.selectedItem != null) {
                 mPresenter.transferTurn(transferToDropdown.selectedItem as String)
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.transfer_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 
     private fun showDeclareSetDialog() {
@@ -484,6 +504,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val cardsLlTbl = layout.findViewById<TableLayout>(R.id.cards_ll_tbl)
         val askableSets = mPresenter.getAskableSetNames()
         val teamPlayerNames = mPresenter.getSameTeamPlayerNames(true)
+        val positiveBtn = layout.findViewById<View>(R.id.declare_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.declare_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.declare_error_msg_tv)
 
         player1CardsLl.setup()
         player2CardsLl.setup()
@@ -538,8 +561,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.declare)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (declareSetDropdown.selectedItem != null) {
                 player1CardsLl.children.forEach {
                     player1CardsApiNameList.add((it as Draggable).getIdentifier())
@@ -557,12 +585,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     player2CardsApiNameList,
                     player3CardsApiNameList
                 )
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.transfer_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 }

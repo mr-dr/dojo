@@ -20,7 +20,7 @@ class LauncherActivity : BaseActivity() {
         welcomeTv?.text = getResources().getString(R.string.welcome1)
 
         tv?.setOnClickListener { view -> // temp impl
-            val intent = Intent(this, AuthActivity::class.java)
+            val intent = Intent(this, GamesListActivity::class.java)
             startActivity(intent)
             // TODO delete this activity after sending elsewhere
         }

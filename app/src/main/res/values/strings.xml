@@ -97,7 +97,7 @@
     <string name="transfer_dialog_title">Whom do you want to transfer to?</string>
     <string name="transfer_dialog_error">You didn\'t select any player name!</string>
     <string name="declare_dialog_title"><![CDATA[Select set & assign cards to each of your teammates]]></string>
-    <string name="number_of_logs">Number of logs</string>
+    <string name="number_of_logs">Select the number of last transactions to show</string>
     <string name="game_room_code">Game room code</string>
     <string name="your_alias_nickname">Your alias</string>
     <string name="your_player_no">Your player no.</string>

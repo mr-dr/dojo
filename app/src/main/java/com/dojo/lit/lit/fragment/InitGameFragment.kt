@@ -80,49 +80,55 @@ class InitGameFragment : BaseFragment() {
 
     private fun makeCreateRoomCall() {
         showProgressDialog()
-        interactor.createRoom((logsDialogInput!!).toInt(), object: ApiListeners<CreateRoomResponse>() {
-            override fun onResponse(response: CreateRoomResponse?) {
-                if (response == null || TextUtil.isEmpty(response.gameId)) {
-                    onErrorResponse(VolleyError("Empty create room response"))
-                    return
+        interactor.createRoom(
+            (logsDialogInput!!).toInt(),
+            object : ApiListeners<CreateRoomResponse>() {
+                override fun onResponse(response: CreateRoomResponse?) {
+                    if (response == null || TextUtil.isEmpty(response.gameId)) {
+                        onErrorResponse(VolleyError("Empty create room response"))
+                        return
+                    }
+                    gameIdDialogInput = response.gameId
+                    hideProgressDialog()
+                    makeJoinRoomCall()
                 }
-                gameIdDialogInput = response.gameId
-                hideProgressDialog()
-                makeJoinRoomCall()
-            }
 
-            override fun onErrorResponse(error: VolleyError?) {
-                hideProgressDialog()
-                // TODO Log all errors
-                Utils.makeToastLong("Room could not be created!")
-            }
+                override fun onErrorResponse(error: VolleyError?) {
+                    hideProgressDialog()
+                    // TODO Log all errors
+                    Utils.makeToastLong("Room could not be created!")
+                }
 
-        })
+            })
     }
 
     private fun makeJoinRoomCall() {
         showProgressDialog()
-        interactor.joinRoom(aliasDialogInput!!, gameIdDialogInput!!, playerNoDialogInput!!.toInt(), object: ApiListeners<String>() {
-            override fun onResponse(response: String?) {
-                hideProgressDialog()
-                if (activity is LitGameActivity) {
-                    val gameData = Bundle()
-                    gameData.putString(BundleArgumentKeys.GAME_CODE, gameIdDialogInput)
-                    gameData.putString(BundleArgumentKeys.ALIAS, aliasDialogInput)
-                    gameData.putInt(BundleArgumentKeys.PLAYER_NO, playerNoDialogInput!!.toInt())
-                    (activity as LitGameActivity).joinGame(gameData)
-                } else {
-                    Utils.makeToastLong("Something went wrong!")
+        interactor.joinRoom(
+            aliasDialogInput!!,
+            gameIdDialogInput!!,
+            playerNoDialogInput!!.toInt(),
+            object : ApiListeners<String>() {
+                override fun onResponse(response: String?) {
+                    hideProgressDialog()
+                    if (activity is LitGameActivity) {
+                        val gameData = Bundle()
+                        gameData.putString(BundleArgumentKeys.GAME_CODE, gameIdDialogInput)
+                        gameData.putString(BundleArgumentKeys.ALIAS, aliasDialogInput)
+                        gameData.putInt(BundleArgumentKeys.PLAYER_NO, playerNoDialogInput!!.toInt())
+                        (activity as LitGameActivity).joinGame(gameData)
+                    } else {
+                        Utils.makeToastLong("Something went wrong!")
+                    }
                 }
-            }
 
-            override fun onErrorResponse(error: VolleyError?) {
-                hideProgressDialog()
-                // TODO Log all errors
-                Utils.makeToastLong("Room could not be joined!")
-            }
+                override fun onErrorResponse(error: VolleyError?) {
+                    hideProgressDialog()
+                    // TODO Log all errors
+                    Utils.makeToastLong("Room could not be joined!")
+                }
 
-        })
+            })
     }
 
     // fixme rishabh - new spinners don't show hints
@@ -143,8 +149,8 @@ class InitGameFragment : BaseFragment() {
 
         titleTv.text = title
 
-        val logCountArray = Arrays.asList("1","2","3","4","5") // fixme move to presenter
-        val joinAsPlayerArray = Arrays.asList("1","2","3","4","5","6")
+        val logCountArray = Arrays.asList("1", "2", "3", "4", "5") // fixme move to presenter
+        val joinAsPlayerArray = Arrays.asList("1", "2", "3", "4", "5", "6")
 
         logsCountTv.setAdapter(
             ArrayAdapter(
@@ -162,7 +168,7 @@ class InitGameFragment : BaseFragment() {
             )
         )
 
-        if(DialogTypes.CREATE_ROOM == dialogType) { // create room - logs count
+        if (DialogTypes.CREATE_ROOM == dialogType) { // create room - logs count
             gameIdTv.visibility = View.GONE
         } else { // join room - game id
             logsCountTv.visibility = View.GONE
@@ -197,10 +203,11 @@ class InitGameFragment : BaseFragment() {
             gameIdDialogInput = gameIdTv.text.toString()
             aliasDialogInput = aliasTv.text.toString()
             playerNoDialogInput = joinAsPlayerTv.selectedItem.toString()
-            if((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
+            if ((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
                 || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
                 || TextUtils.isEmpty(aliasDialogInput)
-                || TextUtils.isEmpty(playerNoDialogInput)) {
+                || TextUtils.isEmpty(playerNoDialogInput)
+            ) {
                 errorMessageTv.visibility = View.VISIBLE
             } else {
                 confirmCallback.run()
