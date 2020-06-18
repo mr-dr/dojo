@@ -9,7 +9,7 @@
     <dimen name="standard_margin_xx_double">80dp</dimen>
     <dimen name="standard_margin_xxx_double">128dp</dimen>
     <dimen name="standard_margin_half">8dp</dimen>
-    <dimen name="standard_in_hand_collapsed_margin">-25dp</dimen>
+    <dimen name="standard_in_hand_collapsed_margin">-20dp</dimen>
     <dimen name="playing_card_height">100dp</dimen>
     <dimen name="playing_card_width">65dp</dimen>
     <dimen name="cell_padding">6dp</dimen>
@@ -17,4 +17,7 @@
     <dimen name="table_width">60dp</dimen>
     <dimen name="standard_corner_radius">10dp</dimen>
     <dimen name="toast_corner_radius">5dp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="welcomeBtnTopMargin">275dp</dimen>
+    <dimen name="welcomeBtnEndMargin">25dp</dimen>
 </resources>

@@ -14,7 +14,10 @@ import com.dojo.lit.lit.model.TransactionResponse
 import com.dojo.lit.lit.util.CardToSetNameUtil
 import com.dojo.lit.lit.view.IPlayGameView
 import com.dojo.lit.network.ApiListeners
-import com.dojo.lit.util.*
+import com.dojo.lit.util.FirebaseRealtimeDbListener
+import com.dojo.lit.util.FirebaseUtils
+import com.dojo.lit.util.TextUtil
+import com.google.android.gms.common.util.CollectionUtils
 import com.google.firebase.database.DatabaseException
 
 class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BasePresenter() {
@@ -57,7 +60,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         cardsHeldByEachPlayerChanged = false
         gameCode = arguments?.getString(BundleArgumentKeys.GAME_CODE) ?: TextUtil.EMPTY
         yourPlayerNo = arguments?.getInt(BundleArgumentKeys.PLAYER_NO) ?: 0 // fixed value
-        playerNames = arguments?.getStringArrayList(BundleArgumentKeys.PLAYER_NAMES) ?: ArrayList() // fixme decide
+        playerNames = arguments?.getStringArrayList(BundleArgumentKeys.PLAYER_NAMES) ?: ArrayList()// fixme decide
         cardsInHand = arguments?.getStringArrayList(BundleArgumentKeys.CARDS_IN_HAND) ?: ArrayList()
         cardsInHandChanged = false
         cardsHeldByEachPlayer = arguments?.getIntegerArrayList(BundleArgumentKeys.CARDS_NO_EACH_PLAYER) ?: ArrayList()
@@ -71,17 +74,21 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         isPaused = false
     }
 
-    private fun <T> reorderOnbasisOfPlayerNo(listToRotate: List<T>): List<T>{
+    private fun <T> reorderOnbasisOfPlayerNo(listToRotate: List<T>?): List<T>? {
+        if(CollectionUtils.isEmpty(listToRotate)) {
+            return null
+        }
         var list = ArrayList<T>()
-        for (x in 1..yourPlayerNo) {
-            var element = listToRotate.get(x)
+        for (x in 0 until (yourPlayerNo)) {
+            var element = listToRotate!!.get(x)
             list.add(element)
         }
-        for (x in 6..yourPlayerNo) {
-            var element = listToRotate.get(x)
+
+        for (y in 5 downTo yourPlayerNo) {
+            var element = listToRotate!!.get(y)
             list.add(0,element)
         }
-        return listToRotate
+        return list
     }
 
 
@@ -197,14 +204,16 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
         val toastMsg = if (showToastMessage) toastMessage else null
 
+        val reorderedCardsHeldNo = if (cardsHeldByEachPlayer.isEmpty()) cardsHeldByEachPlayer else reorderOnbasisOfPlayerNo(cardsHeldByEachPlayer)
+        val reorderedPlayerNames = if (playerNames.isEmpty()) playerNames else reorderOnbasisOfPlayerNo(playerNames)
+
         return PlayGameVM(
             droppedSets,
             yourScore,
             opponentScore,
             cardsHeldByEachPlayerChanged,
-            cardsHeldByEachPlayer,
-            getSameTeamPlayerNames(false),
-            getOppositeTeamPlayerNames(),
+            reorderedCardsHeldNo!!,
+            reorderedPlayerNames!!,
             logsVM,
             logsStr,
             toastMsg,
@@ -261,13 +270,16 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         val arr = ArrayList<String>(3)
         if (playerNames.size < 6) return arr
         if (youAreOnOddTeam()) { // is player 1, 3 or 5
-            if (giveOwnName || yourPlayerNo - 1 != 0) arr.add(playerNames[0])
-            if (giveOwnName || yourPlayerNo - 1 != 2) arr.add(playerNames[2])
-            if (giveOwnName || yourPlayerNo - 1 != 4) arr.add(playerNames[4])
+            if (yourPlayerNo - 1 != 0) arr.add(playerNames[0])
+            if (yourPlayerNo - 1 != 2) arr.add(playerNames[2])
+            if (yourPlayerNo - 1 != 4) arr.add(playerNames[4])
         } else { // player 2, 4 or 6
-            if (giveOwnName || yourPlayerNo - 1 != 1) arr.add(playerNames[1])
-            if (giveOwnName || yourPlayerNo - 1 != 3) arr.add(playerNames[3])
-            if (giveOwnName || yourPlayerNo - 1 != 5) arr.add(playerNames[5])
+            if (yourPlayerNo - 1 != 1) arr.add(playerNames[1])
+            if (yourPlayerNo - 1 != 3) arr.add(playerNames[3])
+            if (yourPlayerNo - 1 != 5) arr.add(playerNames[5])
+        }
+        if(giveOwnName) {
+            arr.add(0,playerNames[yourPlayerNo])
         }
         return arr
     }

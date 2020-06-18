@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
@@ -14,23 +15,22 @@
         android:id="@+id/error_msg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
         android:text="@string/please_fill_all_fields"
         android:textColor="@color/colorError"
-        android:layout_margin="@dimen/standard_margin"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <Spinner
         android:id="@+id/logs_count_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:hint="@string/number_of_logs"
-        android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginLeft="@dimen/standard_margin_double"
+        android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginRight="@dimen/standard_margin_double"
         android:layout_marginBottom="@dimen/standard_margin_half"
-        android:spinnerMode="dropdown"/>
+        android:background="@android:drawable/btn_dropdown"
+        android:hint="@string/number_of_logs"
+        android:spinnerMode="dropdown" />
 
     <EditText
         android:id="@+id/game_code_tv"
@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginRight="@dimen/standard_margin_double"
         android:layout_marginBottom="@dimen/standard_margin_half"
-        android:hint="@string/game_room_code"/>
+        android:hint="@string/game_room_code" />
 
     <EditText
         android:id="@+id/alias_tv"
@@ -58,19 +58,20 @@
         android:id="@+id/player_no_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/standard_margin_double"
+        android:layout_marginTop="@dimen/standard_margin_half"
+        android:layout_marginRight="@dimen/standard_margin_double"
+        android:layout_marginBottom="@dimen/standard_margin_half"
         android:background="@android:drawable/btn_dropdown"
         android:hint="@string/your_player_no"
-        android:layout_marginTop="@dimen/standard_margin_half"
-        android:layout_marginBottom="@dimen/standard_margin_half"
-        android:layout_marginLeft="@dimen/standard_margin_double"
-        android:layout_marginRight="@dimen/standard_margin_double"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:orientation="horizontal">
+
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/positive_button"
             style="@style/DojoDialogButtonStyle"
@@ -78,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_half"
             android:padding="@dimen/standard_padding_half"
-            android:text="@string/confirm"/>
+            android:text="@string/confirm" />
+
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/negative_button"
             style="@style/DojoDialogButtonStyle"
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_half"
             android:padding="@dimen/standard_padding_half"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

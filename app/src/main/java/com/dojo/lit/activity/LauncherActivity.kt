@@ -13,14 +13,14 @@ class LauncherActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv = findViewById(R.id.tv)
+        tv = findViewById(R.id.start_button)
         welcomeTv = findViewById(R.id.welcome_note)
 
-        tv?.text = "Launcher Screen\n" + tv?.text // fixme
+        //tv?.text = "Launcher Screen\n" + tv?.text // fixme
         welcomeTv?.text = getResources().getString(R.string.welcome1)
 
         tv?.setOnClickListener { view -> // temp impl
-            val intent = Intent(this, AuthActivity::class.java)
+            val intent = Intent(this, GamesListActivity::class.java)
             startActivity(intent)
             // TODO delete this activity after sending elsewhere
         }

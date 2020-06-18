@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/standard_margin">
+    android:layout_margin="@dimen/standard_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/transfer_title"
+        style="@style/DojoDialogTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:textColor="@color/txt_inverted" />
 
     <Spinner
         android:id="@+id/transfer_to_dropdown"
@@ -10,6 +19,40 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/transfer_error_msg_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:text="@string/transfer_dialog_error"
+        android:textColor="@color/colorError"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/transfer_positive_button"
+            style="@style/DojoDialogButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/confirm" />
+
+        <com.dojo.lit.view.DojoTextView
+            android:id="@+id/transfer_negative_button"
+            style="@style/DojoDialogButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_half"
+            android:padding="@dimen/standard_padding_half"
+            android:text="@string/cancel" />
+    </LinearLayout>
 
 </LinearLayout>

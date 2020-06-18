@@ -189,24 +189,29 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         if (vm.yourCardsChanged) {
             updateCardsInHand(vm.yourCards)
         }
-        if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_SHORT)
+        if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_LONG)
         mLogsTv.text = vm.logsStr
         if (vm.cardsHeldNoChanged) {
-            updatePlayerNamesNCards(vm.sameTeamPlayerNames, vm.oppTeamPlayerNames, vm.cardsHeldNo)
+            updatePlayerNamesNCards(vm.reorderedPlayerNames, vm.reorderedCardsHeldNo)
         }
     }
 
     private fun updatePlayerNamesNCards(
-        sameTeamNames: List<String>,
-        oppTeamNames: List<String>,
+        playerNames: List<String>,
         cardsHeldNo: List<Int>
     ) {
-        // TODO show cards held by each player
-        mOppPlayerNameTv1.text = oppTeamNames[0] //oppTeamNames[0] + "\n" + oppTeamCards[0]
-        mOppPlayerNameTv2.text = oppTeamNames[1]
-        mOppPlayerNameTv3.text = oppTeamNames[2]
-        mSamePlayerNameTv1.text = sameTeamNames[0]
-        mSamePlayerNameTv2.text = sameTeamNames[1]
+        if (playerNames.size > 4) { // fixme condition shouldn't be needed
+            mOppPlayerNameTv1.text =
+                getString(R.string.player_name_cards, playerNames[1], cardsHeldNo[1].toString())
+            mOppPlayerNameTv2.text =
+                getString(R.string.player_name_cards, playerNames[3], cardsHeldNo[3].toString())
+            mOppPlayerNameTv3.text =
+                getString(R.string.player_name_cards, playerNames[5], cardsHeldNo[5].toString())
+            mSamePlayerNameTv1.text =
+                getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
+            mSamePlayerNameTv2.text =
+                getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
+        }
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {
@@ -355,8 +360,11 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private fun showAskDialog(playerName: String?) {
         val layout = LayoutInflater.from(context).inflate(R.layout.ask_lit_dialog, null)
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle(getString(R.string.ask_dialog_title))
 
+        val title = layout.findViewById<TextView>(R.id.ask_title)
+        val positiveBtn = layout.findViewById<View>(R.id.ask_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.ask_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.ask_error_msg_tv)
         val askFromDropdown = layout.findViewById<Spinner>(R.id.ask_from_dropdown)
         val askForSetDropdown = layout.findViewById<Spinner>(R.id.ask_suit_dropdown)
         val askForCardDropdown = layout.findViewById<Spinner>(R.id.ask_card_dropdown)
@@ -364,6 +372,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         var oppositeTeamPlayerNames = mPresenter.getOppositeTeamPlayerNames()
         val askableSetNames = mPresenter.getAskableSetNames()
         var askableCards: List<String>? = null
+        title.text = (getString(R.string.ask_dialog_title))
 
         if (playerName != null && oppositeTeamPlayerNames.contains(playerName)) {
             var selectedNameTop: MutableList<String>
@@ -417,8 +426,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.ask)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (askableCards != null && askFromDropdown.selectedItem != null
                 && askForSetDropdown != null && askForCardDropdown != null
             ) {
@@ -426,22 +440,28 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     askFromDropdown.selectedItem as String,
                     askableCards!![askForCardDropdown.selectedItemPosition]
                 )
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.ask_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 
     private fun showTransferDialog() {
         val layout = LayoutInflater.from(context).inflate(R.layout.transfer_lit_dialog, null)
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle(getString(R.string.transfer_dialog_title))
 
+        val title = layout.findViewById<TextView>(R.id.transfer_title)
+        val positiveBtn = layout.findViewById<View>(R.id.transfer_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.transfer_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.transfer_error_msg_tv)
         val transferToDropdown = layout.findViewById<Spinner>(R.id.transfer_to_dropdown)
         val transferablePlayerNames = mPresenter.getTransferablePlayerNames()
+        title.text = (getString(R.string.transfer_dialog_title))
 
         transferToDropdown.setAdapter(
             ArrayAdapter(
@@ -453,24 +473,31 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.transfer)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (transferToDropdown.selectedItem != null) {
                 mPresenter.transferTurn(transferToDropdown.selectedItem as String)
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.transfer_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 
     private fun showDeclareSetDialog() {
         val layout = LayoutInflater.from(context).inflate(R.layout.declare_lit_dialog, null)
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle(getString(R.string.declare_dialog_title))
 
+        val title = layout.findViewById<TextView>(R.id.declare_title)
         val declareSetDropdown = layout.findViewById<Spinner>(R.id.declare_set_dropdown)
         val player1NameTv = layout.findViewById<TextView>(R.id.player_1_name_tv)
         val player2NameTv = layout.findViewById<TextView>(R.id.player_2_name_tv)
@@ -484,6 +511,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val cardsLlTbl = layout.findViewById<TableLayout>(R.id.cards_ll_tbl)
         val askableSets = mPresenter.getAskableSetNames()
         val teamPlayerNames = mPresenter.getSameTeamPlayerNames(true)
+        val positiveBtn = layout.findViewById<View>(R.id.declare_positive_button)
+        val negativeBtn = layout.findViewById<View>(R.id.declare_negative_button)
+        val errorMessageTv = layout.findViewById<View>(R.id.declare_error_msg_tv)
+        title.text = (getString(R.string.declare_dialog_title))
 
         player1CardsLl.setup()
         player2CardsLl.setup()
@@ -538,8 +569,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         builder.setView(layout)
 
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+
         // Set up the buttons
-        builder.setPositiveButton(getString(R.string.declare)) { dialog, which ->
+        positiveBtn.setOnClickListener {
             if (declareSetDropdown.selectedItem != null) {
                 player1CardsLl.children.forEach {
                     player1CardsApiNameList.add((it as Draggable).getIdentifier())
@@ -557,12 +593,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     player2CardsApiNameList,
                     player3CardsApiNameList
                 )
+                alertDialog?.dismiss()
             } else {
-                Utils.makeToastLong(R.string.transfer_dialog_error)
+                errorMessageTv.visibility = View.VISIBLE
             }
         }
-        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
+        negativeBtn.setOnClickListener {
+            alertDialog?.dismiss()
+        }
 
-        builder.show()
     }
 }
