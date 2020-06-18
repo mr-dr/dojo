@@ -16,6 +16,7 @@ public class DojoLinearLayout extends LinearLayout {
     int endColor = 0;
     int gradientAngle = -1;
     int strokeColor = 0;
+    int gradientType = 0;
     Float strokeWidth = 0F;
     Float strokeDashWidth = 0F;
     Float strokeDashGap = 0F;
@@ -38,7 +39,7 @@ public class DojoLinearLayout extends LinearLayout {
     }
 
     public void setSheetAttrs(float cornerRadius, int bgColor, int startColor, int midColor,
-                              int endColor, int angle, int strokeColor, Float strokeWidth, Float strokeDashWidth, Float strokeDashGap) {
+                              int endColor, int angle, int strokeColor, Float strokeWidth, Float strokeDashWidth, Float strokeDashGap, int gradientType) {
         hasSheet = true;
         this.cornerRadius = cornerRadius;
         this.bgColor = bgColor;
@@ -50,6 +51,7 @@ public class DojoLinearLayout extends LinearLayout {
         this.strokeWidth = strokeWidth;
         this.strokeDashWidth = strokeDashWidth;
         this.strokeDashGap = strokeDashGap;
-        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, angle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap));
+        this.gradientType = gradientType;
+        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, angle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap, gradientType));
     }
 }

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:fontFamily="casual"
-        android:layout_marginTop="161dp"
+        android:layout_marginTop="74dp"
         android:padding="@dimen/standard_padding"
         android:textColor="@color/black"
         app:olSheetColor="@color/txt_inverted"

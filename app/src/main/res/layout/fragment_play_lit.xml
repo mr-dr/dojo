@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    fixme not constrained to google ad at top -->
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/your_score_info_tv"
         android:layout_width="0dp"
@@ -30,11 +31,11 @@
         android:gravity="center"
         android:padding="@dimen/standard_padding_half"
         android:textColor="@color/txt_inverted"
-        app:layout_constraintBottom_toTopOf="@id/dropped_set_info_tv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gAdTop"
         app:olSheet="true"
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:layout_constraintTop_toBottomOf="@id/gAdTop"
+        app:layout_constraintBottom_toTopOf="@id/log_header_tv"
+        app:layout_constraintStart_toStartOf="parent"
         app:olSheetEndColor="@color/same_team_dark"
         app:olSheetGradientAngle="tl_br"
         app:olSheetStartColor="@color/same_team"
@@ -90,6 +91,7 @@
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/dropped_set_info_tv"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
@@ -145,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.61" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/turn_info"
@@ -235,24 +237,18 @@
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/ask_tv"
+            style="@style/DojoTxnBtnStyle"
+            android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/righteous"
-            android:paddingStart="@dimen/standard_padding_half"
-            android:paddingEnd="@dimen/standard_padding_half"
-            android:text="@string/ask"
-            android:textColor="@color/colorCta"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/transfer_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/righteous"
-            android:paddingStart="@dimen/standard_padding_half"
-            android:paddingEnd="@dimen/standard_padding_half"
-            android:text="@string/transfer"
-            android:textColor="@color/colorCta" />
+            style="@style/DojoTxnBtnStyle"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="@dimen/standard_margin_half"
+            android:text="@string/transfer" />
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/declare_tv"
@@ -300,12 +296,12 @@
 
         <LinearLayout
             android:id="@+id/your_cards_ll"
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
             android:layout_margin="@dimen/standard_margin_half"
-            android:clipToPadding="false"
-            android:orientation="horizontal">
+            android:clipToPadding="false" >
 
             <ImageView
                 android:layout_width="65dp"
@@ -334,35 +330,15 @@
 
     <TextView
         android:id="@+id/gAdBottom"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:background="@color/txt_inverted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Google Ad Here"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.dojo.lit.view.DojoTextView
-        android:id="@+id/text1"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="161dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:padding="@dimen/standard_padding"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:olSheet="true"
-        app:olSheetColor="@color/txt_inverted"
-        app:olSheetCornerRadius="@dimen/toast_corner_radius"
-        app:olSheetStrokeColor="@color/black"
-        app:olSheetStrokeWidth="2dp"
-        tools:text="Risso was brutally denied by p4 for 3♥ and left to cry in the corner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

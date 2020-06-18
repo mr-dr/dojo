@@ -29,6 +29,12 @@ import com.dojo.lit.view.DraggableTextView
 import com.dojo.lit.view.DroppableLinearLayout
 import androidx.core.view.children
 import com.dojo.lit.view.Draggable
+import android.view.animation.Animation
+import android.view.animation.AlphaAnimation
+import com.google.android.gms.common.util.CollectionUtils
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+
 
 class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     override fun onClick(v: View?) {
@@ -42,8 +48,12 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             showDeclareSetDialog()
         } else if (id == R.id.game_code_tv || id == R.id.game_code_share) {
             shareGameCode(mPresenter.gameCode)
-        } else if (id == R.id.player_1_opp_tv || id == R.id.player_2_opp_tv || id == R.id.player_3_opp_tv) {
-            showAskDialog((v as TextView).text.toString())
+        } else if (id == R.id.player_1_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[0])
+        } else if (id == R.id.player_2_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[1])
+        } else if (id == R.id.player_3_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[2])
         }
     }
 
@@ -79,6 +89,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mDeclareBtn: TextView
     private lateinit var mYourAlias: TextView
     private val mHandler = Handler()
+    private val anim = AlphaAnimation(0.9f, 1.0f)
     private val delayedTimeMillis: Long = 5000
 
     override fun onCreateView(
@@ -103,6 +114,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private fun init() {
         initViews()
         setupDefaultValues()
+        initAnimator()
     }
 
     private fun initViews() {
@@ -127,6 +139,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mAskBtn = findViewById(R.id.ask_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
 
+        mTransferBtn.startAnimation(anim)
+        mAskBtn.startAnimation(anim)
+        mDeclareBtn.startAnimation(anim)
 
         mTransferBtn.setOnClickListener(this)
         mAskBtn.setOnClickListener(this)
@@ -168,19 +183,29 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         }
         mActionsLl.apply {
             if (vm.showDefaultActions) {
-                visibility = VISIBLE
+                mTransferBtn.startAnimation(anim)
+                mDeclareBtn.startAnimation(anim)
+                mTransferBtn.setBackgroundTintList(getResources().getColorStateList(R.color.transparent));
+                mDeclareBtn.setBackgroundTintList(getResources().getColorStateList(R.color.transparent));
+//                mTransferBtn.visibility = VISIBLE
+//                mDeclareBtn.visibility = VISIBLE
                 mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
                 mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
                 mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
             } else {
-                visibility = GONE
+                mTransferBtn.clearAnimation()
+                mDeclareBtn.clearAnimation()
+                mTransferBtn.setBackgroundTintList(getResources().getColorStateList(R.color.txt_inverted_opacity_50));
+                mDeclareBtn.setBackgroundTintList(getResources().getColorStateList(R.color.txt_inverted_opacity_50));
+//                mTransferBtn.visibility = GONE
+//                mDeclareBtn.visibility = GONE
                 mOppPlayerNameTv1.setOnClickListener(null)
                 mOppPlayerNameTv2.setOnClickListener(null)
                 mOppPlayerNameTv3.setOnClickListener(null)
             }
         }
         mTransferBtn.apply {
-            if (vm.showTransferAction) {
+            if (vm.showTransferAction && vm.showDefaultActions) {
                 visibility = VISIBLE
             } else {
                 visibility = GONE
@@ -212,6 +237,32 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             mSamePlayerNameTv2.text =
                 getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
         }
+        val morePadding = resources.getDimension(R.dimen.standard_padding).toInt()
+        val lessPadding = resources.getDimension(R.dimen.standard_padding_half).toInt()
+//        // TODO show cards held by each player
+//        if (isYourTurn) {
+//            mOppPlayerNameTv1.text = getString(R.string.ask_player, oppTeamNames[0]) //oppTeamNames[0] + "\n" + oppTeamCards[0]
+//            mOppPlayerNameTv2.text = getString(R.string.ask_player, oppTeamNames[1])
+//            mOppPlayerNameTv3.text = getString(R.string.ask_player, oppTeamNames[2])
+//            mOppPlayerNameTv1.startAnimation(anim)
+//            mOppPlayerNameTv2.startAnimation(anim)
+//            mOppPlayerNameTv3.startAnimation(anim)
+//            mOppPlayerNameTv1.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+//            mOppPlayerNameTv2.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+//            mOppPlayerNameTv3.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+//        } else {
+//            mOppPlayerNameTv1.text = oppTeamNames[0] //oppTeamNames[0] + "\n" + oppTeamCards[0]
+//            mOppPlayerNameTv2.text = oppTeamNames[1]
+//            mOppPlayerNameTv3.text = oppTeamNames[2]
+//            mOppPlayerNameTv1.clearAnimation()
+//            mOppPlayerNameTv2.clearAnimation()
+//            mOppPlayerNameTv3.clearAnimation()
+//            mOppPlayerNameTv1.setPadding(morePadding,morePadding,morePadding,morePadding)
+//            mOppPlayerNameTv2.setPadding(morePadding,morePadding,morePadding,morePadding)
+//            mOppPlayerNameTv3.setPadding(morePadding,morePadding,morePadding,morePadding)
+//        }
+//        mSamePlayerNameTv1.text = sameTeamNames[0]
+//        mSamePlayerNameTv2.text = sameTeamNames[1]
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {
@@ -602,5 +653,12 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             alertDialog?.dismiss()
         }
 
+    }
+
+    private fun initAnimator() {
+        anim.duration = 500 //You can manage the blinking time with this parameter
+        anim.startOffset = 20
+        anim.repeatMode = Animation.REVERSE
+        anim.repeatCount = Animation.INFINITE
     }
 }

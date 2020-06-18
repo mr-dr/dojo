@@ -20,6 +20,7 @@ public class DojoTextView extends AppCompatTextView {
     int endColor = 0;
     int gradientAngle = -1;
     int strokeColor = 0;
+    int gradientType = 0;
     Float strokeWidth = 0F;
     Float strokeDashWidth = 0F;
     Float strokeDashGap = 0F;
@@ -49,10 +50,11 @@ public class DojoTextView extends AppCompatTextView {
             endColor = a.getColor(R.styleable.SheetStyleable_olSheetEndColor, 0);
             gradientAngle = a.getInt(R.styleable.SheetStyleable_olSheetGradientAngle, 0);
             strokeColor = a.getColor(R.styleable.SheetStyleable_olSheetStrokeColor, 0);
+            gradientType = a.getColor(R.styleable.SheetStyleable_olSheetGradientType, 0);
             strokeWidth = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeWidth, 0);
             strokeDashWidth = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeDashWidth, 0);
             strokeDashGap = a.getDimension(R.styleable.SheetStyleable_olSheetStrokeDashGap, 0);
-            sheet = SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, gradientAngle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap);
+            sheet = SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, gradientAngle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap, gradientType);
             setBackground(sheet);
         }
     }
@@ -67,7 +69,8 @@ public class DojoTextView extends AppCompatTextView {
     }
 
     public void setSheetAttrs(float cornerRadius, int bgColor, int startColor, int midColor,
-                              int endColor, int angle, int strokeColor, Float strokeWidth, Float strokeDashWidth, Float strokeDashGap) {
+                              int endColor, int angle, int strokeColor, Float strokeWidth,
+                              Float strokeDashWidth, Float strokeDashGap, int gradientType) {
         hasSheet = true;
         this.cornerRadius = cornerRadius;
         this.bgColor = bgColor;
@@ -79,6 +82,7 @@ public class DojoTextView extends AppCompatTextView {
         this.strokeWidth = strokeWidth;
         this.strokeDashWidth = strokeDashWidth;
         this.strokeDashGap = strokeDashGap;
-        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, angle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap));
+        this.gradientType = gradientType;
+        setBackground(SheetHelper.fetchSheetDrawable(cornerRadius, bgColor, startColor, midColor, endColor, angle, strokeColor, strokeWidth.intValue(), strokeDashWidth, strokeDashGap, gradientType));
     }
 }

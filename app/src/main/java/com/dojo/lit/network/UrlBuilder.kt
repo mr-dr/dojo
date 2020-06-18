@@ -1,5 +1,6 @@
 package com.dojo.lit.network
 
+import com.dojo.lit.Utils
 import com.dojo.lit.util.TextUtil
 import com.google.android.gms.common.util.CollectionUtils
 import java.lang.StringBuilder
@@ -7,7 +8,7 @@ import java.lang.StringBuilder
 class UrlBuilder {
     lateinit var baseUrl: String
     var path: String? = null
-    var params: Map<String, String>? = null
+    var params: MutableMap<String, String>? = null
 
     fun baseUrl(baseUrl: String): UrlBuilder {
         this.baseUrl = baseUrl
@@ -19,12 +20,14 @@ class UrlBuilder {
         return this
     }
 
-    fun params(params: Map<String, String>): UrlBuilder {
+    fun params(params: MutableMap<String, String>): UrlBuilder {
         this.params = params
         return this
     }
 
     fun build(): String {
+        if (params == null) params = HashMap()
+        params?.put("app_version", Utils.getAppVersionCodeFromPackage().toString()) // fixme move to constants
         if (baseUrl.endsWith("/")) baseUrl = baseUrl.substring(0, baseUrl.length - 1)
         if (!TextUtil.isEmpty(path) && !(path?.startsWith("/") ?: true)) path = "/" + path
 
