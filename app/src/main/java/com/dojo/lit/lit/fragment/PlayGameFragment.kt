@@ -200,8 +200,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         playerNames: List<String>,
         cardsHeldNo: List<Int>
     ) {
-        // TODO show cards held by each player
-        if (playerNames.size > 4) {
+        if (playerNames.size > 4) { // fixme condition shouldn't be needed
             mOppPlayerNameTv1.text =
                 getString(R.string.player_name_cards, playerNames[1], cardsHeldNo[1].toString())
             mOppPlayerNameTv2.text =

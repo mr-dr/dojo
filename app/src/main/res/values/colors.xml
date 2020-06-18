@@ -17,4 +17,5 @@
     <color name="logs_bg_color">#88000000</color>
     <color name="white">#FFF</color>
     <color name="transparent">#00000000</color>
+    <color name="dark_red">#660000</color>
 </resources>
