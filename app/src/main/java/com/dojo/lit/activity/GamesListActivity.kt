@@ -13,7 +13,7 @@ class GamesListActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv = findViewById(R.id.tv)
+        tv = findViewById(R.id.start_button)
         tv?.text = "GamesList Screen\n" + tv?.text // fixme
 
         if (gameList.size <= 1) {

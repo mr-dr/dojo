@@ -33,6 +33,23 @@ abstract class BaseActivity : AppCompatActivity() {
         firebaseAnalytics.logEvent(event, bundle)
     }
 
+    // fixme : extremely important test this
+    fun showUpdateDialog() {
+//        val layout = LayoutInflater.from(baseContext).inflate(R.layout.update_app, null)
+        val progressModal = AlertDialog.Builder(baseContext)
+        progressModal.setTitle(R.string.update_app)
+
+//        progressModal.setView(layout)
+
+        // Set up the buttons
+        progressModal.setPositiveButton(R.string.update_caps) { dialog, which ->
+            // TODO add playstore link
+        }
+        progressModal.setNegativeButton(R.string.cancel_caps, { dialog, which -> finishAffinity() })
+        progressModal.setCancelable(false)
+        progressModal.show()
+    }
+
     fun showProgressDialog() {
         val layout = LayoutInflater.from(baseContext).inflate(R.layout.progress, null)
         val progressModal = AlertDialog.Builder(baseContext)

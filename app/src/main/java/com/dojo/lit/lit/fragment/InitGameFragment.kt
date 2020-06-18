@@ -25,7 +25,6 @@ import java.util.*
 class InitGameFragment : BaseFragment() {
 
     lateinit var interactor: GameInteractor
-    lateinit var welcomeTv: TextView
     lateinit var createRoomTv: TextView
     lateinit var joinRoomTv: TextView
 
@@ -58,7 +57,6 @@ class InitGameFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        welcomeTv = findViewById(R.id.welcome_text)
         createRoomTv = findViewById(R.id.create_room_tv)
         joinRoomTv = findViewById(R.id.join_room_tv)
     }

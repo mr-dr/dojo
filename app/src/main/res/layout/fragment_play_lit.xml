@@ -8,16 +8,19 @@
     android:paddingStart="@dimen/standard_padding"
     android:paddingEnd="@dimen/standard_padding">
 
-    <TextView
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/gAdTop"
-        android:layout_width="320dp"
-        android:layout_height="100dp"
-        android:background="@color/txt_inverted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Google Ad Here"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
 
 <!--    fixme not constrained to google ad at top -->
     <com.dojo.lit.view.DojoTextView
@@ -252,15 +255,11 @@
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/declare_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/righteous"
-            android:paddingStart="@dimen/standard_padding_half"
-            android:paddingEnd="@dimen/standard_padding_half"
-            android:text="@string/declare"
-            android:textColor="@color/colorCta" />
+            style="@style/DojoTxnBtnStyle"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/declare" />
     </LinearLayout>
-
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/your_cards_tv"
         android:layout_width="wrap_content"
@@ -304,31 +303,32 @@
             android:clipToPadding="false" >
 
             <ImageView
-                android:layout_width="65dp"
-                android:layout_height="100dp"
+                android:layout_width="52dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
                 android:src="@drawable/clubs_k" />
 
             <ImageView
-                android:layout_width="65dp"
-                android:layout_height="100dp"
+                android:layout_width="52dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
                 android:src="@drawable/clubs_2" />
 
             <ImageView
-                android:layout_width="65dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/playing_card_width"
+                android:layout_height="@dimen/playing_card_height"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
                 android:src="@drawable/spades_10" />
 
             <ImageView
-                android:layout_width="65dp"
-                android:layout_height="100dp"
+                android:layout_width="52dp"
+                android:layout_height="80dp"
                 android:src="@drawable/diamonds_2" />
         </LinearLayout>
     </HorizontalScrollView>
 
-    <TextView
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/gAdBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -85,13 +85,14 @@
     <string name="log_template_took">%1$s took %3$s from %2$s</string>
     <string name="log_template_ask">%1$s asked %2$s for %3$s</string>
     <string name="you">You</string>
-    <string name="create_room">Create Room</string>
-    <string name="join_room">Join Room</string>
+    <string name="create_room">HOST A NEW GAME</string>
+    <string name="join_room">JOIN AN EXISTING GAME</string>
     <string name="dropped_sets">Dropped sets:\n</string>
     <string name="create_room_dialog_text">Enter new game details</string>
     <string name="join_room_dialog_text">Enter the game details</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_caps">CANCEL</string>
     <string name="ask_dialog_title">Who do you want to ask from?</string>
     <string name="ask_dialog_error">Please select all 3 fields to ask card!</string>
     <string name="transfer_dialog_title">Whom do you want to transfer to?</string>
@@ -123,4 +124,6 @@
     <string name="welcome14">We never really grow up, we only learn how to act in public.</string>
     <string name="welcome15">Har baar kuch accha milna zaroori nahi</string>
     <string name="play">Start</string>
+    <string name="update_app">There\'s a newer version of the app with more games!</string>
+    <string name="update_caps">UPDATE</string>
 </resources>

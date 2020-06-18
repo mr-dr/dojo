@@ -88,6 +88,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mTransferBtn: TextView
     private lateinit var mDeclareBtn: TextView
     private lateinit var mYourAlias: TextView
+    private lateinit var mAdTop: AdView
+    private lateinit var mAdBottom: AdView
     private val mHandler = Handler()
     private val anim = AlphaAnimation(0.9f, 1.0f)
     private val delayedTimeMillis: Long = 5000
@@ -138,6 +140,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mTransferBtn = findViewById(R.id.transfer_tv)
         mAskBtn = findViewById(R.id.ask_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
+        mAdTop = findViewById(R.id.gAdTop)
+        mAdBottom = findViewById(R.id.gAdBottom)
 
         mTransferBtn.startAnimation(anim)
         mAskBtn.startAnimation(anim)
@@ -160,6 +164,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             arguments!!.getString(BundleArgumentKeys.ALIAS)
                 ?: getResources().getString(R.string.none)
         mYourAlias.text = getResources().getString(R.string.your_alias, alias)
+        val adRequestTop = AdRequest.Builder().build()
+        val adRequestBottom = AdRequest.Builder().build()
+        mAdTop.loadAd(adRequestTop)
+        mAdBottom.loadAd(adRequestBottom)
     }
 
     private fun setupPresenter() {

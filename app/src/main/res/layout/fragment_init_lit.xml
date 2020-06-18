@@ -4,47 +4,27 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#001429"
     android:padding="@dimen/standard_padding">
 
-    <TextView
-        android:id="@+id/welcome_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/action_btns_ll"
-        app:layout_constraintVertical_chainStyle="packed"
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/create_room_tv"
+        style="@style/InitLitBtn"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintBottom_toTopOf="@id/join_room_tv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textIsSelectable="true"
-        tools:text="Bienvenidos to Lit, Amigo!"/>
-
-    <LinearLayout
-        android:id="@+id/action_btns_ll"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/welcome_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="@string/create_room" />
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/join_room_tv"
+        style="@style/InitLitBtn"
+        android:layout_marginStart="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <TextView
-            android:id="@+id/create_room_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin_half"
-            android:padding="@dimen/standard_padding_half"
-            android:background="@color/colorPrimary"
-            android:text="@string/create_room"/>
-        <TextView
-            android:id="@+id/join_room_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin_half"
-            android:padding="@dimen/standard_padding_half"
-            android:background="@color/colorPrimary"
-            android:text="@string/join_room"/>
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_room_tv"
+        android:text="@string/join_room"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

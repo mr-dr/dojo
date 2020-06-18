@@ -12,12 +12,12 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv = findViewById(R.id.tv)
-        tv?.text = "Auth Screen\n" + tv?.text // fixme
-
-        tv?.setOnClickListener { view -> // temp impl
-            val intent = Intent(this, GamesListActivity::class.java)
-            startActivity(intent)
-        }
+//        tv = findViewById(R.id.tv)
+//        tv?.text = "Auth Screen\n" + tv?.text // fixme
+//
+//        tv?.setOnClickListener { view -> // temp impl
+//            val intent = Intent(this, GamesListActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 }

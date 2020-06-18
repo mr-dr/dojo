@@ -13,6 +13,7 @@ class LauncherActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        showUpdateDialog()
         tv = findViewById(R.id.start_button)
         welcomeTv = findViewById(R.id.welcome_note)
 
