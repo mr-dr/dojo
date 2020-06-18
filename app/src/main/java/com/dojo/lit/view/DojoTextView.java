@@ -34,6 +34,7 @@ public class DojoTextView extends AppCompatTextView {
     }
 
     public DojoTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+
         super(context, attrs, defStyleAttr);
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,

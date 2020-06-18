@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg1"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="@dimen/standard_padding"
     android:paddingEnd="@dimen/standard_padding">
 
@@ -12,52 +12,52 @@
         android:id="@+id/gAdTop"
         android:layout_width="320dp"
         android:layout_height="100dp"
-        android:text="Google Ad Here"
-        android:gravity="center"
         android:background="@color/txt_inverted"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="Google Ad Here"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/your_score_info_tv"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginStart="@dimen/standard_margin_half"
         android:layout_marginEnd="@dimen/standard_margin_half"
-        android:textColor="@color/txt_inverted"
+        android:layout_marginBottom="@dimen/standard_margin_half"
         android:fontFamily="@font/amatica_sc_bold"
+        android:gravity="center"
         android:padding="@dimen/standard_padding_half"
-        app:olSheet="true"
-        app:olSheetStartColor="@color/same_team"
-        app:olSheetEndColor="@color/same_team_dark"
-        app:olSheetGradientAngle="tl_br"
-        app:olSheetCornerRadius="@dimen/standard_corner_radius"
-        app:layout_constraintTop_toBottomOf="@id/gAdTop"
+        android:textColor="@color/txt_inverted"
         app:layout_constraintBottom_toTopOf="@id/dropped_set_info_tv"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Apna Score\n0"/>
+        app:layout_constraintTop_toBottomOf="@id/gAdTop"
+        app:olSheet="true"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetEndColor="@color/same_team_dark"
+        app:olSheetGradientAngle="tl_br"
+        app:olSheetStartColor="@color/same_team"
+        tools:text="Apna Score\n0" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/opponent_score_info_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_margin_half"
         android:layout_marginStart="@dimen/standard_margin_half"
         android:layout_marginEnd="@dimen/standard_margin_half"
+        android:layout_marginBottom="@dimen/standard_margin_half"
+        android:fontFamily="@font/amatica_sc_bold"
         android:gravity="center"
         android:padding="@dimen/standard_padding_half"
         android:textColor="@color/txt_inverted"
-        android:fontFamily="@font/amatica_sc_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/your_score_info_tv"
         app:olSheet="true"
-        app:olSheetStartColor="@color/opp_team"
+        app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:olSheetEndColor="@color/opp_team_dark"
         app:olSheetGradientAngle="tl_br"
-        app:olSheetCornerRadius="@dimen/standard_corner_radius"
+        app:olSheetStartColor="@color/opp_team"
         tools:text="Unka Score\n0" />
 
     <com.dojo.lit.view.DojoTextView
@@ -76,17 +76,17 @@
         app:layout_constraintStart_toEndOf="@id/your_score_info_tv"
         app:layout_constraintTop_toTopOf="@id/your_score_info_tv"
         tools:text="Game Code\nxbvjkdm" />
+
     <View
         android:id="@+id/game_code_share"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="@dimen/standard_margin_half"
-        app:layout_constraintTop_toTopOf="@id/game_code_tv"
-        app:layout_constraintBottom_toBottomOf="@id/game_code_tv"
-        app:layout_constraintStart_toEndOf="@id/game_code_tv"
-        app:layout_constraintEnd_toStartOf="@id/opponent_score_info_tv"
         android:background="@android:drawable/ic_menu_share"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/game_code_tv"
+        app:layout_constraintEnd_toStartOf="@id/opponent_score_info_tv"
+        app:layout_constraintStart_toEndOf="@id/game_code_tv"
+        app:layout_constraintTop_toTopOf="@id/game_code_tv" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/dropped_set_info_tv"
@@ -97,16 +97,16 @@
         android:textColor="@color/txt_inverted"
         app:layout_constraintBottom_toTopOf="@id/log_header_tv"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Dropped sets : \nLow Spades"/>
+        tools:text="Dropped sets : \nLow Spades" />
 
     <LinearLayout
         android:id="@+id/cards_held_table"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        app:layout_constraintTop_toBottomOf="@id/game_code_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/game_code_tv" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/log_header_tv"
@@ -124,18 +124,18 @@
         android:id="@+id/logs_info_sv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/standard_margin_half"
         android:background="@color/logs_bg_color"
         app:layout_constraintBottom_toTopOf="@id/player_1_opp_tv"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="@dimen/standard_margin_half">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/logs_info_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_half"
-            android:paddingBottom="@dimen/standard_padding"
             android:fontFamily="@font/rajdhani_bold"
+            android:paddingBottom="@dimen/standard_padding"
             android:textColor="@color/txt_inverted"
             tools:text="Reaa took 6 Spades from Ayan\nReaa asked 7 Spades from Ayan\nReaa asked 7 Spades from Ayan\nReaa asked 7 Spades from Ayan" />
     </ScrollView>
@@ -179,8 +179,8 @@
         app:layout_constraintBottom_toTopOf="@id/table_vert_center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:olSheetStartColor="@color/opp_team"
         app:olSheetEndColor="@color/opp_team_dark"
+        app:olSheetStartColor="@color/opp_team"
         tools:text="Pazer" />
 
     <com.dojo.lit.view.DojoTextView
@@ -189,8 +189,8 @@
         android:layout_marginTop="@dimen/standard_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/table_vert_center"
-        app:olSheetStartColor="@color/opp_team"
         app:olSheetEndColor="@color/opp_team_dark"
+        app:olSheetStartColor="@color/opp_team"
         tools:text="Rocket" />
 
     <com.dojo.lit.view.DojoTextView
@@ -199,8 +199,8 @@
         android:layout_marginBottom="@dimen/standard_margin"
         app:layout_constraintBottom_toTopOf="@id/table_vert_center"
         app:layout_constraintStart_toStartOf="parent"
-        app:olSheetStartColor="@color/same_team"
         app:olSheetEndColor="@color/same_team_dark"
+        app:olSheetStartColor="@color/same_team"
         tools:text="Tantan" />
 
     <com.dojo.lit.view.DojoTextView
@@ -209,8 +209,8 @@
         android:layout_marginTop="@dimen/standard_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/table_vert_center"
-        app:olSheetStartColor="@color/opp_team"
         app:olSheetEndColor="@color/opp_team_dark"
+        app:olSheetStartColor="@color/opp_team"
         tools:text="Tururu" />
 
     <com.dojo.lit.view.DojoTextView
@@ -219,19 +219,19 @@
         android:layout_marginBottom="@dimen/standard_margin"
         app:layout_constraintBottom_toTopOf="@id/table_vert_center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:olSheetStartColor="@color/same_team"
         app:olSheetEndColor="@color/same_team_dark"
+        app:olSheetStartColor="@color/same_team"
         tools:text="Sanyu" />
 
     <LinearLayout
         android:id="@+id/action_btns_ll"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/turn_info"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/turn_info">
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/ask_tv"
@@ -241,8 +241,8 @@
             android:paddingStart="@dimen/standard_padding_half"
             android:paddingEnd="@dimen/standard_padding_half"
             android:text="@string/ask"
-            android:visibility="gone"
-            android:textColor="@color/colorCta" />
+            android:textColor="@color/colorCta"
+            android:visibility="gone" />
 
         <com.dojo.lit.view.DojoTextView
             android:id="@+id/transfer_tv"
@@ -297,37 +297,38 @@
         android:layout_marginBottom="@dimen/standard_padding_half"
         app:layout_constraintBottom_toTopOf="@id/gAdBottom"
         app:layout_constraintStart_toStartOf="parent">
+
         <LinearLayout
             android:id="@+id/your_cards_ll"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
             android:layout_margin="@dimen/standard_margin_half"
             android:clipToPadding="false"
-            android:layout_gravity="fill_horizontal">
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="100dp"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
-                android:src="@drawable/clubs_k"
-                />
+                android:src="@drawable/clubs_k" />
+
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="100dp"
-                android:src="@drawable/clubs_2"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
-                />
+                android:src="@drawable/clubs_2" />
+
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="100dp"
-                android:src="@drawable/spades_10"
                 android:layout_marginRight="@dimen/standard_in_hand_collapsed_margin"
-                />
+                android:src="@drawable/spades_10" />
+
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="100dp"
-                android:src="@drawable/diamonds_2"
-                />
+                android:src="@drawable/diamonds_2" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -335,33 +336,33 @@
         android:id="@+id/gAdBottom"
         android:layout_width="320dp"
         android:layout_height="50dp"
-        android:text="Google Ad Here"
-        android:gravity="center"
         android:background="@color/txt_inverted"
+        android:gravity="center"
+        android:text="Google Ad Here"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/text1"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:fontFamily="casual"
         android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="161dp"
+        android:fontFamily="casual"
+        android:gravity="center"
         android:padding="@dimen/standard_padding"
         android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:olSheet="true"
         app:olSheetColor="@color/txt_inverted"
+        app:olSheetCornerRadius="@dimen/toast_corner_radius"
         app:olSheetStrokeColor="@color/black"
         app:olSheetStrokeWidth="2dp"
-        android:textSize="20sp"
-        app:olSheet="true"
-        app:olSheetCornerRadius="@dimen/toast_corner_radius"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:text="Risso was brutally denied by p4 for 3♥ and left to cry in the corner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
