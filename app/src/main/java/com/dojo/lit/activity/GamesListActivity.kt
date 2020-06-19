@@ -6,7 +6,9 @@ import android.widget.TextView
 import com.dojo.lit.R
 import com.dojo.lit.base.BaseActivity
 import com.dojo.lit.lit.activity.LitGameActivity
+import com.dojo.lit.lit.activity.LitInitActivity
 
+// fixme skipping activity until more games
 class GamesListActivity : BaseActivity() {
     private var tv: TextView? = null
     private var gameList = ArrayList<String>()
@@ -17,9 +19,11 @@ class GamesListActivity : BaseActivity() {
         tv?.text = "GamesList Screen\n" + tv?.text // fixme
 
         if (gameList.size <= 1) {
-            val intent = Intent(this, LitGameActivity::class.java)
+            val intent = Intent(this, LitInitActivity::class.java)
             startActivity(intent)
         }
 
     }
+
+
 }

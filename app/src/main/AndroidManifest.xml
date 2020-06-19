@@ -28,6 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".lit.activity.LitGameActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".lit.activity.LitInitActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

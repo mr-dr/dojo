@@ -74,7 +74,7 @@
     <string name="your_cards">Your Cards</string>
     <string name="logs">Logs</string>
     <string name="none">None/Empty</string>
-    <string name="lit_game_not_enough_args">Not enough information to start game!\\nGame probably not started yet!!</string>
+    <string name="lit_game_not_enough_args">Not enough information to start game!\nGame probably not started yet!!</string>
 <!--    <string name="game_code">Game Code: %s</string>-->
     <string name="game_code">Game Code\n%s</string>
     <string name="waiting_for_turn">Waiting for %s to play</string>

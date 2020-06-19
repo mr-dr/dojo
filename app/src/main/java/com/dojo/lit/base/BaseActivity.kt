@@ -21,7 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
     }
 
     final fun sendFirebaseEvent(event: String, bundle: Bundle) {

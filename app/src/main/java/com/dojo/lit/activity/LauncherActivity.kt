@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import com.dojo.lit.R
 import com.dojo.lit.base.BaseActivity
+import com.dojo.lit.lit.activity.LitInitActivity
 
 class LauncherActivity : BaseActivity() {
     private var tv: TextView? = null
@@ -21,7 +22,7 @@ class LauncherActivity : BaseActivity() {
         welcomeTv?.text = getResources().getString(R.string.welcome1)
 
         tv?.setOnClickListener { view -> // temp impl
-            val intent = Intent(this, GamesListActivity::class.java)
+            val intent = Intent(this, LitInitActivity::class.java)
             startActivity(intent)
             // TODO delete this activity after sending elsewhere
         }
