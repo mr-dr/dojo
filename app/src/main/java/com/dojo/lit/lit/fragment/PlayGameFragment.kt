@@ -31,7 +31,6 @@ import androidx.core.view.children
 import com.dojo.lit.view.Draggable
 import android.view.animation.Animation
 import android.view.animation.AlphaAnimation
-import com.google.android.gms.common.util.CollectionUtils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
@@ -40,9 +39,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     override fun onClick(v: View?) {
         if (v == null) return
         val id = v.id
-        if (id == R.id.ask_tv) {
-            showAskDialog()
-        } else if (id == R.id.transfer_tv) {
+        if (id == R.id.transfer_tv) {
             showTransferDialog()
         } else if (id == R.id.declare_tv) {
             showDeclareSetDialog()
@@ -83,8 +80,6 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mOppPlayerNameTv3: TextView
     private lateinit var mSamePlayerNameTv1: TextView
     private lateinit var mSamePlayerNameTv2: TextView
-    private lateinit var mActionsLl: LinearLayout
-    private lateinit var mAskBtn: TextView
     private lateinit var mTransferBtn: TextView
     private lateinit var mDeclareBtn: TextView
     private lateinit var mYourAlias: TextView
@@ -136,19 +131,15 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mOppPlayerNameTv3 = findViewById(R.id.player_3_opp_tv)
         mSamePlayerNameTv1 = findViewById(R.id.player_1_same_tv)
         mSamePlayerNameTv2 = findViewById(R.id.player_2_same_tv)
-        mActionsLl = findViewById(R.id.action_btns_ll)
         mTransferBtn = findViewById(R.id.transfer_tv)
-        mAskBtn = findViewById(R.id.ask_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
         mAdTop = findViewById(R.id.gAdTop)
         mAdBottom = findViewById(R.id.gAdBottom)
 
-        mTransferBtn.startAnimation(anim)
-        mAskBtn.startAnimation(anim)
-        mDeclareBtn.startAnimation(anim)
+//        mTransferBtn.startAnimation(anim)
+//        mDeclareBtn.startAnimation(anim)
 
         mTransferBtn.setOnClickListener(this)
-        mAskBtn.setOnClickListener(this)
         mDeclareBtn.setOnClickListener(this)
         mGameCodeTv.setOnClickListener(this)
         mGameCodeShareTv.setOnClickListener(this)
@@ -189,28 +180,22 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.not_your_turn))
             }
         }
-        mActionsLl.apply {
-            if (vm.showDefaultActions) {
-                mTransferBtn.startAnimation(anim)
-                mDeclareBtn.startAnimation(anim)
-                mTransferBtn.setBackgroundTintList(getResources().getColorStateList(R.color.transparent));
-                mDeclareBtn.setBackgroundTintList(getResources().getColorStateList(R.color.transparent));
-//                mTransferBtn.visibility = VISIBLE
-//                mDeclareBtn.visibility = VISIBLE
-                mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
-                mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
-                mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
-            } else {
-                mTransferBtn.clearAnimation()
-                mDeclareBtn.clearAnimation()
-                mTransferBtn.setBackgroundTintList(getResources().getColorStateList(R.color.txt_inverted_opacity_50));
-                mDeclareBtn.setBackgroundTintList(getResources().getColorStateList(R.color.txt_inverted_opacity_50));
-//                mTransferBtn.visibility = GONE
-//                mDeclareBtn.visibility = GONE
-                mOppPlayerNameTv1.setOnClickListener(null)
-                mOppPlayerNameTv2.setOnClickListener(null)
-                mOppPlayerNameTv3.setOnClickListener(null)
-            }
+        if (vm.showDefaultActions) {
+//            mTransferBtn.startAnimation(anim)
+//            mDeclareBtn.startAnimation(anim)
+            mTransferBtn.visibility = VISIBLE
+            mDeclareBtn.visibility = VISIBLE
+            mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
+            mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
+            mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
+        } else {
+//            mTransferBtn.clearAnimation()
+//            mDeclareBtn.clearAnimation()
+            mTransferBtn.visibility = GONE
+            mDeclareBtn.visibility = GONE
+            mOppPlayerNameTv1.setOnClickListener(null)
+            mOppPlayerNameTv2.setOnClickListener(null)
+            mOppPlayerNameTv3.setOnClickListener(null)
         }
         mTransferBtn.apply {
             if (vm.showTransferAction && vm.showDefaultActions) {
@@ -223,54 +208,43 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             updateCardsInHand(vm.yourCards)
         }
         if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_LONG)
-        mLogsTv.text = vm.logsStr
-        if (vm.cardsHeldNoChanged) {
-            updatePlayerNamesNCards(vm.reorderedPlayerNames, vm.reorderedCardsHeldNo)
+        mLogsTv.apply {
+            text = vm.logsStr
+            post { mLogsSv.fullScroll(View.FOCUS_DOWN) }
         }
+        updatePlayerNamesNCards(vm.reorderedPlayerNames, vm.reorderedCardsHeldNo, vm.isYourTurn)
     }
 
     private fun updatePlayerNamesNCards(
         playerNames: List<String>,
-        cardsHeldNo: List<Int>
+        cardsHeldNo: List<Int>,
+        isYourTurn: Boolean
     ) {
-        if (playerNames.size > 4) { // fixme condition shouldn't be needed
-            mOppPlayerNameTv1.text =
-                getString(R.string.player_name_cards, playerNames[1], cardsHeldNo[1].toString())
-            mOppPlayerNameTv2.text =
-                getString(R.string.player_name_cards, playerNames[3], cardsHeldNo[3].toString())
-            mOppPlayerNameTv3.text =
-                getString(R.string.player_name_cards, playerNames[5], cardsHeldNo[5].toString())
-            mSamePlayerNameTv1.text =
-                getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
-            mSamePlayerNameTv2.text =
-                getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
-        }
+        if (playerNames.size < 4) return
         val morePadding = resources.getDimension(R.dimen.standard_padding).toInt()
         val lessPadding = resources.getDimension(R.dimen.standard_padding_half).toInt()
-//        // TODO show cards held by each player
-//        if (isYourTurn) {
-//            mOppPlayerNameTv1.text = getString(R.string.ask_player, oppTeamNames[0]) //oppTeamNames[0] + "\n" + oppTeamCards[0]
-//            mOppPlayerNameTv2.text = getString(R.string.ask_player, oppTeamNames[1])
-//            mOppPlayerNameTv3.text = getString(R.string.ask_player, oppTeamNames[2])
-//            mOppPlayerNameTv1.startAnimation(anim)
-//            mOppPlayerNameTv2.startAnimation(anim)
-//            mOppPlayerNameTv3.startAnimation(anim)
-//            mOppPlayerNameTv1.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
-//            mOppPlayerNameTv2.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
-//            mOppPlayerNameTv3.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
-//        } else {
-//            mOppPlayerNameTv1.text = oppTeamNames[0] //oppTeamNames[0] + "\n" + oppTeamCards[0]
-//            mOppPlayerNameTv2.text = oppTeamNames[1]
-//            mOppPlayerNameTv3.text = oppTeamNames[2]
-//            mOppPlayerNameTv1.clearAnimation()
-//            mOppPlayerNameTv2.clearAnimation()
-//            mOppPlayerNameTv3.clearAnimation()
-//            mOppPlayerNameTv1.setPadding(morePadding,morePadding,morePadding,morePadding)
-//            mOppPlayerNameTv2.setPadding(morePadding,morePadding,morePadding,morePadding)
-//            mOppPlayerNameTv3.setPadding(morePadding,morePadding,morePadding,morePadding)
-//        }
-//        mSamePlayerNameTv1.text = sameTeamNames[0]
-//        mSamePlayerNameTv2.text = sameTeamNames[1]
+        var oppTeamStringId = R.string.player_name_cards
+        if (isYourTurn) {
+            oppTeamStringId = R.string.ask_player
+            mOppPlayerNameTv1.startAnimation(anim)
+            mOppPlayerNameTv2.startAnimation(anim)
+            mOppPlayerNameTv3.startAnimation(anim)
+            mOppPlayerNameTv1.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+            mOppPlayerNameTv2.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+            mOppPlayerNameTv3.setPadding(lessPadding,lessPadding,lessPadding,lessPadding)
+        } else {
+            mOppPlayerNameTv1.clearAnimation()
+            mOppPlayerNameTv2.clearAnimation()
+            mOppPlayerNameTv3.clearAnimation()
+            mOppPlayerNameTv1.setPadding(morePadding,morePadding,morePadding,morePadding)
+            mOppPlayerNameTv2.setPadding(morePadding,morePadding,morePadding,morePadding)
+            mOppPlayerNameTv3.setPadding(morePadding,morePadding,morePadding,morePadding)
+        }
+        mOppPlayerNameTv1.text = getString(oppTeamStringId, playerNames[1], cardsHeldNo[1].toString())
+        mOppPlayerNameTv2.text = getString(oppTeamStringId, playerNames[3], cardsHeldNo[3].toString())
+        mOppPlayerNameTv3.text = getString(oppTeamStringId, playerNames[5], cardsHeldNo[5].toString())
+        mSamePlayerNameTv1.text = getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
+        mSamePlayerNameTv2.text = getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {

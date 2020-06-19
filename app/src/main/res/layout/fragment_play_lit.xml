@@ -161,7 +161,7 @@
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/indie_flower"
         android:gravity="center"
-        android:padding="@dimen/standard_padding_double"
+        android:padding="@dimen/standard_padding"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/table_vert_center"
@@ -175,7 +175,7 @@
         app:olSheetCornerRadius="@dimen/standard_corner_radius"
         app:olSheetStrokeColor="@color/txt_inverted"
         app:olSheetStrokeWidth="10dp"
-        tools:text="Waiting for Ayan to play" />
+        tools:text="@string/its_your_turn" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/player_1_opp_tv"
@@ -191,12 +191,12 @@
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/player_2_opp_tv"
         style="@style/LitPlayerNames"
-        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin_half"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/table_vert_center"
         app:olSheetEndColor="@color/opp_team_dark"
         app:olSheetStartColor="@color/opp_team"
-        tools:text="Rocket" />
+        tools:text="Ask\nRocket\n(9)" />
 
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/player_1_same_tv"
@@ -228,43 +228,34 @@
         app:olSheetStartColor="@color/same_team"
         tools:text="Sanyu" />
 
-    <LinearLayout
-        android:id="@+id/action_btns_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/standard_margin_half"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/transfer_tv"
+        style="@style/DojoTxnBtnStyle"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/standard_margin_half"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/turn_info">
+        app:layout_constraintTop_toBottomOf="@id/turn_info"
+        app:layout_constraintEnd_toStartOf="@id/declare_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:text="@string/transfer" />
 
-        <com.dojo.lit.view.DojoTextView
-            android:id="@+id/ask_tv"
-            style="@style/DojoTxnBtnStyle"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/declare_tv"
+        style="@style/DojoTxnBtnStyle"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toEndOf="@id/transfer_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/turn_info"
+        android:text="@string/declare" />
 
-        <com.dojo.lit.view.DojoTextView
-            android:id="@+id/transfer_tv"
-            style="@style/DojoTxnBtnStyle"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="@dimen/standard_margin_half"
-            android:text="@string/transfer" />
-
-        <com.dojo.lit.view.DojoTextView
-            android:id="@+id/declare_tv"
-            style="@style/DojoTxnBtnStyle"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="@string/declare" />
-    </LinearLayout>
     <com.dojo.lit.view.DojoTextView
         android:id="@+id/your_cards_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin_half"
+        android:layout_marginEnd="@dimen/standard_margin_half"
+        android:layout_marginStart="@dimen/standard_margin_half"
         android:fontFamily="@font/advent_pro_bold"
         android:text="@string/your_cards"
         android:textColor="@color/txt_inverted"
@@ -289,7 +280,7 @@
         android:id="@+id/your_cards_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_padding_half"
+        android:layout_marginBottom="@dimen/standard_padding_x_half"
         app:layout_constraintBottom_toTopOf="@id/gAdBottom"
         app:layout_constraintStart_toStartOf="parent">
 

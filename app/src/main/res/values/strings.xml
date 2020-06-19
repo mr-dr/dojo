@@ -78,7 +78,7 @@
 <!--    <string name="game_code">Game Code: %s</string>-->
     <string name="game_code">Game Code\n%s</string>
     <string name="waiting_for_turn">Waiting for %s to play</string>
-    <string name="its_your_turn">It\'s your turn to play</string>
+    <string name="its_your_turn">It\'s your turn.\nAsk, Declare or Transfer.</string>
     <string name="your_score">Apna Score\n%s</string>
     <string name="your_alias">%s</string>
     <string name="opponent_score">Unka Score\n%s</string>
@@ -105,7 +105,7 @@
     <string name="please_fill_all_fields">*Please fill all fields</string>
     <string name="images_of_cards">Images of Cards</string>
     <string name="init_lit_incomplete_fields_msg">Please fill all the values!</string>
-    <string name="ask_player">Ask\n%s</string>
+    <string name="ask_player">Ask\n%s\n(%s)</string>
     <string name="player_name_cards">%s\n(%s)</string>
     <string name="welcome">Welcome</string>
     <string name="welcome1">Aa gaye muh utha ke??</string>
