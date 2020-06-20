@@ -234,7 +234,7 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
         super.stop()
         Log.d(LOG_TAG, "onStop() called")
 //        FirebaseUtils.disconnectFromDb()
-        FirebaseUtils.unsubscribeToFirebaseRealtimeDb(firebaseListener)
+//        FirebaseUtils.unsubscribeToFirebaseRealtimeDb(firebaseListener)
         view = null
 //        mInteractor.leaveRoom(gameCode, yourPlayerNo, object : ApiListeners<String>() {
 //            override fun onErrorResponse(error: VolleyError) {

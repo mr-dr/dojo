@@ -45,6 +45,7 @@
                 android:id="@+id/player_1_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Pazer" />
 
@@ -52,6 +53,7 @@
                 android:id="@+id/player_2_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Tururu" />
 
@@ -59,6 +61,7 @@
                 android:id="@+id/player_3_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Holo" />
         </TableRow>

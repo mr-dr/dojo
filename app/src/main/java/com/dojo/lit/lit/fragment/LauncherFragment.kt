@@ -17,7 +17,7 @@ import android.os.Handler
 class LauncherFragment : BaseFragment() {
 
     companion object {
-        val TIME_OUT = 2000L
+        val TIME_OUT = 10000L
         val MSG_DISMISS_DIALOG = 0
     }
 

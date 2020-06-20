@@ -651,6 +651,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     )
                     tv.setup()
                     val padding = Utils.getDimen(R.dimen.standard_padding_half).toInt()
+                    tv.setTextColor(resources.getColor(R.color.txt_inverted))
                     tv.setPadding(padding, padding, padding, padding)
 //                    tv.setSheetAttrs() // TODO
                     player1CardsLl.addView(tv)
