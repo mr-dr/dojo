@@ -87,7 +87,7 @@
     <string name="you">You</string>
     <string name="create_room">HOST A NEW GAME</string>
     <string name="join_room">JOIN AN EXISTING GAME</string>
-    <string name="dropped_sets">Dropped sets:\n</string>
+    <string name="dropped_sets">Dropped sets</string>
     <string name="create_room_dialog_text">Enter new game details</string>
     <string name="join_room_dialog_text">Enter the game details</string>
     <string name="confirm">Confirm</string>
@@ -107,7 +107,7 @@
     <string name="init_lit_incomplete_fields_msg">Please fill all the values!</string>
     <string name="ask_player">Ask\n%s\n(%s)</string>
     <string name="player_name_cards">%s\n(%s)</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome0">Welcome</string>
     <string name="welcome1">Aa gaye muh utha ke??</string>
     <string name="welcome2">Biyah ho gaya tumhara??</string>
     <string name="welcome3">Itna akele padh gaye life mei?</string>

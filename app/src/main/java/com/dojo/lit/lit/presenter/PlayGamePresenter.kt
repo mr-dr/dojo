@@ -40,7 +40,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private var toastMessage: String?
     @Deprecated("use logsStr instead") private val logs: MutableList<TransactionData>
     private var turnOfPlayer: Int
-    private val droppedSets: MutableList<String>
+    val droppedSets: MutableList<String>
     // received for every transaction, only true when last transaction was a successful declare by you
     private var droppedSuccessfullyInLastTurn: Boolean
     private var yourScore:Int
@@ -79,12 +79,12 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             return null
         }
         var list = ArrayList<T>()
-        for (x in 0 until (yourPlayerNo)) {
+        for (x in 0 until (yourPlayerNo-1)) {
             var element = listToRotate!!.get(x)
             list.add(element)
         }
 
-        for (y in 5 downTo yourPlayerNo) {
+        for (y in 5 downTo yourPlayerNo-1) {
             var element = listToRotate!!.get(y)
             list.add(0,element)
         }
@@ -279,7 +279,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             if (yourPlayerNo - 1 != 5) arr.add(playerNames[5])
         }
         if(giveOwnName) {
-            arr.add(0,playerNames[yourPlayerNo])
+            arr.add(0,playerNames[yourPlayerNo-1])
         }
         return arr
     }
