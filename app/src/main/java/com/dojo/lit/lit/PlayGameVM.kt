@@ -18,7 +18,7 @@ data class PlayGameVM(
     val isYourTurn: Boolean,
     val yourCards: List<String>,
     val yourCardsChanged: Boolean,
-    val showDefaultActions: Boolean,
+    val showDeclareAction: Boolean,
     val showTransferAction: Boolean
 ) : Parcelable
 

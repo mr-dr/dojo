@@ -73,7 +73,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             val typeface = ResourcesCompat.getFont(context!!, R.font.righteous)
             view.setTypeface(typeface)
             view.setTextColor(resources.getColor(R.color.txt_inverted))
-            if (cardCount%2!=0) {
+            if (cardCount % 2 != 0) {
                 droppedSetsll_1.addView(view)
             } else {
                 droppedSetsll_2.addView(view)
@@ -213,30 +213,27 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.not_your_turn))
             }
         }
-        if (vm.showDefaultActions) {
-//            mTransferBtn.startAnimation(anim)
-//            mDeclareBtn.startAnimation(anim)
-            mTransferBtn.visibility = VISIBLE
+        if (vm.showDeclareAction) {
             mDeclareBtn.visibility = VISIBLE
             mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
             mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
             mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
         } else {
-//            mTransferBtn.clearAnimation()
-//            mDeclareBtn.clearAnimation()
-            mTransferBtn.visibility = GONE
             mDeclareBtn.visibility = GONE
             mOppPlayerNameTv1.setOnClickListener(null)
             mOppPlayerNameTv2.setOnClickListener(null)
             mOppPlayerNameTv3.setOnClickListener(null)
         }
+
         mTransferBtn.apply {
-            if (vm.showTransferAction && vm.showDefaultActions) {
+            if (vm.showTransferAction) {
                 visibility = VISIBLE
             } else {
                 visibility = GONE
             }
         }
+
+
         if (vm.yourCardsChanged) {
             updateCardsInHand(vm.yourCards)
         }
