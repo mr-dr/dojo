@@ -16,7 +16,8 @@ object SheetHelper {
         strokeColor: Int,
         strokeWidth: Int,
         strokeDashWidth: Float,
-        strokeDashGap: Float
+        strokeDashGap: Float,
+        gradientType: Int
     ): SheetDrawable {
         val sheet = SheetDrawable()
         sheet.setRoundedCorners(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
@@ -28,9 +29,17 @@ object SheetHelper {
             val orientation = getOrientation(gradientAngle)
             val colors = intArrayOf(startColor, endColor)
             sheet.setBgGradient(colors, orientation)
+            setGradientType(sheet, gradientType);
         }
         sheet.setStroke(strokeWidth, strokeColor, strokeDashWidth, strokeDashGap)
         return sheet
+    }
+
+    private fun setGradientType(sheet: SheetDrawable, gradientType: Int) {
+        when (gradientType) {
+            1 -> sheet.gradientType = GradientDrawable.RADIAL_GRADIENT
+            else -> sheet.gradientType = GradientDrawable.LINEAR_GRADIENT
+        }
     }
 
     private fun getOrientation(gradientAngle: Int): GradientDrawable.Orientation {

@@ -1,6 +1,9 @@
 package com.dojo.lit.lit
 
 object BundleArgumentKeys {
+    val GAME_DATA_ARGS: String
+        get() = "args"
+
     val GAME_CODE: String
         get() = "game_code"
 

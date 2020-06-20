@@ -1,5 +1,6 @@
 package com.dojo.lit.lit.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.android.volley.VolleyError
 import com.dojo.lit.Utils
 import com.dojo.lit.lit.BundleArgumentKeys
 import com.dojo.lit.lit.activity.LitGameActivity
+import com.dojo.lit.lit.activity.LitInitActivity
 import com.dojo.lit.lit.model.CreateRoomResponse
 import com.dojo.lit.network.ApiListeners
 import com.dojo.lit.util.TextUtil
@@ -25,7 +27,6 @@ import java.util.*
 class InitGameFragment : BaseFragment() {
 
     lateinit var interactor: GameInteractor
-    lateinit var welcomeTv: TextView
     lateinit var createRoomTv: TextView
     lateinit var joinRoomTv: TextView
 
@@ -58,7 +59,6 @@ class InitGameFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        welcomeTv = findViewById(R.id.welcome_text)
         createRoomTv = findViewById(R.id.create_room_tv)
         joinRoomTv = findViewById(R.id.join_room_tv)
     }
@@ -111,15 +111,11 @@ class InitGameFragment : BaseFragment() {
             object : ApiListeners<String>() {
                 override fun onResponse(response: String?) {
                     hideProgressDialog()
-                    if (activity is LitGameActivity) {
-                        val gameData = Bundle()
-                        gameData.putString(BundleArgumentKeys.GAME_CODE, gameIdDialogInput)
-                        gameData.putString(BundleArgumentKeys.ALIAS, aliasDialogInput)
-                        gameData.putInt(BundleArgumentKeys.PLAYER_NO, playerNoDialogInput!!.toInt())
-                        (activity as LitGameActivity).joinGame(gameData)
-                    } else {
-                        Utils.makeToastLong("Something went wrong!")
-                    }
+                    val gameData = Bundle()
+                    gameData.putString(BundleArgumentKeys.GAME_CODE, gameIdDialogInput)
+                    gameData.putString(BundleArgumentKeys.ALIAS, aliasDialogInput)
+                    gameData.putInt(BundleArgumentKeys.PLAYER_NO, playerNoDialogInput!!.toInt())
+                    joinGame(gameData)
                 }
 
                 override fun onErrorResponse(error: VolleyError?) {
@@ -217,6 +213,12 @@ class InitGameFragment : BaseFragment() {
         negativeBtn.setOnClickListener {
             alertDialog?.dismiss()
         }
+    }
+
+    fun joinGame(gameData: Bundle) {
+        val intent = Intent(this.context, LitGameActivity::class.java)
+        intent.putExtra(BundleArgumentKeys.GAME_DATA_ARGS, gameData)
+        startActivity(intent)
     }
 
     private object DialogTypes {

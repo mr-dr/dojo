@@ -21,7 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
     }
 
     final fun sendFirebaseEvent(event: String, bundle: Bundle) {
@@ -31,6 +31,23 @@ abstract class BaseActivity : AppCompatActivity() {
 //        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
 //        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         firebaseAnalytics.logEvent(event, bundle)
+    }
+
+    // fixme : extremely important test this
+    fun showUpdateDialog() {
+//        val layout = LayoutInflater.from(baseContext).inflate(R.layout.update_app, null)
+        val progressModal = AlertDialog.Builder(baseContext)
+        progressModal.setTitle(R.string.update_app)
+
+//        progressModal.setView(layout)
+
+        // Set up the buttons
+        progressModal.setPositiveButton(R.string.update_caps) { dialog, which ->
+            // TODO add playstore link
+        }
+        progressModal.setNegativeButton(R.string.cancel_caps, { dialog, which -> finishAffinity() })
+        progressModal.setCancelable(false)
+        progressModal.show()
     }
 
     fun showProgressDialog() {

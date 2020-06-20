@@ -21,5 +21,9 @@
         <attr name="olSheetStrokeDashWidth" format="dimension"/>
         <attr name="olSheetStrokeDashGap" format="dimension"/>
         <attr name="olSheetStrokeColor" format="color"/>
+        <attr name="olSheetGradientType" format="enum">
+            <enum name="linear" value="0"/>
+            <enum name="radial" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

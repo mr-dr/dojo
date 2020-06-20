@@ -2,11 +2,18 @@ package com.dojo.lit.lit.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.children
 import com.dojo.lit.R
 import com.dojo.lit.Utils
 import com.dojo.lit.fragment.BaseFragment
@@ -17,34 +24,64 @@ import com.dojo.lit.lit.presenter.PlayGamePresenter
 import com.dojo.lit.lit.util.SetNamesUtil
 import com.dojo.lit.lit.view.IPlayGameView
 import com.dojo.lit.util.CardImagesUtil
-import com.dojo.lit.util.TextUtil
-import java.lang.StringBuilder
-import android.os.Handler
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.dojo.lit.util.CardNamesUtil
+import com.dojo.lit.util.TextUtil
+import com.dojo.lit.view.Draggable
 import com.dojo.lit.view.DraggableTextView
 import com.dojo.lit.view.DroppableLinearLayout
-import androidx.core.view.children
-import com.dojo.lit.view.Draggable
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+
 
 class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     override fun onClick(v: View?) {
         if (v == null) return
         val id = v.id
-        if (id == R.id.ask_tv) {
-            showAskDialog()
-        } else if (id == R.id.transfer_tv) {
+        if (id == R.id.transfer_tv) {
             showTransferDialog()
         } else if (id == R.id.declare_tv) {
             showDeclareSetDialog()
         } else if (id == R.id.game_code_tv || id == R.id.game_code_share) {
             shareGameCode(mPresenter.gameCode)
-        } else if (id == R.id.player_1_opp_tv || id == R.id.player_2_opp_tv || id == R.id.player_3_opp_tv) {
-            showAskDialog((v as TextView).text.toString())
+        } else if (id == R.id.player_1_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[0])
+        } else if (id == R.id.player_2_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[1])
+        } else if (id == R.id.player_3_opp_tv) {
+            showAskDialog(mPresenter.getOppositeTeamPlayerNames()[2])
+        } else if (id == R.id.your_score_info_tv || id == R.id.opponent_score_info_tv) {
+            showDroppedSetsDialog()
         }
+    }
+
+    private fun showDroppedSetsDialog() {
+        val layout = LayoutInflater.from(context).inflate(R.layout.declared_sets, null)
+        val builder = AlertDialog.Builder(context!!)
+        builder.setView(layout)
+
+        val droppedSetsLl1 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_1)
+        val droppedSetsLl2 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_2)
+
+        droppedSetsLl1.removeAllViews()
+        droppedSetsLl2.removeAllViews()
+        val droppedSets = mPresenter.droppedSets
+        droppedSets.indices.forEach { cardCount ->
+            val apiCardName = droppedSets[cardCount]
+            val view = TextView(context)
+            view.text = apiCardName
+            val typeface = ResourcesCompat.getFont(context!!, R.font.righteous)
+            view.setTypeface(typeface)
+            view.setTextColor(resources.getColor(R.color.txt_inverted))
+            if (cardCount % 2 != 0) {
+                droppedSetsLl1.addView(view)
+            } else {
+                droppedSetsLl2.addView(view)
+            }
+        }
+
+        var alertDialog = builder.show()
+        alertDialog.window?.decorView?.background =
+            resources.getDrawable(R.drawable.dojo_dialog_drop_sets)
     }
 
     private fun shareGameCode(gameCode: String) {
@@ -73,12 +110,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mOppPlayerNameTv3: TextView
     private lateinit var mSamePlayerNameTv1: TextView
     private lateinit var mSamePlayerNameTv2: TextView
-    private lateinit var mActionsLl: LinearLayout
-    private lateinit var mAskBtn: TextView
     private lateinit var mTransferBtn: TextView
     private lateinit var mDeclareBtn: TextView
     private lateinit var mYourAlias: TextView
+    private lateinit var mAdTop: AdView
+    private lateinit var mAdBottom: AdView
     private val mHandler = Handler()
+    private val anim = AlphaAnimation(0.9f, 1.0f)
     private val delayedTimeMillis: Long = 5000
 
     override fun onCreateView(
@@ -103,6 +141,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private fun init() {
         initViews()
         setupDefaultValues()
+        initAnimator()
     }
 
     private fun initViews() {
@@ -122,14 +161,17 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mOppPlayerNameTv3 = findViewById(R.id.player_3_opp_tv)
         mSamePlayerNameTv1 = findViewById(R.id.player_1_same_tv)
         mSamePlayerNameTv2 = findViewById(R.id.player_2_same_tv)
-        mActionsLl = findViewById(R.id.action_btns_ll)
         mTransferBtn = findViewById(R.id.transfer_tv)
-        mAskBtn = findViewById(R.id.ask_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
+        mAdTop = findViewById(R.id.gAdTop)
+        mAdBottom = findViewById(R.id.gAdBottom)
 
+//        mTransferBtn.startAnimation(anim)
+//        mDeclareBtn.startAnimation(anim)
 
+        mYourScoreTv.setOnClickListener(this)
+        mOpponentScoreTv.setOnClickListener(this)
         mTransferBtn.setOnClickListener(this)
-        mAskBtn.setOnClickListener(this)
         mDeclareBtn.setOnClickListener(this)
         mGameCodeTv.setOnClickListener(this)
         mGameCodeShareTv.setOnClickListener(this)
@@ -145,6 +187,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             arguments!!.getString(BundleArgumentKeys.ALIAS)
                 ?: getResources().getString(R.string.none)
         mYourAlias.text = getResources().getString(R.string.your_alias, alias)
+        val adRequestTop = AdRequest.Builder().build()
+        val adRequestBottom = AdRequest.Builder().build()
+        mAdTop.loadAd(adRequestTop)
+        mAdBottom.loadAd(adRequestBottom)
     }
 
     private fun setupPresenter() {
@@ -166,21 +212,25 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 mTurnInfoTv.setBackgroundColor(Utils.getColor(R.color.not_your_turn))
             }
         }
-        mActionsLl.apply {
-            if (vm.showDefaultActions) {
-                visibility = VISIBLE
-                mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
-                mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
-                mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
-            } else {
-                visibility = GONE
-                mOppPlayerNameTv1.setOnClickListener(null)
-                mOppPlayerNameTv2.setOnClickListener(null)
-                mOppPlayerNameTv3.setOnClickListener(null)
-            }
+        if (vm.showDefaultActions) {
+//            mTransferBtn.startAnimation(anim)
+//            mDeclareBtn.startAnimation(anim)
+            mTransferBtn.visibility = VISIBLE
+            mDeclareBtn.visibility = VISIBLE
+            mOppPlayerNameTv1.setOnClickListener(this@PlayGameFragment)
+            mOppPlayerNameTv2.setOnClickListener(this@PlayGameFragment)
+            mOppPlayerNameTv3.setOnClickListener(this@PlayGameFragment)
+        } else {
+//            mTransferBtn.clearAnimation()
+//            mDeclareBtn.clearAnimation()
+            mTransferBtn.visibility = GONE
+            mDeclareBtn.visibility = GONE
+            mOppPlayerNameTv1.setOnClickListener(null)
+            mOppPlayerNameTv2.setOnClickListener(null)
+            mOppPlayerNameTv3.setOnClickListener(null)
         }
         mTransferBtn.apply {
-            if (vm.showTransferAction) {
+            if (vm.showTransferAction && vm.showDefaultActions) {
                 visibility = VISIBLE
             } else {
                 visibility = GONE
@@ -190,28 +240,48 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             updateCardsInHand(vm.yourCards)
         }
         if (!TextUtil.isEmpty(vm.toastMessage)) showDojoToast(vm.toastMessage!!, Toast.LENGTH_LONG)
-        mLogsTv.text = vm.logsStr
-        if (vm.cardsHeldNoChanged) {
-            updatePlayerNamesNCards(vm.reorderedPlayerNames, vm.reorderedCardsHeldNo)
+        mLogsTv.apply {
+            text = vm.logsStr
+            post { mLogsSv.fullScroll(View.FOCUS_DOWN) }
         }
+        updatePlayerNamesNCards(vm.reorderedPlayerNames, vm.reorderedCardsHeldNo, vm.isYourTurn)
     }
 
     private fun updatePlayerNamesNCards(
         playerNames: List<String>,
-        cardsHeldNo: List<Int>
+        cardsHeldNo: List<Int>,
+        isYourTurn: Boolean
     ) {
-        if (playerNames.size > 4) { // fixme condition shouldn't be needed
-            mOppPlayerNameTv1.text =
-                getString(R.string.player_name_cards, playerNames[1], cardsHeldNo[1].toString())
-            mOppPlayerNameTv2.text =
-                getString(R.string.player_name_cards, playerNames[3], cardsHeldNo[3].toString())
-            mOppPlayerNameTv3.text =
-                getString(R.string.player_name_cards, playerNames[5], cardsHeldNo[5].toString())
-            mSamePlayerNameTv1.text =
-                getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
-            mSamePlayerNameTv2.text =
-                getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
+        if (playerNames.size < 4) return
+        val morePadding = resources.getDimension(R.dimen.standard_padding).toInt()
+        val lessPadding = resources.getDimension(R.dimen.standard_padding_half).toInt()
+        var oppTeamStringId = R.string.player_name_cards
+        if (isYourTurn) {
+            oppTeamStringId = R.string.ask_player
+            mOppPlayerNameTv1.startAnimation(anim)
+            mOppPlayerNameTv2.startAnimation(anim)
+            mOppPlayerNameTv3.startAnimation(anim)
+            mOppPlayerNameTv1.setPadding(lessPadding, lessPadding, lessPadding, lessPadding)
+            mOppPlayerNameTv2.setPadding(lessPadding, lessPadding, lessPadding, lessPadding)
+            mOppPlayerNameTv3.setPadding(lessPadding, lessPadding, lessPadding, lessPadding)
+        } else {
+            mOppPlayerNameTv1.clearAnimation()
+            mOppPlayerNameTv2.clearAnimation()
+            mOppPlayerNameTv3.clearAnimation()
+            mOppPlayerNameTv1.setPadding(morePadding, morePadding, morePadding, morePadding)
+            mOppPlayerNameTv2.setPadding(morePadding, morePadding, morePadding, morePadding)
+            mOppPlayerNameTv3.setPadding(morePadding, morePadding, morePadding, morePadding)
         }
+        mOppPlayerNameTv1.text =
+            getString(oppTeamStringId, playerNames[1], cardsHeldNo[1].toString())
+        mOppPlayerNameTv2.text =
+            getString(oppTeamStringId, playerNames[3], cardsHeldNo[3].toString())
+        mOppPlayerNameTv3.text =
+            getString(oppTeamStringId, playerNames[5], cardsHeldNo[5].toString())
+        mSamePlayerNameTv1.text =
+            getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
+        mSamePlayerNameTv2.text =
+            getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {
@@ -602,5 +672,12 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             alertDialog?.dismiss()
         }
 
+    }
+
+    private fun initAnimator() {
+        anim.duration = 500 //You can manage the blinking time with this parameter
+        anim.startOffset = 20
+        anim.repeatMode = Animation.REVERSE
+        anim.repeatCount = Animation.INFINITE
     }
 }

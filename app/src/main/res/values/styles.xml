@@ -51,4 +51,36 @@
         <item name="olSheetEndColor">@color/txt_inverted_opacity_50</item>
     </style>
 
+    <style name="DojoTxnBtnStyle" parent="DojoDialogTextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/architects_daughter</item>
+        <item name="android:paddingStart">@dimen/standard_padding_half</item>
+        <item name="android:paddingEnd">@dimen/standard_padding_half</item>
+        <item name="android:paddingTop">@dimen/standard_padding_x_half</item>
+        <item name="android:paddingBottom">@dimen/standard_padding_x_half</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_green</item>
+<!--        <item name="olSheet">true</item>-->
+    </style>
+
+    <style name="InitLitBtn">
+        <item name="android:minHeight">100dp</item>
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/standard_margin_double</item>
+        <item name="android:layout_marginBottom">@dimen/standard_margin_double</item>
+        <item name="android:fontFamily">@font/advent_pro_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/standard_padding</item>
+        <item name="android:textColor">@color/txt_inverted</item>
+        <item name="android:textSize">22sp</item>
+        <item name="olSheet">true</item>
+        <item name="olSheetCornerRadius">10dp</item>
+        <item name="olSheetEndColor">#001429</item>
+        <item name="olSheetGradientAngle">br_tl</item>
+        <item name="olSheetStartColor">#0052A3</item>
+        <item name="olSheetStrokeColor">#0052a3</item>
+        <item name="olSheetStrokeWidth">4dp</item>
+    </style>
+
 </resources>
