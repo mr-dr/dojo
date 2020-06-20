@@ -207,7 +207,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         val reorderedCardsHeldNo = if (cardsHeldByEachPlayer.isEmpty()) cardsHeldByEachPlayer else reorderOnbasisOfPlayerNo(cardsHeldByEachPlayer)
         val reorderedPlayerNames = if (playerNames.isEmpty()) playerNames else reorderOnbasisOfPlayerNo(playerNames)
 
-        val showTransferAction = droppedSuccessfullyInLastTurn != null
+        val showTransferAction = droppedSuccessfullyInLastTurn != null && isYourTurn
 
         return PlayGameVM(
             droppedSets,
