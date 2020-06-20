@@ -62,7 +62,7 @@
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginRight="@dimen/standard_margin_double"
         android:layout_marginBottom="@dimen/standard_margin_half"
-        android:background="@android:drawable/btn_dropdown"
+        android:backgroundTint="@color/navy_blue"
         android:hint="@string/your_player_no"
         android:spinnerMode="dropdown" />
 

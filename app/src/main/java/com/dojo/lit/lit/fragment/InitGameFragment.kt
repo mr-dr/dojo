@@ -159,7 +159,7 @@ class InitGameFragment : BaseFragment() {
         joinAsPlayerTv.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.dojo_dropdown_item,
                 joinAsPlayerArray
             )
         )
@@ -173,25 +173,6 @@ class InitGameFragment : BaseFragment() {
         builder.setView(layout)
 
         var alertDialog: AlertDialog? = null
-
-//        // Set up the buttons
-////        builder.setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-//        builder.setPositiveButton("") { dialog, which ->
-//            logsDialogInput = logsCountTv.selectedItem.toString()
-//            gameIdDialogInput = gameIdTv.text.toString()
-//            aliasDialogInput = aliasTv.text.toString()
-//            playerNoDialogInput = joinAsPlayerTv.selectedItem.toString()
-//            if((DialogTypes.CREATE_ROOM == dialogType && TextUtils.isEmpty(logsDialogInput))
-//                || (DialogTypes.JOIN_ROOM == dialogType && TextUtils.isEmpty(gameIdDialogInput))
-//                || TextUtils.isEmpty(aliasDialogInput)
-//                || TextUtils.isEmpty(playerNoDialogInput)) {
-//                Utils.makeToastLong(getString(R.string.init_lit_incomplete_fields_msg))
-//                return@setPositiveButton
-//            }
-//            confirmCallback.run()
-//        }
-//        builder.setNegativeButton(getString(R.string.cancel), { dialog, which -> dialog.cancel() })
-//        builder.setNegativeButton("", { dialog, which -> dialog.cancel() })
         alertDialog = builder.show()
         alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
         positiveBtn.setOnClickListener {

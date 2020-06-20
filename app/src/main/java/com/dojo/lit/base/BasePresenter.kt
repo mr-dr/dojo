@@ -8,4 +8,6 @@ open class BasePresenter {
     open fun stop(){
 
     }
+
+    open fun destroy() {}
 }

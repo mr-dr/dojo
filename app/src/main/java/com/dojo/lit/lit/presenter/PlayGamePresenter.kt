@@ -20,7 +20,7 @@ import com.dojo.lit.util.TextUtil
 import com.google.android.gms.common.util.CollectionUtils
 import com.google.firebase.database.DatabaseException
 
-class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BasePresenter() {
+class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : BasePresenter() {
     // fixme arguments should be non-null
     companion object {
         val YOU = "you"
@@ -184,8 +184,9 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
     private fun setData() {
+        if (view?.isDead() ?: true) return
         val vm = getVM()
-        view.setData(vm)
+        view?.setData(vm)
     }
 
     private fun getVM(): PlayGameVM {
@@ -231,8 +232,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
     override fun stop() { // fixme rishabh
         super.stop()
+        Log.d(LOG_TAG, "onStop() called")
 //        FirebaseUtils.disconnectFromDb()
-//        FirebaseUtils.unsubscribeToFirebaseRealtimeDb()
+        FirebaseUtils.unsubscribeToFirebaseRealtimeDb(firebaseListener)
+        view = null
 //        mInteractor.leaveRoom(gameCode, yourPlayerNo, object : ApiListeners<String>() {
 //            override fun onErrorResponse(error: VolleyError) {
 //                Log.d(LOG_TAG, "leave room failed")
@@ -243,6 +246,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 //            }
 //        })
 ////        GameStateUpdateScheduler.stopScheduledTask()
+    }
+
+    override fun destroy() {
+        Log.d(LOG_TAG, "onDestroy() called")
     }
 
     fun resume() {
@@ -401,6 +408,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             }
 
         })
+    }
+
+    fun rematch(gameCode: String) {
+        // TODO implement
     }
 
 }
