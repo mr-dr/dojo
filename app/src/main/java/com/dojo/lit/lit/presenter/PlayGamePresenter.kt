@@ -42,7 +42,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     private var turnOfPlayer: Int
     val droppedSets: MutableList<String>
     // received for every transaction, only true when last transaction was a successful declare by you
-    private var droppedSuccessfullyInLastTurn: Boolean
+    private var droppedSuccessfullyInLastTurn: Boolean?
     private var yourScore:Int
     private var opponentScore: Int
 
@@ -65,7 +65,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         cardsInHandChanged = false
         cardsHeldByEachPlayer = arguments?.getIntegerArrayList(BundleArgumentKeys.CARDS_NO_EACH_PLAYER) ?: ArrayList()
         logsLength = arguments?.getInt(BundleArgumentKeys.LOGS_LENGTH) ?: 0 // fixed value
-        droppedSuccessfullyInLastTurn = false
+        droppedSuccessfullyInLastTurn = null
         logsStr = "-"
         toastMessage = null
         logs = ArrayList()
@@ -117,7 +117,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         playerNames.addAll(newData.getPlayerNames())
         cardsHeldByEachPlayer.clear()
         cardsHeldByEachPlayer.addAll(newData.getCardsHeldByEachPlayer())
-        droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop.toBoolean()
+        droppedSuccessfullyInLastTurn = newData.wasLastTxnSuccessfulDrop?.toBoolean()
 
     }
 
@@ -207,6 +207,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         val reorderedCardsHeldNo = if (cardsHeldByEachPlayer.isEmpty()) cardsHeldByEachPlayer else reorderOnbasisOfPlayerNo(cardsHeldByEachPlayer)
         val reorderedPlayerNames = if (playerNames.isEmpty()) playerNames else reorderOnbasisOfPlayerNo(playerNames)
 
+        val showTransferAction = droppedSuccessfullyInLastTurn != null && isYourTurn
+
         return PlayGameVM(
             droppedSets,
             yourScore,
@@ -221,8 +223,8 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             isYourTurn,
             cardsInHand,
             cardsInHandChanged,
-            isYourTurn,
-            droppedSuccessfullyInLastTurn
+            droppedSuccessfullyInLastTurn?:true&&isYourTurn,
+            showTransferAction
             )
     }
 
@@ -303,7 +305,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
     fun getTransferablePlayerNames(): List<String> {
         val yourTeamHasCards = yourTeamHasCards()
-        if (yourTeamHasCards) {
+        if (yourTeamHasCards && droppedSuccessfullyInLastTurn!!) {
             return getSameTeamPlayerNames(false)
         } else {
             return getOppositeTeamPlayerNames()

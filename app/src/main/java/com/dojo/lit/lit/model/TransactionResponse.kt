@@ -11,7 +11,7 @@ data class TransactionResponse(
     @SerializedName("dropped_sets")
     val droppedSets: List<String>,
     @SerializedName("last_transaction_drop")
-    val wasLastTxnSuccessfulDrop: String, // fixme - backend
+    val wasLastTxnSuccessfulDrop: String?, // fixme - backend
     @SerializedName("score_even")
     val scoreEvenTeam: Int,
     @SerializedName("score_odd")
