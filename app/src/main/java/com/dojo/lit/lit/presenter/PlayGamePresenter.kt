@@ -99,9 +99,9 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
         val newCardsInHand = getYourCards(newData)
         cardsInHandChanged = !cardsInHand.equals(newCardsInHand) // expecting sorted cards
         cardsInHand.clear()
-        cardsInHand.addAll(newCardsInHand)
+        if (newCardsInHand != null) cardsInHand.addAll(newCardsInHand) // fixme
         droppedSets.clear()
-        droppedSets.addAll(newData.droppedSets)
+        if (newData.droppedSets != null) droppedSets.addAll(newData.droppedSets)  // fixme
         logsStr = TextUtil.join(newData.logs, TextUtil.NEWLINE);
         val lastLog =
             if (newData.logs != null && newData.logs.size > 0) newData.logs[newData.logs.size - 1] else null
