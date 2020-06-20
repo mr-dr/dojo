@@ -356,6 +356,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     }
 
     private fun getCardsMargin(size: Int): Int {
+        if(true) return 0 // fixme
         val min = Utils.getDimen(R.dimen.standard_in_hand_collapsed_margin).toInt()
         val max = Utils.getDimen(R.dimen.standard_margin_half).toInt()
         if (size <= 4) {
