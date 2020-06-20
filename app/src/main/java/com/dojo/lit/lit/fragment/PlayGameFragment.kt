@@ -59,24 +59,23 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         val builder = AlertDialog.Builder(context!!)
         builder.setView(layout)
 
-        val droppedSetsll_1 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_1)
-        val droppedSetsll_2 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_2)
+        val droppedSetsLl1 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_1)
+        val droppedSetsLl2 = layout.findViewById<LinearLayout>(R.id.dropped_sets_ll_2)
 
-        droppedSetsll_1.removeAllViews()
-        droppedSetsll_2.removeAllViews()
+        droppedSetsLl1.removeAllViews()
+        droppedSetsLl2.removeAllViews()
         val droppedSets = mPresenter.droppedSets
         droppedSets.indices.forEach { cardCount ->
             val apiCardName = droppedSets[cardCount]
-            //val drawableId = CardImagesUtil.getMapping().get(apiCardName)
             val view = TextView(context)
             view.text = apiCardName
             val typeface = ResourcesCompat.getFont(context!!, R.font.righteous)
             view.setTypeface(typeface)
             view.setTextColor(resources.getColor(R.color.txt_inverted))
-            if (cardCount%2!=0) {
-                droppedSetsll_1.addView(view)
+            if (cardCount % 2 != 0) {
+                droppedSetsLl1.addView(view)
             } else {
-                droppedSetsll_2.addView(view)
+                droppedSetsLl2.addView(view)
             }
         }
 
