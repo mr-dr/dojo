@@ -343,14 +343,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 view.setBackgroundColor(Utils.getColor(R.color.black))
                 // fixme log this, it should never happen
             }
+            val lp = LinearLayout.LayoutParams(
+                Utils.getDimen(R.dimen.playing_card_width).toInt(),
+                Utils.getDimen(R.dimen.playing_card_height).toInt()
+            )
             if (cardCount < yourCards.size - 1) { // don't reduce right margin for last card
-                val lp = LinearLayout.LayoutParams(
-                    Utils.getDimen(R.dimen.playing_card_width).toInt(),
-                    Utils.getDimen(R.dimen.playing_card_height).toInt()
-                )
                 lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
-                view.layoutParams = lp
             }
+            view.layoutParams = lp
             mYourCardsLl.addView(view)
         }
     }
