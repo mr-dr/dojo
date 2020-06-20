@@ -350,8 +350,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 )
                 lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
                 view.layoutParams = lp
-                mYourCardsLl.addView(view)
             }
+            mYourCardsLl.addView(view)
         }
     }
 
