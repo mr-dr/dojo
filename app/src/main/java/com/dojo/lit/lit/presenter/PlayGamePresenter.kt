@@ -79,14 +79,14 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
             return null
         }
         var list = ArrayList<T>()
-        for (x in 0 until (yourPlayerNo-1)) {
+        for (x in 0 until (yourPlayerNo - 1)) {
             var element = listToRotate!!.get(x)
             list.add(element)
         }
 
-        for (y in 5 downTo yourPlayerNo-1) {
+        for (y in 5 downTo yourPlayerNo - 1) {
             var element = listToRotate!!.get(y)
-            list.add(0,element)
+            list.add(0, element)
         }
         return list
     }
@@ -263,15 +263,10 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     fun getOppositeTeamPlayerNames(): List<String> {
         val arr = ArrayList<String>(3)
         if (playerNames.size < 6) return arr
-        if (youAreOnOddTeam()) { // is player 1, 3 or 5
-            arr.add(playerNames[1])
-            arr.add(playerNames[3])
-            arr.add(playerNames[5])
-        } else { // player 2, 4 or 6
-            arr.add(playerNames[0])
-            arr.add(playerNames[2])
-            arr.add(playerNames[4])
-        }
+        val reorderedPlayerNames = reorderOnbasisOfPlayerNo(playerNames)!!
+        arr.add(reorderedPlayerNames[1])
+        arr.add(reorderedPlayerNames[3])
+        arr.add(reorderedPlayerNames[5])
         return arr
     }
 
