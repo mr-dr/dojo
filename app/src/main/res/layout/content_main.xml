@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
@@ -26,8 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/welcomeBtnTopMargin"
         android:layout_marginEnd="@dimen/welcomeBtnEndMargin"
+        android:paddingBottom="@dimen/standard_padding_half"
         android:background="@drawable/button_white"
-        android:fontFamily="@font/kalam_light"
+        android:fontFamily="@font/advent_pro_bold"
         android:gravity="center"
         android:text="@string/play"
         android:textColor="@color/dark_red"

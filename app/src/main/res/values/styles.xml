@@ -76,7 +76,7 @@
         <item name="android:textSize">22sp</item>
         <item name="olSheet">true</item>
         <item name="olSheetCornerRadius">10dp</item>
-        <item name="olSheetEndColor">#001429</item>
+        <item name="olSheetEndColor">@color/blue_bg</item>
         <item name="olSheetGradientAngle">br_tl</item>
         <item name="olSheetStartColor">#0052A3</item>
         <item name="olSheetStrokeColor">#0052a3</item>

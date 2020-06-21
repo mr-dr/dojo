@@ -19,4 +19,5 @@
     <color name="transparent">#00000000</color>
     <color name="dark_red">#660000</color>
     <color name="navy_blue">#002952</color>
+    <color name="blue_bg">#001429</color>
 </resources>

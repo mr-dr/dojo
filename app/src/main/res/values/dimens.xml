@@ -20,6 +20,6 @@
     <dimen name="standard_corner_radius">10dp</dimen>
     <dimen name="toast_corner_radius">5dp</dimen>
     <dimen name="text_size_large">24sp</dimen>
-    <dimen name="welcomeBtnTopMargin">275dp</dimen>
+    <dimen name="welcomeBtnTopMargin">250dp</dimen>
     <dimen name="welcomeBtnEndMargin">25dp</dimen>
 </resources>
