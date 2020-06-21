@@ -4,4 +4,5 @@ import com.dojo.lit.lit.PlayGameVM
 
 interface IPlayGameView {
     fun setData(vm: PlayGameVM)
+    fun isDead(): Boolean
 }

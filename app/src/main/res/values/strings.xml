@@ -126,4 +126,9 @@
     <string name="play">Start</string>
     <string name="update_app">There\'s a newer version of the app with more games!</string>
     <string name="update_caps">UPDATE</string>
+    <string name="you_won">You Won! Play Again?</string>
+    <string name="you_lost">Ahh...Loser, Wanna Play Again?</string>
+    <string name="rematch">Rematch</string>
+    <string name="your_final_score">Your score: %s</string>
+    <string name="their_final_score">Their score: %s</string>
 </resources>

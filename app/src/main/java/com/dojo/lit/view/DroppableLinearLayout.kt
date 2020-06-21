@@ -44,7 +44,6 @@ class DroppableLinearLayout(context: Context?, attr: AttributeSet) : LinearLayou
             DragEvent.ACTION_DROP -> {
                 val item = event.clipData.getItemAt(0)
                 val dragData = item.text
-                Utils.makeToastLong(dragData.toString())
                 v.invalidate()
                 val draggedView = event.localState as View
                 val parent = draggedView.parent as ViewGroup

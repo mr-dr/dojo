@@ -67,6 +67,7 @@ object FirebaseUtils {
     }
 
     fun unsubscribeToFirebaseRealtimeDb(listener: FirebaseRealtimeDbListener?) {
+        if (listener == null) return
         if (realtimeDbListeners.contains(listener)) {
             realtimeDbListeners.remove(listener)
         }

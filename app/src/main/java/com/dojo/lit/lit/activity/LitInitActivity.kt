@@ -7,13 +7,8 @@ import com.dojo.lit.lit.fragment.InitGameFragment
 
 class LitInitActivity : BaseActivity() {
 
-    lateinit var initGameFragment: InitGameFragment
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lit)
-        initGameFragment = InitGameFragment()
-        replaceFragment(initGameFragment, R.id.content_frame, false, false, "LitInitActivity")
-
+        setContentView(R.layout.activity_init_lit)
     }
 }

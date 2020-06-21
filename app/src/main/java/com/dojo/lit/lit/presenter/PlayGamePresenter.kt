@@ -20,7 +20,7 @@ import com.dojo.lit.util.TextUtil
 import com.google.android.gms.common.util.CollectionUtils
 import com.google.firebase.database.DatabaseException
 
-class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BasePresenter() {
+class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : BasePresenter() {
     // fixme arguments should be non-null
     companion object {
         val YOU = "you"
@@ -79,14 +79,14 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             return null
         }
         var list = ArrayList<T>()
-        for (x in 0 until (yourPlayerNo-1)) {
+        for (x in 0 until (yourPlayerNo - 1)) {
             var element = listToRotate!!.get(x)
             list.add(element)
         }
 
-        for (y in 5 downTo yourPlayerNo-1) {
+        for (y in 5 downTo yourPlayerNo - 1) {
             var element = listToRotate!!.get(y)
-            list.add(0,element)
+            list.add(0, element)
         }
         return list
     }
@@ -99,9 +99,9 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         val newCardsInHand = getYourCards(newData)
         cardsInHandChanged = !cardsInHand.equals(newCardsInHand) // expecting sorted cards
         cardsInHand.clear()
-        cardsInHand.addAll(newCardsInHand)
+        if (newCardsInHand != null) cardsInHand.addAll(newCardsInHand) // fixme
         droppedSets.clear()
-        droppedSets.addAll(newData.droppedSets)
+        if (newData.droppedSets != null) droppedSets.addAll(newData.droppedSets)  // fixme
         logsStr = TextUtil.join(newData.logs, TextUtil.NEWLINE);
         val lastLog =
             if (newData.logs != null && newData.logs.size > 0) newData.logs[newData.logs.size - 1] else null
@@ -184,8 +184,9 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
     private fun setData() {
+        if (view?.isDead() ?: true) return
         val vm = getVM()
-        view.setData(vm)
+        view?.setData(vm)
     }
 
     private fun getVM(): PlayGameVM {
@@ -231,8 +232,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 
     override fun stop() { // fixme rishabh
         super.stop()
+        Log.d(LOG_TAG, "onStop() called")
 //        FirebaseUtils.disconnectFromDb()
-//        FirebaseUtils.unsubscribeToFirebaseRealtimeDb()
+//        FirebaseUtils.unsubscribeToFirebaseRealtimeDb(firebaseListener)
+        view = null
 //        mInteractor.leaveRoom(gameCode, yourPlayerNo, object : ApiListeners<String>() {
 //            override fun onErrorResponse(error: VolleyError) {
 //                Log.d(LOG_TAG, "leave room failed")
@@ -243,6 +246,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
 //            }
 //        })
 ////        GameStateUpdateScheduler.stopScheduledTask()
+    }
+
+    override fun destroy() {
+        Log.d(LOG_TAG, "onDestroy() called")
     }
 
     fun resume() {
@@ -256,15 +263,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     fun getOppositeTeamPlayerNames(): List<String> {
         val arr = ArrayList<String>(3)
         if (playerNames.size < 6) return arr
-        if (youAreOnOddTeam()) { // is player 1, 3 or 5
-            arr.add(playerNames[1])
-            arr.add(playerNames[3])
-            arr.add(playerNames[5])
-        } else { // player 2, 4 or 6
-            arr.add(playerNames[0])
-            arr.add(playerNames[2])
-            arr.add(playerNames[4])
-        }
+        val reorderedPlayerNames = reorderOnbasisOfPlayerNo(playerNames)!!
+        arr.add(reorderedPlayerNames[1])
+        arr.add(reorderedPlayerNames[3])
+        arr.add(reorderedPlayerNames[5])
         return arr
     }
 
@@ -372,7 +374,7 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
         })
     }
 
-    private fun getPlayerNoFromName(playerName: String): Int { // returns 1-6
+    fun getPlayerNoFromName(playerName: String): Int { // returns 1-6
         playerNames.indices.forEach {
             if(playerName == playerNames[it]) {
                 return (it + 1)
@@ -382,15 +384,22 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
     }
 
     fun dropSet(
+        player1No: Int,
+        player2No: Int,
+        player3No: Int,
         player1Cards: List<String>,
         player2Cards: List<String>,
         player3Cards: List<String>
     ) {
-        val data = if (youAreOnOddTeam()) {
-            DropSetData(1, 3, 5, player1Cards, player2Cards, player3Cards)
-        } else {
-            DropSetData(2, 4, 6, player1Cards, player2Cards, player3Cards)
-        }
+
+        val data = DropSetData(
+            player1No + 1,
+            player2No + 1,
+            player3No + 1,
+            player1Cards,
+            player2Cards,
+            player3Cards
+        )
         mInteractor.dropSet(gameCode, data, object: ApiListeners<String>(){
             override fun onResponse(response: String?) {
 
@@ -401,6 +410,10 @@ class PlayGamePresenter(val view: IPlayGameView, val arguments: Bundle?) : BaseP
             }
 
         })
+    }
+
+    fun rematch(gameCode: String) {
+        // TODO implement
     }
 
 }

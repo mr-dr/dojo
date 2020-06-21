@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin_half"
-        android:background="@android:drawable/btn_dropdown"
+        android:backgroundTint="@color/navy_blue"
         android:spinnerMode="dropdown" />
 
     <TextView
@@ -45,6 +45,7 @@
                 android:id="@+id/player_1_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Pazer" />
 
@@ -52,6 +53,7 @@
                 android:id="@+id/player_2_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Tururu" />
 
@@ -59,6 +61,7 @@
                 android:id="@+id/player_3_name_tv"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/cell_padding"
+                android:textColor="@color/txt_inverted"
                 android:textStyle="bold"
                 tools:text="Holo" />
         </TableRow>

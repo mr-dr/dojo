@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/dojo_dialog"
+    android:padding="@dimen/standard_padding"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/title_tv"
+        style="@style/DojoDialogTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/txt_inverted"
+        tools:text="@string/you_won"/>
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/your_score_tv"
+        style="@style/DojoDialogTextStyle"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/txt_inverted"
+        tools:text="@string/your_final_score"
+        />
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/opponent_score_tv"
+        style="@style/DojoDialogTextStyle"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_inverted"
+        app:layout_constraintTop_toBottomOf="@id/your_score_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/their_final_score"
+        />
+
+    <com.dojo.lit.view.DojoTextView
+        android:id="@+id/positive_button"
+        style="@style/DojoDialogButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/standard_padding_half"
+        android:layout_marginTop="@dimen/standard_margin_half"
+        app:layout_constraintTop_toBottomOf="@id/opponent_score_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/rematch"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

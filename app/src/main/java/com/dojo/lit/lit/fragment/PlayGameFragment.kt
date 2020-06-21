@@ -1,6 +1,7 @@
 package com.dojo.lit.lit.fragment
 
 import android.content.Intent
+import android.util.Log
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -26,11 +27,15 @@ import com.dojo.lit.lit.view.IPlayGameView
 import com.dojo.lit.util.CardImagesUtil
 import com.dojo.lit.util.CardNamesUtil
 import com.dojo.lit.util.TextUtil
+import java.lang.StringBuilder
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.dojo.lit.view.Draggable
 import com.dojo.lit.view.DraggableTextView
 import com.dojo.lit.view.DroppableLinearLayout
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import kotlin.collections.ArrayList
 
 
 class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
@@ -119,11 +124,16 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private val anim = AlphaAnimation(0.9f, 1.0f)
     private val delayedTimeMillis: Long = 5000
 
+    private var isDead = false
+
+    val LOG_TAG = "play_lit_presenter"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(LOG_TAG, "onCreate() fragment called")
         setupPresenter()
         return inflater.inflate(R.layout.fragment_play_lit, container, false)
     }
@@ -198,6 +208,10 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     }
 
     override fun setData(vm: PlayGameVM) {
+        if(vm.droppedSets.size >= 9) {
+            showEndGameDialog(vm)
+            return;
+        }
         mDroppedSetsTv.text = getDroppedSetsText(vm.droppedSets)
         mYourScoreTv.text = getResources().getString(R.string.your_score, vm.yourScore.toString())
         mOpponentScoreTv.text =
@@ -329,19 +343,20 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 view.setBackgroundColor(Utils.getColor(R.color.black))
                 // fixme log this, it should never happen
             }
+            val lp = LinearLayout.LayoutParams(
+                Utils.getDimen(R.dimen.playing_card_width).toInt(),
+                Utils.getDimen(R.dimen.playing_card_height).toInt()
+            )
             if (cardCount < yourCards.size - 1) { // don't reduce right margin for last card
-                val lp = LinearLayout.LayoutParams(
-                    Utils.getDimen(R.dimen.playing_card_width).toInt(),
-                    Utils.getDimen(R.dimen.playing_card_height).toInt()
-                )
                 lp.setMargins(0, 0, lpMargin, 0) //Not RTL supported
-                view.layoutParams = lp
-                mYourCardsLl.addView(view)
             }
+            view.layoutParams = lp
+            mYourCardsLl.addView(view)
         }
     }
 
     private fun getCardsMargin(size: Int): Int {
+        if(true) return 0 // fixme
         val min = Utils.getDimen(R.dimen.standard_in_hand_collapsed_margin).toInt()
         val max = Utils.getDimen(R.dimen.standard_margin_half).toInt()
         if (size <= 4) {
@@ -413,11 +428,21 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mPresenter.pause()
     }
 
+    override fun isDead(): Boolean {
+        return isDead
+    }
+
     override fun onStop() {
         super.onStop()
+        isDead = true
         mHandler.postDelayed({
             mPresenter.stop()
         }, delayedTimeMillis)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.destroy()
     }
 
     private fun showAskDialog() {
@@ -452,7 +477,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         askFromDropdown.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.dojo_dropdown_item,
                 oppositeTeamPlayerNames
             )
         )
@@ -460,7 +485,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         askForSetDropdown.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.dojo_dropdown_item,
                 getSetDisplayNames(askableSetNames)
             )
         )
@@ -477,7 +502,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 askForCardDropdown.setAdapter(
                     ArrayAdapter(
                         context!!,
-                        android.R.layout.simple_spinner_dropdown_item,
+                        R.layout.dojo_dropdown_item,
                         getCardDisplayNames(askableCards!!)
                     )
                 )
@@ -533,7 +558,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         transferToDropdown.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.dojo_dropdown_item,
                 transferablePlayerNames
             )
         )
@@ -594,7 +619,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         declareSetDropdown.setAdapter(
             ArrayAdapter(
                 context!!,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.dojo_dropdown_item,
                 getSetDisplayNames(askableSets)
             )
         )
@@ -626,6 +651,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                     )
                     tv.setup()
                     val padding = Utils.getDimen(R.dimen.standard_padding_half).toInt()
+                    tv.setTextColor(resources.getColor(R.color.txt_inverted))
                     tv.setPadding(padding, padding, padding, padding)
 //                    tv.setSheetAttrs() // TODO
                     player1CardsLl.addView(tv)
@@ -656,6 +682,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
 //                Utils.makeToastLong("declare clicked")
                 mPresenter.dropSet(
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[0]),
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[1]),
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[2]),
                     player1CardsApiNameList,
                     player2CardsApiNameList,
                     player3CardsApiNameList
@@ -676,5 +705,34 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         anim.startOffset = 20
         anim.repeatMode = Animation.REVERSE
         anim.repeatCount = Animation.INFINITE
+    }
+
+    private fun showEndGameDialog(vm: PlayGameVM) {
+        val youWon = vm.yourScore > vm.opponentScore
+        val layout = LayoutInflater.from(context).inflate(R.layout.end_game_dialog, null)
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("")
+
+        val titleTv = layout.findViewById<TextView>(R.id.title_tv)
+        val yourScoreTv = layout.findViewById<TextView>(R.id.your_score_tv)
+        val opponentScoreTv = layout.findViewById<TextView>(R.id.opponent_score_tv)
+        val positiveBtn = layout.findViewById<TextView>(R.id.positive_button) // rematch
+
+        titleTv.text = if (youWon) {
+            getString(R.string.you_won)
+        } else {
+            getString(R.string.you_lost)
+        }
+        yourScoreTv.text = getString(R.string.your_final_score, vm.yourScore.toString())
+        opponentScoreTv.text = getString(R.string.their_final_score, vm.opponentScore.toString())
+        builder.setView(layout)
+        var alertDialog: AlertDialog? = null
+
+        alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        positiveBtn.setOnClickListener {
+            mPresenter.rematch(arguments!!.getString(BundleArgumentKeys.GAME_CODE)!!)
+            Utils.makeToastLong("Rematch not implemented yet!")
+        }
     }
 }
