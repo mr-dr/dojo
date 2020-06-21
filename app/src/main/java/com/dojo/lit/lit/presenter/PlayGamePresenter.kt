@@ -374,7 +374,7 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
         })
     }
 
-    private fun getPlayerNoFromName(playerName: String): Int { // returns 1-6
+    fun getPlayerNoFromName(playerName: String): Int { // returns 1-6
         playerNames.indices.forEach {
             if(playerName == playerNames[it]) {
                 return (it + 1)
@@ -384,15 +384,22 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     }
 
     fun dropSet(
+        player1No: Int,
+        player2No: Int,
+        player3No: Int,
         player1Cards: List<String>,
         player2Cards: List<String>,
         player3Cards: List<String>
     ) {
-        val data = if (youAreOnOddTeam()) {
-            DropSetData(1, 3, 5, player1Cards, player2Cards, player3Cards)
-        } else {
-            DropSetData(2, 4, 6, player1Cards, player2Cards, player3Cards)
-        }
+
+        val data = DropSetData(
+            player1No + 1,
+            player2No + 1,
+            player3No + 1,
+            player1Cards,
+            player2Cards,
+            player3Cards
+        )
         mInteractor.dropSet(gameCode, data, object: ApiListeners<String>(){
             override fun onResponse(response: String?) {
 

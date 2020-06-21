@@ -682,6 +682,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
 //                Utils.makeToastLong("declare clicked")
                 mPresenter.dropSet(
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[0]),
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[1]),
+                    mPresenter.getPlayerNoFromName(teamPlayerNames[2]),
                     player1CardsApiNameList,
                     player2CardsApiNameList,
                     player3CardsApiNameList
