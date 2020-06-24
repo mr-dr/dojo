@@ -62,4 +62,15 @@ class LauncherFragment : BaseFragment() {
         mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, TIME_OUT)
     }
 
+    fun showForceUpgradeDialog() {
+        val layout = LayoutInflater.from(context).inflate(R.layout.welcome_dialog, null)
+        val builder = AlertDialog.Builder(context!!)
+        builder.setView(layout)
+        val mWelcomeTv = layout.findViewById<TextView>(R.id.welcome_note_tv)
+        mWelcomeTv.text = resources.getString(R.string.force_upgrade)
+        builder.setCancelable(false)
+        val alertDialog = builder.show()
+        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog_welcome_note)
+    }
+
 }

@@ -14,4 +14,5 @@ public interface ApiParams {
     String CARDS_C = "cardsc";
     String CARD = "card";
     String LOGS = "logs";
+    String APP_VERSION = "appversion";
 }

@@ -17,9 +17,29 @@ object FirebaseUtils {
     private lateinit var myRef: DatabaseReference
     private val realtimeDbListeners = ArrayList<FirebaseRealtimeDbListener>()
     private var currentGameCode: String? = null
+    val lastDisconnectedAt = 0
+    val connectedRef = Firebase.database.getReference(".info/connected")
+    val connectionListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val connected = snapshot.getValue(Boolean::class.java) ?: false
+            if (connected) {
+                Log.d(TAG, "connected")
+            } else {
+                Log.d(TAG, "not connected")
+                if(realtimeDbListeners.size > 0) {
+
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Log.w(TAG, "Listener was cancelled")
+        }
+    }
 
     init {
         database = Firebase.database
+        connectedRef.addValueEventListener(connectionListener)
     }
 
     private fun addListenersToRealtimeDb() {
@@ -52,6 +72,7 @@ object FirebaseUtils {
         myRef = database.getReference(dbName)
         currentGameCode = dbName
         addListenersToRealtimeDb()
+        myRef.onDisconnect()
     }
 
     fun disconnectFromDb(){

@@ -17,6 +17,7 @@ import com.dojo.lit.lit.BundleArgumentKeys
 import com.dojo.lit.lit.activity.LitGameActivity
 import com.dojo.lit.lit.activity.LitInitActivity
 import com.dojo.lit.lit.model.CreateRoomResponse
+import com.dojo.lit.lit.util.DialogHelper
 import com.dojo.lit.network.ApiListeners
 import com.dojo.lit.util.TextUtil
 import com.dojo.lit.view.DojoAlertDialog

@@ -1,13 +1,12 @@
 package com.dojo.lit.lit
 
+import com.dojo.lit.Utils
 import com.dojo.lit.base.BaseInteractor
-import com.dojo.lit.lit.model.CreateRoomResponse
-import com.dojo.lit.lit.model.DropSetData
-import com.dojo.lit.lit.model.TransactionData
-import com.dojo.lit.lit.model.TransactionResponse
+import com.dojo.lit.lit.model.*
 import com.dojo.lit.network.*
 
 class GameInteractor: BaseInteractor() {
+
     companion object {
         val BASE_URL = "https://us-central1-litt-276414.cloudfunctions.net" // fixed for Firebase Cloud Functions
         val CREATE_ROOM_TAG = "createRoomRequestTag"
@@ -16,6 +15,8 @@ class GameInteractor: BaseInteractor() {
         val ASK_CARD_TAG = "askCardRequestTag"
         val DROP_SET_TAG = "dropSetRequestTag"
         val TRANSFER_TURN_TAG = "transferRequestTag"
+        val REMATCH_TAG = "rematchRequestTag"
+        val FORCE_UPGRADE_TAG = "forceUpgradeRequestTag"
         val GET_CHANGES_TAG = "lit_changes_tag"
     }
 
@@ -128,6 +129,34 @@ class GameInteractor: BaseInteractor() {
             .headers(ApiHeader.getDefaultHeaders())
             .listener(listener)
             .tag(TRANSFER_TURN_TAG)
+            .build()
+        startApiRequest(request)
+    }
+
+    fun rematch(gameCode: String, listener: ApiListeners<String>) {
+        val params = HashMap<String, String>()
+        params.put(ApiParams.GAME_ID, gameCode)
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.REMATCH).params(params).build()
+        val request = ApiBuilder<String>()
+            .get(String::class.java)
+            .url(url)
+            .headers(ApiHeader.getDefaultHeaders())
+            .listener(listener)
+            .tag(REMATCH_TAG)
+            .build()
+        startApiRequest(request)
+    }
+
+    fun forceUpgradeCheck(listener: ApiListeners<AppInitResponse>) {
+        val params = HashMap<String, String>()
+        params.put(ApiParams.APP_VERSION, Utils.getAppVersionCodeFromPackage().toString())
+        val url = UrlBuilder().baseUrl(BASE_URL).path(LitUrlPaths.CHECK_UPGRADE).params(params).build()
+        val request = ApiBuilder<AppInitResponse>()
+            .get(AppInitResponse::class.java)
+            .url(url)
+            .headers(ApiHeader.getDefaultHeaders())
+            .listener(listener)
+            .tag(FORCE_UPGRADE_TAG)
             .build()
         startApiRequest(request)
     }

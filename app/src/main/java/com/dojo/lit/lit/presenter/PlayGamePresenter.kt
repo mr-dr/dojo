@@ -348,7 +348,7 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     }
 
     fun askCard(playerName: String, card: String) {
-        val data = TransactionData(yourPlayerNo, getPlayerNoFromName(playerName), card, false)
+        val data = TransactionData(yourPlayerNo, getApiPlayerNoFromName(playerName), card, false)
         mInteractor.askCard(gameCode, data, object: ApiListeners<String>(){
             override fun onResponse(response: String?) {
 
@@ -362,7 +362,7 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     }
 
     fun transferTurn(playerName: String) {
-        mInteractor.transferTurn(yourPlayerNo, getPlayerNoFromName(playerName), gameCode, object: ApiListeners<String>(){
+        mInteractor.transferTurn(yourPlayerNo, getApiPlayerNoFromName(playerName), gameCode, object: ApiListeners<String>(){
             override fun onResponse(response: String?) {
 
             }
@@ -374,7 +374,7 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
         })
     }
 
-    fun getPlayerNoFromName(playerName: String): Int { // returns 1-6
+    fun getApiPlayerNoFromName(playerName: String): Int { // returns 1-6
         playerNames.indices.forEach {
             if(playerName == playerNames[it]) {
                 return (it + 1)
@@ -393,9 +393,9 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     ) {
 
         val data = DropSetData(
-            player1No + 1,
-            player2No + 1,
-            player3No + 1,
+            player1No,
+            player2No,
+            player3No,
             player1Cards,
             player2Cards,
             player3Cards
@@ -413,7 +413,15 @@ class PlayGamePresenter(var view: IPlayGameView?, val arguments: Bundle?) : Base
     }
 
     fun rematch(gameCode: String) {
-        // TODO implement
+        mInteractor.rematch(gameCode, object: ApiListeners<String>() {
+            override fun onResponse(response: String?) {
+            }
+
+            override fun onErrorResponse(error: VolleyError?) {
+                //TODO("show reason as toast")
+            }
+
+        })
     }
 
 }

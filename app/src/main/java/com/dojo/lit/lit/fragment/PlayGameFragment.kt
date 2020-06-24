@@ -30,12 +30,15 @@ import com.dojo.lit.util.TextUtil
 import java.lang.StringBuilder
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.dojo.lit.view.DojoOtherPlayerView
 import com.dojo.lit.view.Draggable
 import com.dojo.lit.view.DraggableTextView
 import com.dojo.lit.view.DroppableLinearLayout
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import kotlin.collections.ArrayList
+import com.google.android.gms.ads.InterstitialAd
+import com.dojo.lit.lit.util.DialogHelper
 
 
 class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
@@ -110,21 +113,22 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
     private lateinit var mLogsSv: ScrollView
     private lateinit var mTurnInfoTv: TextView
     private lateinit var mYourCardsLl: LinearLayout
-    private lateinit var mOppPlayerNameTv1: TextView
-    private lateinit var mOppPlayerNameTv2: TextView
-    private lateinit var mOppPlayerNameTv3: TextView
-    private lateinit var mSamePlayerNameTv1: TextView
-    private lateinit var mSamePlayerNameTv2: TextView
+    private lateinit var mOppPlayerNameTv1: DojoOtherPlayerView
+    private lateinit var mOppPlayerNameTv2: DojoOtherPlayerView
+    private lateinit var mOppPlayerNameTv3: DojoOtherPlayerView
+    private lateinit var mSamePlayerNameTv1: DojoOtherPlayerView
+    private lateinit var mSamePlayerNameTv2: DojoOtherPlayerView
     private lateinit var mTransferBtn: TextView
     private lateinit var mDeclareBtn: TextView
     private lateinit var mYourAlias: TextView
     private lateinit var mAdTop: AdView
-    private lateinit var mAdBottom: AdView
     private val mHandler = Handler()
     private val anim = AlphaAnimation(0.9f, 1.0f)
     private val delayedTimeMillis: Long = 5000
 
     private var isDead = false
+
+    private lateinit var mFullScreenAd: InterstitialAd
 
     val LOG_TAG = "play_lit_presenter"
 
@@ -152,6 +156,13 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         initViews()
         setupDefaultValues()
         initAnimator()
+        initInterstitialAd()
+    }
+
+    private fun initInterstitialAd() {
+        mFullScreenAd = InterstitialAd(this.context);
+        mFullScreenAd.setAdUnitId(getString(R.string.test_ad_unit_id))
+        mFullScreenAd.loadAd(AdRequest.Builder().build())
     }
 
     private fun initViews() {
@@ -174,7 +185,6 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         mTransferBtn = findViewById(R.id.transfer_tv)
         mDeclareBtn = findViewById(R.id.declare_tv)
         mAdTop = findViewById(R.id.gAdTop)
-        mAdBottom = findViewById(R.id.gAdBottom)
 
 //        mTransferBtn.startAnimation(anim)
 //        mDeclareBtn.startAnimation(anim)
@@ -198,9 +208,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
                 ?: getResources().getString(R.string.none)
         mYourAlias.text = getResources().getString(R.string.your_alias, alias)
         val adRequestTop = AdRequest.Builder().build()
-        val adRequestBottom = AdRequest.Builder().build()
         mAdTop.loadAd(adRequestTop)
-        mAdBottom.loadAd(adRequestBottom)
     }
 
     private fun setupPresenter() {
@@ -283,16 +291,16 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             mOppPlayerNameTv2.setPadding(morePadding, morePadding, morePadding, morePadding)
             mOppPlayerNameTv3.setPadding(morePadding, morePadding, morePadding, morePadding)
         }
-        mOppPlayerNameTv1.text =
-            getString(oppTeamStringId, playerNames[1], cardsHeldNo[1].toString())
-        mOppPlayerNameTv2.text =
-            getString(oppTeamStringId, playerNames[3], cardsHeldNo[3].toString())
-        mOppPlayerNameTv3.text =
-            getString(oppTeamStringId, playerNames[5], cardsHeldNo[5].toString())
-        mSamePlayerNameTv1.text =
-            getString(R.string.player_name_cards, playerNames[2], cardsHeldNo[2].toString())
-        mSamePlayerNameTv2.text =
-            getString(R.string.player_name_cards, playerNames[4], cardsHeldNo[4].toString())
+        mOppPlayerNameTv1.setData(
+            playerNames[1], getString(oppTeamStringId, cardsHeldNo[1].toString()), R.color.opp_team)
+        mOppPlayerNameTv2.setData(
+            playerNames[3], getString(oppTeamStringId, cardsHeldNo[3].toString()), R.color.opp_team)
+        mOppPlayerNameTv3.setData(
+            playerNames[5], getString(oppTeamStringId, cardsHeldNo[5].toString()), R.color.opp_team)
+        mSamePlayerNameTv1.setData(
+            playerNames[2], getString(R.string.player_name_cards, cardsHeldNo[2].toString()), R.color.same_team)
+        mSamePlayerNameTv2.setData(
+            playerNames[4], getString(R.string.player_name_cards, cardsHeldNo[4].toString()), R.color.same_team)
     }
 
     private fun getLogsText(logs: List<TransactionLogVM>): String {
@@ -522,6 +530,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         alertDialog = builder.show()
         alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        DialogHelper.alignDialog(alertDialog.window)
 
         // Set up the buttons
         positiveBtn.setOnClickListener {
@@ -569,6 +578,7 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
         alertDialog = builder.show()
         alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        DialogHelper.alignDialog(alertDialog.window)
 
         // Set up the buttons
         positiveBtn.setOnClickListener {
@@ -665,7 +675,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         var alertDialog: AlertDialog? = null
 
         alertDialog = builder.show()
-        alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        val window = alertDialog.window
+        window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
+        DialogHelper.alignDialog(window)
 
         // Set up the buttons
         positiveBtn.setOnClickListener {
@@ -682,9 +694,9 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
 
 //                Utils.makeToastLong("declare clicked")
                 mPresenter.dropSet(
-                    mPresenter.getPlayerNoFromName(teamPlayerNames[0]),
-                    mPresenter.getPlayerNoFromName(teamPlayerNames[1]),
-                    mPresenter.getPlayerNoFromName(teamPlayerNames[2]),
+                    mPresenter.getApiPlayerNoFromName(teamPlayerNames[0]),
+                    mPresenter.getApiPlayerNoFromName(teamPlayerNames[1]),
+                    mPresenter.getApiPlayerNoFromName(teamPlayerNames[2]),
                     player1CardsApiNameList,
                     player2CardsApiNameList,
                     player3CardsApiNameList
@@ -698,6 +710,14 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
             alertDialog?.dismiss()
         }
 
+    }
+
+    private fun showInterstitialAd() {
+        if (mFullScreenAd.isLoaded()) {
+            mFullScreenAd.show()
+        } else {
+            Log.d(LOG_TAG, "The interstitial wasn't loaded yet.");
+        }
     }
 
     private fun initAnimator() {
@@ -731,8 +751,8 @@ class PlayGameFragment : BaseFragment(), IPlayGameView, View.OnClickListener {
         alertDialog = builder.show()
         alertDialog.window?.decorView?.background = resources.getDrawable(R.drawable.dojo_dialog)
         positiveBtn.setOnClickListener {
+            showInterstitialAd()
             mPresenter.rematch(arguments!!.getString(BundleArgumentKeys.GAME_CODE)!!)
-            Utils.makeToastLong("Rematch not implemented yet!")
         }
     }
 }

@@ -48,6 +48,7 @@
         style="@style/DojoDialogTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="10"
         android:layout_marginLeft="@dimen/standard_margin_double"
         android:layout_marginTop="@dimen/standard_margin_half"
         android:layout_marginRight="@dimen/standard_margin_double"

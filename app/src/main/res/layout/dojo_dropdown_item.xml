@@ -6,5 +6,5 @@
     android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/standard_padding"
+    android:padding="@dimen/standard_padding_half"
     android:ellipsize="marquee"/>

@@ -79,6 +79,7 @@
     <string name="game_code">Game Code\n%s</string>
     <string name="waiting_for_turn">Waiting for %s to play</string>
     <string name="its_your_turn">It\'s your turn.\nAsk, Declare or Transfer.</string>
+    <string name="incorrect_drop_turn">Transfer turn to the opposite team.</string>
     <string name="your_score">Apna Score\n%s</string>
     <string name="your_alias">%s</string>
     <string name="opponent_score">Unka Score\n%s</string>
@@ -97,7 +98,7 @@
     <string name="ask_dialog_error">Please select all 3 fields to ask card!</string>
     <string name="transfer_dialog_title">Whom do you want to transfer to?</string>
     <string name="transfer_dialog_error">You didn\'t select any player name!</string>
-    <string name="declare_dialog_title"><![CDATA[Select set & assign cards to each of your teammates]]></string>
+    <string name="declare_dialog_title">Assign cards correctly</string>
     <string name="number_of_logs">Select the number of last transactions to show</string>
     <string name="game_room_code">Game room code</string>
     <string name="your_alias_nickname">Your alias</string>
@@ -105,8 +106,8 @@
     <string name="please_fill_all_fields">*Please fill all fields</string>
     <string name="images_of_cards">Images of Cards</string>
     <string name="init_lit_incomplete_fields_msg">Please fill all the values!</string>
-    <string name="ask_player">Ask\n%s\n(%s)</string>
-    <string name="player_name_cards">%s\n(%s)</string>
+    <string name="ask_player">Ask\n(%s)</string>
+    <string name="player_name_cards">(%s)</string>
     <string name="welcome0">Welcome</string>
     <string name="welcome1">Aa gaye muh utha ke??</string>
     <string name="welcome2">Biyah ho gaya tumhara??</string>
@@ -131,4 +132,7 @@
     <string name="rematch">Rematch</string>
     <string name="your_final_score">Your score: %s</string>
     <string name="their_final_score">Their score: %s</string>
+    <string name="test_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="banner_test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="force_upgrade"><![CDATA[We have new & exciting games & features in store for you! Upgrade your app now.]]></string>
 </resources>
